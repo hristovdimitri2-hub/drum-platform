@@ -16,7 +16,7 @@
 require('dotenv').config();
 process.env.DEMO_MODE = 'true';
 
-const demoStore = require('../src/services/demo-store');
+const store = require('../src/services/store');
 const carbon = require('../src/services/carbon');
 const trust = require('../src/services/trust');
 
@@ -171,7 +171,7 @@ function buildSeed() {
       trustEvents.push({
         id: `demo-trust-${trustNo}`,
         userId: carrierId,
-        eventType: 'delivery_success',
+        eventType: 'delivery_success_carrier',
         eventValue: 5,
         shipmentId: id,
         metadata: JSON.stringify({ co2_saved: co2.savedCo2Kg.toFixed(2) }),
@@ -182,8 +182,8 @@ function buildSeed() {
       trustEvents.push({
         id: `demo-trust-${trustNo}`,
         userId: senderId,
-        eventType: 'delivery_success',
-        eventValue: 5,
+        eventType: 'delivery_success_sender',
+        eventValue: 3,
         shipmentId: id,
         metadata: JSON.stringify({}),
         isDemo: true,
@@ -216,13 +216,13 @@ function printSummary(seedData) {
 
 function main() {
   if (process.argv.includes('--wipe')) {
-    demoStore.clear();
+    store.clear();
     console.log('Demo data cleared (data/demo-state.json).');
     return;
   }
 
   const seedData = buildSeed();
-  demoStore.resetSeed(seedData);
+  store.resetSeed(seedData);
   printSummary(seedData);
   console.log('\nOK: записано в data/demo-state.json. Стартирай npm start и отвори /dashboard/carbon');
 }

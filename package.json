@@ -9,7 +9,7 @@
     "seed": "node scripts/seed-airtable.js",
     "seed:demo": "node scripts/seed-demo.js",
     "demo:e2e": "node scripts/demo-e2e.js",
-    "test": "node scripts/demo-e2e.js --quiet"
+    "test": "node --test"
   },
   "dependencies": {
     "telegraf": "^4.16.3",

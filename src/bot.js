@@ -59,7 +59,7 @@ stripeService.assertTestMode();
 
 if (IS_DEMO) {
   console.log('╔══════════════════════════════════════════════════════╗');
-  console.log('║  ⚠️  DEMO MODE — simulated payments & in-memory DB   ║');
+  console.log('║  ⚠️  DEMO MODE — simulated payments & local SQLite DB ║');
   console.log('║  All data is marked [DEMO]. NOT real traction.       ║');
   console.log('╚══════════════════════════════════════════════════════╝');
 }

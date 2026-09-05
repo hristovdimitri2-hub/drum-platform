@@ -157,8 +157,8 @@ async function handleDeliveryScan(ctx, shipment) {
   });
 
   // Update trust scores (event-sourced; both parties earn delivery_success)
-  const senderTrust = await ctx.airtable.updateTrustScore(shipment.senderId, 'delivery_success');
-  const carrierTrust = await ctx.airtable.updateTrustScore(shipment.carrierId, 'delivery_success');
+  const senderTrust = await ctx.airtable.updateTrustScore(shipment.senderId, 'delivery_success_sender');
+  const carrierTrust = await ctx.airtable.updateTrustScore(shipment.carrierId, 'delivery_success_carrier');
 
   await ctx.airtable.logTrustEvent({
     userId: shipment.carrierId,

@@ -141,8 +141,8 @@ async function main() {
 
   // ── 6. Trust Score ──
   step(6, 'Trust Score (event-sourced, прагове 31/50/70/90)');
-  const senderTrust = await store.updateTrustScore(sender.id, 'delivery_success');
-  const carrierTrust = await store.updateTrustScore(carrier.id, 'delivery_success');
+  const senderTrust = await store.updateTrustScore(sender.id, 'delivery_success_sender');
+  const carrierTrust = await store.updateTrustScore(carrier.id, 'delivery_success_carrier');
   console.log(`  Изпращач: 50 → ${senderTrust.score} (${senderTrust.tier})`);
   console.log(`  Превозвач: 50 → ${carrierTrust.score} (${carrierTrust.tier})`);
 

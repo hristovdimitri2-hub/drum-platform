@@ -1,17 +1,27 @@
 /**
- * Store facade — selects the data layer
+ * Store facade — selects the data layer (B1)
  *
- *   DEMO_MODE=true  -> services/demo-store.js (in-memory, marked [DEMO])
- *   otherwise       -> services/airtable.js   (real Airtable base)
+ *   DATA_BACKEND=sqlite    -> services/db/sqlite.js (DEFAULT, self-contained)
+ *   DATA_BACKEND=airtable  -> services/airtable.js   (production no-code DB)
+ *   DATA_BACKEND=demo      -> services/demo-store.js (legacy in-memory)
  *
- * Both implementations expose the identical interface, so commands
- * never need to know which one is active.
+ * DEMO_MODE is INDEPENDENT of the backend: it only switches Stripe to
+ * simulated rails and marks records is_demo=1. SQLite remains the default
+ * data layer in every mode.
+ *
+ * All backends implement the same adapter interface (docs/DATABASE.md).
  */
 
-const isDemoMode = String(process.env.DEMO_MODE || '').toLowerCase() === 'true';
+const DATA_BACKEND = String(process.env.DATA_BACKEND || 'sqlite').toLowerCase();
+const IS_DEMO = String(process.env.DEMO_MODE || '').toLowerCase() === 'true';
 
-module.exports = isDemoMode
-  ? require('./demo-store')
-  : require('./airtable');
+let backend;
+if (DATA_BACKEND === 'airtable') backend = require('./airtable');
+else if (DATA_BACKEND === 'demo') backend = require('./demo-store');
+else backend = require('./db/sqlite');
 
-module.exports.isDemoMode = isDemoMode;
+module.exports = Object.assign({}, backend, {
+  isDemoMode: IS_DEMO,
+  backend: DATA_BACKEND === 'demo' ? 'demo' : backend.backend || DATA_BACKEND,
+});
+
