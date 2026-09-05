@@ -65,3 +65,25 @@
 7. **P2:** Typeform → webhook → /new (вж. TYPEFORM_FIELDS.md).
 8. **P2:** Grid/GPS разстояния (сега: таблица с коридорни км) + документиран емисиен фактор от официален източник (EEA/DEFRA) за грантова отчетност.
 9. **P3:** автотестове (jest) върху services — демо E2E скриптът е временният smoke test.
+
+## Приложено в Етап 2 (B5/B8)
+
+- **Money module** (`src/services/money.js`): ЕДИН каноничен изчислител за
+  split 80/15/5 (remainder → застраховката, гаранция €0.00), VAT върху
+  таксата (gross→net+VAT). Stripe, transactions, finance.js и тестовете
+  всички го ползват — нула дублирана математика.
+- **Аномалия 3 — реално фото: TODO (production).** DEMO режим записва
+  placeholder файл с метаданни (data/proofs/<dispute>.json) и изрично
+  `demoPlaceholder: true`. Не се моква като "истинска снимка" — видно е
+  в кода и в evidence пакета.
+- **Evidence пакет** (B5.4): една команда (`/evidence <ID>` или
+  `GET /api/evidence/<ID>`) → JSON + Markdown + SHA-256 checksum,
+  репродуцируем (same content → same hash). Съдържа: shipment, Stripe
+  режим, финансова времева линия от transactions (split в стотинки),
+  спорове, Carbon Ledger запис.
+- **Финансов модел** (B8): `src/services/finance.js` = single source of
+  truth (коридорите в /new идват от там). Генератор:
+  `node scripts/build-financials.js` → `docs/data-room/FINANCIAL_MODEL.md/.csv`
+  с watermark и независима аритметична проверка (refuses to write при
+  грешка). Сравнение с Financial_Model_SYNCED.xlsx:
+  `docs/data-room/FINANCIAL_NOTES.md` (6 разминавания документирани).

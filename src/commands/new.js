@@ -15,13 +15,7 @@
  */
 
 const { Markup } = require('telegraf');
-
-const CORRIDORS = [
-  { from: 'София', to: 'Пловдив', basePriceEur: 10 },
-  { from: 'Пловдив', to: 'София', basePriceEur: 10 },
-  { from: 'София', to: 'Варна', basePriceEur: 15 },
-  { from: 'Варна', to: 'София', basePriceEur: 15 },
-];
+const { CORRIDORS } = require('../services/finance'); // B8 single source of truth
 
 module.exports = async (ctx) => {
   // Start session for new shipment
