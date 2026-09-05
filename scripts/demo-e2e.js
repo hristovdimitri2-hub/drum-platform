@@ -53,14 +53,14 @@ async function main() {
   console.log(`  Изпращач: ${sender.firstName} ${sender.lastName} (@${sender.username}) — Trust ${sender.trustScore}`);
   console.log(`  Превозвач: ${carrier.firstName} ${carrier.lastName} (@${carrier.username}) — Trust ${carrier.trustScore}`);
 
-  // ── 1. Заявка ──
+  // ── 1. Заявка ── (B8.1 BASE калибровка: T = €7.75 captured)
   step(1, 'Изпращачът създава заявка (като /new)');
-  const baseEur = 10; // София → Пловдив
-  const feeEur = +(baseEur * 0.15).toFixed(2);
-  const insuranceEur = +(baseEur * 0.05).toFixed(2);
-  const totalEur = +(baseEur + feeEur + insuranceEur).toFixed(2);
+  const totalEur = 7.75; // BASE калибровка (T) — виж src/services/finance.js
+  const baseEur = 6.20;  // carrier pool (80% от T)
+  const feeEur = 1.16;   // DRUM такса (15% от T)
+  const insuranceEur = 0.39; // застраховка (5% от T)
   console.log(`  Коридор: София → Пловдив | Пратка: [DEMO] Документи в плик`);
-  console.log(`  Цена: base €${baseEur.toFixed(2)} + такса €${feeEur.toFixed(2)} + застраховка €${insuranceEur.toFixed(2)} = €${totalEur.toFixed(2)}`);
+  console.log(`  Цена: превозвач €${baseEur.toFixed(2)} + такса €${feeEur.toFixed(2)} + застраховка €${insuranceEur.toFixed(2)} = €${totalEur.toFixed(2)}`);
 
   // ── 2. Escrow (auth-only) ──
   step(2, 'Stripe escrow — auth-only замразяване');

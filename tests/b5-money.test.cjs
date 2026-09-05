@@ -53,10 +53,11 @@ test('MONEY: eur/cents conversions are exact for cent-precision inputs', () => {
   assert.equal(money.centsToEur(money.eurToCents(0.07)), 0.07);
 });
 
-test('MONEY: VAT on DRUM fee — 1.80 gross → 1.50 net + 0.30 VAT', () => {
+test('MONEY: VAT on DRUM fee — canon B8.1: 20% ON TOP (tax-exclusive)', () => {
   const v = money.vatOnDrumFee(180);
-  assert.deepEqual(v, { grossCents: 180, netCents: 150, vatCents: 30 });
-  assert.equal(v.netCents + v.vatCents, v.grossCents);
+  assert.deepEqual(v, { feeCents: 180, vatCents: 36, netCents: 180 });
+  // 0.414 case: fee 2.07 → VAT 0.414 → 41c
+  assert.equal(money.vatOnDrumFee(207).vatCents, 41);
 });
 
 test('MONEY: VAT applies to DRUM fee ONLY — carrier payout untouched', () => {
@@ -64,5 +65,13 @@ test('MONEY: VAT applies to DRUM fee ONLY — carrier payout untouched', () => {
   const v = money.vatOnDrumFee(split.drumCents);
   assert.equal(split.carrierCents, 960);                 // carrier unaffected
   assert.equal(split.insuranceCents, 60);                // insurance unaffected
-  assert.equal(v.grossCents, 180);                       // only the fee
+  assert.equal(v.feeCents, 180);                         // only the fee
+});
+
+test('MONEY: Stripe canon 1.5% + €0.25 on the captured amount', () => {
+  assert.equal(money.STRIPE.percent, 0.015);
+  assert.equal(money.STRIPE.fixedCents, 25);
+  assert.equal(money.stripeFeeCents(1200), 43);          // 18 + 25
+  assert.equal(money.stripeFeeCents(437), 32);           // 7 + 25 (GTM-ENTRY)
+  assert.equal(money.stripeFeeCents(775), 37);           // 12 + 25 (BASE)
 });

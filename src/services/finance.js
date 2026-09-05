@@ -1,31 +1,33 @@
 /**
- * FINANCE (B8) — canonical financial model. SINGLE SOURCE OF TRUTH.
+ * FINANCE (B8.1) — canonical financial model. SINGLE SOURCE OF TRUTH.
  *
- * Every number in /docs/data-room/ comes from THIS file via
- * scripts/build-financials.js. The demo pricing (commands/new.js) imports
- * the same corridor table. No number is typed by hand in documents.
+ * PRICE AS A SCENARIO AXIS: TICKET_CALEBRATIONS with 3 documented
+ * calibrations (ticket T = the captured amount the 80/15/5 split runs on):
+ *   (a) GTM_ENTRY — user pays ≈ €4.50 (T = €4.37): entry price vs Econt.
+ *       Explicit model finding: the €0.25 fixed Stripe fee crushes the
+ *       margin to ~€0.21/delivery here (see FINANCIAL_NOTES.md).
+ *   (b) BASE      — user pays ≈ €8.00 (T = €7.75): THE data-room base.
+ *   (c) PREMIUM   — T = €13.80 (current demo pricing): honestly labeled
+ *       "optimistic/premium basket", NOT the base.
+ * NOTE: userPays for (a)/(b) ≈ T × 1.03 (marketing rounding); the exact
+ * surcharge mechanism is an OPEN QUESTION for brief revision. For (c)
+ * userPays = T (already loaded). Corridor mix (70/30 Пд/Вн) is a
+ * documented parameter that applied to the premium basket.
  *
- * Watermark rule: every generated figure is ROUNDED DOWN to the cent
- * ("до €0.00" — conservative by construction) and every waterfall row
- * reconciles to exactly €0.00 remainder (tested).
+ * VAT canon (B8.1): 20% ON TOP of the DRUM fee (tax-exclusive), absorbed
+ * by the platform (user price unchanged) — see money.vatOnDrumFee.
+ * Stripe canon (B8.1): 1.5% + €0.25, base = captured amount (money.js).
  *
- * Canonical model (per delivery, on the CAPTURED total):
- *   gross           = corridor total (base + 15% fee + 5% insurance)
- *   carrier payout  = 80% (money.splitAmounts)
- *   DRUM fee        = 15% (VAT-INCLUSIVE: net = gross/1.2)
- *   insurance pool  = 5%
- *   Stripe cost     = 1.5% + €0.25/txn (ASSUMPTION: EU cards, Connect)
- *   cross-subsidy   = 15% of DRUM fee + 5% of insurance → social pool
- *   VAT             = 20% on the DRUM fee only (never on the carrier)
+ * Watermark: all outputs floored to the cent ("до €0.00"), every
+ * waterfall reconciles to zero remainder (tested), and every table row
+ * exposes its derivation (retained/delivery, fixed/delivery).
  *
- * Carbon revenue is EXCLUDED from the base model (speculative; the synced
- * Excel model includes it — documented in FINANCIAL_NOTES.md as a
- * deliberate difference, not an oversight).
+ * Carbon revenue stays EXCLUDED from the base model (see FINANCIAL_NOTES).
  */
 
 const money = require('./money');
 
-// ---- Corridor prices (single source — used by commands/new.js too) --------
+// Corridor prices (used by commands/new.js — premium basket in the bot)
 const CORRIDORS = [
   { from: 'София', to: 'Пловдив', basePriceEur: 10 },
   { from: 'Пловдив', to: 'София', basePriceEur: 10 },
@@ -33,16 +35,47 @@ const CORRIDORS = [
   { from: 'Варна', to: 'София', basePriceEur: 15 },
 ];
 
-// Corridor mix in scenarios (ASSUMPTION — labeled in output)
+// Documented corridor mix (applied to the premium basket in v0.2.0 model)
 const CORRIDOR_MIX = { 'София-Пловдив': 0.7, 'София-Варна': 0.3 };
 
-// ---- Stripe cost (ASSUMPTION: EU cards + Connect, per transaction) --------
-const STRIPE = { percent: 0.015, fixedCents: 25 };
+// ---- B8.1: price as a scenario axis ---------------------------------------
+const TICKET_CALEBRATIONS = [
+  {
+    key: 'GTM_ENTRY',
+    label: 'GTM-ENTRY (конкурентно срещу Econt)',
+    ticketCents: 437,
+    userPaysEur: 4.5,
+    note: 'Фикс. Stripe такса смачка маржа — виж FINANCIAL_NOTES',
+  },
+  {
+    key: 'BASE',
+    label: 'BASE (среден чек по документите) — data-room канон',
+    ticketCents: 775,
+    userPaysEur: 8.0,
+  },
+  {
+    key: 'PREMIUM',
+    label: 'PREMIUM (сегашни демо цени) — оптимистичен/премиум кош',
+    ticketCents: 1380,
+    userPaysEur: 13.8,
+  },
+];
 
-// ---- Fixed monthly costs (ASSUMPTIONS — solo founder, organic growth) -----
+function calibrationByKey(key) {
+  return TICKET_CALEBRATIONS.find((c) => c.key === key);
+}
+
+/** Floor to the cent — the B8 "до €0.00" watermark (conservative). */
+function floorToCent(eur) {
+  return Math.floor((Number(eur) || 0) * 100) / 100;
+}
+
+// ---- Fixed monthly costs — BREAK-EVEN LADDER (B8.1) -----------------------
 const FIXED_MONTHLY = [
-  { label: 'Infra (Railway + SQLite host + domain)', eurCents: 3500 },
-  { label: 'Ops tooling & support', eurCents: 1500 },
+  { label: 'Infra (технически, без екип)', eurCents: 5000 },
+  { label: 'Lean', eurCents: 300000 },
+  { label: 'Scale A', eurCents: 1000000 },
+  { label: 'Документиран Y1 burn', eurCents: 1660000 },
 ];
 
 // ---- Monthly delivery volumes per scenario/year (ASSUMPTIONS) -------------
@@ -52,47 +85,33 @@ const SCENARIOS = {
   optimistic: { y1: 1000, y2: 6000, y3: 20000 },
 };
 
-/** Floor to the cent — the B8 "до €0.00" watermark (conservative). */
-function floorToCent(eur) {
-  return Math.floor((Number(eur) || 0) * 100) / 100;
-}
-
-/** Weighted-average captured total per delivery (cents), from corridor mix. */
-function avgGrossCents() {
-  let cents = 0;
-  for (const [key, share] of Object.entries(CORRIDOR_MIX)) {
-    const [from, to] = key.split('-');
-    const corridor = CORRIDORS.find((c) => c.from === from && c.to === to) || CORRIDORS[0];
-    cents += Math.round(money.eurToCents(corridor.basePriceEur) * 1.2) * share;
-  }
-  return Math.round(cents);
-}
+const DEFAULT_CALIBRATION = 'BASE';
 
 /**
- * Per-delivery waterfall in cents. All figures via money.js.
- * Reconciliation: gross = carrier + insurance + fee-net + Stripe + VAT, remainder 0.
+ * Per-delivery waterfall for a given ticket (captured cents).
+ * Canonical paths: money.splitAmounts + money.stripeFeeCents + money.vatOnDrumFee.
+ * Reconciliation: ticket = carrier + insurance + vat + stripe + retained (€0.00).
  */
-function waterfallPerDelivery(grossCents = avgGrossCents()) {
-  const split = money.splitAmounts(grossCents);              // 80/15/5, remainder in insurance
-  const stripeFeeCents = Math.round(grossCents * STRIPE.percent) + STRIPE.fixedCents;
-  const vat = money.vatOnDrumFee(split.drumCents);           // fee gross -> net + VAT
+function waterfall(ticketCents) {
+  const split = money.splitAmounts(ticketCents);
+  const stripeFeeCents = money.stripeFeeCents(ticketCents);
+  const vat = money.vatOnDrumFee(split.drumCents);
   const socialCents =
     Math.round(split.drumCents * 0.15) + Math.round(split.insuranceCents * 0.05);
-  const platformRetainedCents = split.drumCents - vat.vatCents - stripeFeeCents;
-
+  const platformRetainedCents =
+    split.drumCents - vat.vatCents - stripeFeeCents;
   return {
-    grossCents,
+    ticketCents,
     carrierCents: split.carrierCents,
-    drumFeeGrossCents: split.drumCents,
-    drumFeeNetCents: vat.netCents,
+    drumFeeCents: split.drumCents,
     vatCents: vat.vatCents,
     insuranceCents: split.insuranceCents,
     stripeFeeCents,
     socialPoolCents: socialCents,
     platformRetainedCents,
-    netMarginPct: Math.floor((platformRetainedCents / grossCents) * 10000) / 100,
+    netMarginPct: Math.floor((platformRetainedCents / ticketCents) * 10000) / 100,
     reconciliationRemainderCents:
-      grossCents -
+      ticketCents -
       split.carrierCents -
       split.insuranceCents -
       vat.vatCents -
@@ -101,42 +120,54 @@ function waterfallPerDelivery(grossCents = avgGrossCents()) {
   };
 }
 
-/** Monthly fixed costs (cents). */
-function fixedMonthlyCents() {
-  return FIXED_MONTHLY.reduce((s, f) => s + f.eurCents, 0);
+const Y1_BURN_CENTS = FIXED_MONTHLY[3].eurCents; // documented Y1 burn
+function fixedMonthlyBurnCents() {
+  return Y1_BURN_CENTS;
 }
 
-/** Break-even deliveries per month (ceiled). */
-function breakEvenDeliveriesPerMonth() {
-  const w = waterfallPerDelivery();
-  return Math.ceil(fixedMonthlyCents() / w.platformRetainedCents);
+/**
+ * Break-even ladder for a calibration: every burn level x retained/delivery.
+ */
+function breakEvenLadder(ticketCents) {
+  const w = waterfall(ticketCents);
+  return FIXED_MONTHLY.map((f) => ({
+    label: f.label,
+    monthlyBurnCents: f.eurCents,
+    breakEvenDeliveries: Math.ceil(f.eurCents / w.platformRetainedCents),
+  }));
 }
 
-/** Yearly P&L rows for a scenario (pessimistic | base | optimistic). */
-function yearlyPnl(scenarioName) {
+/** Yearly P&L for a scenario on a calibration (default BASE). */
+function yearlyPnl(scenarioName, calibrationKey = DEFAULT_CALIBRATION) {
+  const cal = calibrationByKey(calibrationKey);
+  if (!cal) throw new Error('Unknown calibration: ' + calibrationKey);
   const volumes = SCENARIOS[scenarioName];
   if (!volumes) throw new Error('Unknown scenario: ' + scenarioName);
-  const w = waterfallPerDelivery();
-  const fixedCents = fixedMonthlyCents() * 12;
+  const w = waterfall(cal.ticketCents);
+  const fixedCents = Y1_BURN_CENTS * 12; // documented Y1 burn (B8.1)
   return Object.entries(volumes).map(([year, perMonth]) => {
     const deliveries = perMonth * 12;
-    const grossCents = deliveries * w.grossCents;
-    const ebitdaCents = deliveries * w.platformRetainedCents - fixedCents;
+    const grossCents = deliveries * w.ticketCents;
     return {
       scenario: scenarioName,
+      calibration: cal.key,
       year: year.toUpperCase(),
       deliveries,
+      ticketEur: money.centsToEur(w.ticketCents),
+      retainedPerDeliveryCents: w.platformRetainedCents,
+      fixedPerDeliveryCents: Math.round(fixedCents / deliveries),
       grossCents,
       carrierCents: deliveries * w.carrierCents,
-      drumFeeGrossCents: deliveries * w.drumFeeGrossCents,
+      drumFeeCents: deliveries * w.drumFeeCents,
       vatCents: deliveries * w.vatCents,
       insuranceCents: deliveries * w.insuranceCents,
       stripeFeeCents: deliveries * w.stripeFeeCents,
       socialPoolCents: deliveries * w.socialPoolCents,
       platformRetainedCents: deliveries * w.platformRetainedCents,
       fixedCents,
-      ebitdaCents,
-      ebitdaMarginPct: Math.floor((ebitdaCents / grossCents) * 10000) / 100,
+      ebitdaCents: deliveries * w.platformRetainedCents - fixedCents,
+      ebitdaMarginPct:
+        Math.floor(((deliveries * w.platformRetainedCents - fixedCents) / grossCents) * 10000) / 100,
     };
   });
 }
@@ -144,14 +175,16 @@ function yearlyPnl(scenarioName) {
 module.exports = {
   CORRIDORS,
   CORRIDOR_MIX,
-  STRIPE,
+  TICKET_CALEBRATIONS,
+  DEFAULT_CALIBRATION,
   FIXED_MONTHLY,
   SCENARIOS,
+  calibrationByKey,
   floorToCent,
-  avgGrossCents,
-  waterfallPerDelivery,
-  fixedMonthlyCents,
-  breakEvenDeliveriesPerMonth,
+  waterfall,
+  fixedMonthlyBurnCents,
+  Y1_BURN_CENTS,
+  breakEvenLadder,
   yearlyPnl,
   money,
 };
