@@ -1,0 +1,31 @@
+{
+  "name": "drum-mvp",
+  "version": "0.2.0",
+  "description": "DRUM 3.0 — Concierge MVP (Telegram bot + Stripe + Airtable + Carbon Ledger)",
+  "main": "src/bot.js",
+  "scripts": {
+    "start": "node src/bot.js",
+    "dev": "nodemon src/bot.js",
+    "seed": "node scripts/seed-airtable.js",
+    "seed:demo": "node scripts/seed-demo.js",
+    "demo:e2e": "node scripts/demo-e2e.js",
+    "test": "node scripts/demo-e2e.js --quiet"
+  },
+  "dependencies": {
+    "telegraf": "^4.16.3",
+    "stripe": "^18.5.0",
+    "airtable": "^0.12.2",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
