@@ -40,6 +40,7 @@ const acceptCommand = require('./commands/accept');
 const scanCommand = require('./commands/scan');
 const statusCommand = require('./commands/status');
 const helpCommand = require('./commands/help');
+const matchesCommand = require('./commands/matches');
 
 const IS_DEMO = airtableService.isDemoMode === true || stripeService.DEMO_MODE === true;
 
@@ -97,6 +98,7 @@ if (bot) {
   bot.command('accept', acceptCommand);
   bot.command('scan', scanCommand);
   bot.command('status', statusCommand);
+  bot.command('matches', matchesCommand);
   bot.command('cancel', async (ctx) => {
     if (ctx.session) delete ctx.session.newShipment;
     await ctx.reply('✅ Текущото действие е отменено.', Markup.removeKeyboard());
