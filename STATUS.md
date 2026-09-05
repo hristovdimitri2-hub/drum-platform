@@ -5,47 +5,56 @@
 
 ## Текущ етап
 
-**ПРЕ-ЕТАП L — ЗАВЪРШЕН (L0a-L4). ГЕЙТ L5: СПРЯНО за човешко решение.**
+**ЕТАП 1 — започва (ПРЕ-ЕТАП L и U: ЗАВЪРШЕНИ, сценарий А потвърден).**
 
 ## Готово (валидно, верифицирано)
 
 - v0.2.0 (commit 91c0b3c): одит + ремонт (7 бъга), Carbon Ledger модул +
-  дашборд (/dashboard/carbon), demo mode (DEMO_MODE), E2E демо
-  (scripts/demo-e2e.js), seed данни (100 доставки, [DEMO]), landing,
-  документация (README/SETUP/DEMO_SCRIPT/ARCHITECTURE).
-  Тествано: seed:demo, demo:e2e, /health, /dashboard/carbon, / — всички OK.
-- ПРЕ-ЕТАП L: локално търсене (195 попадения, двоен шаблон "Друм"+"drum",
-  depth>=6, Desktop/Downloads/Documents); GitHub legacy
-  `hristovdimitri2-hub/Drum` — PRIVATE (потвърдено), клонирано в
-  `_legacy_github_drum`; инвентаризация на версиите 1-6 (документни снимки,
-  НЕ кодови итерации); `docs/VERSION_MAP.md` генериран.
-- Принципи: Strict Agent Model, Stripe TEST-only guard, [DEMO] маркиране,
-  GDPR минимизация.
+  дашборд (/dashboard/carbon), demo mode, E2E демо, seed (100 доставки, [DEMO]),
+  landing, документация. Тествано: seed:demo / demo:e2e / /health / dashboard — OK.
+- ПРЕ-ЕТАП L (commit 622b62f): локално търсене (195 попадения, двоен шаблон,
+  depth>=6); GitHub legacy `hristovdimitri2-hub/Drum` PRIVATE — клониран;
+  версиите 1-6 = документни ревизии, НЕ код; docs/VERSION_MAP.md.
+- ПРЕ-ЕТАП U (този commit): едиен локален ред:
+    Desktop\проекти\DRUM\{drum-mvp, _archive_v1-v6 (00-08), _archive_3_0
+    (+ unique), _legacy_github_drum, CLEANUP_LIST.md}
+  - 8те "Друм" папки -> _archive_v1-v6\00..07 (преместени)
+  - DRUM_3_0_COMPLETE_ARCHIVE -> _archive_3_0\ (копие; оригинал в списъка за почистване)
+  - unique материали копирани в _archive_3_0\unique\ (Financial_Model_SYNCED,
+    Investor_Deck .pptx/.pdf, Concept_v1, README_ARCHIVE2)
+  - U6 инвентаризация: Excel = 6 листа (Assumptions/Unit Economics/P&L/
+    Sensitivity/ESG/Competitors); Deck = 12 слайда BG, остарял ask
+    (€400K @ €2.4M) — НЕ влиза в data-room
+  - U7/U8: CLEANUP_LIST.md (68+ .lnk, 6 .zip, дубликати, секция СЕКУРНОСТ)
+- Принципи: Strict Agent Model, Stripe TEST-only guard, [DEMO] маркиране, GDPR.
 
-## Открито по време на L (изисква решение)
+## Сигурност (напомняне към потребителя)
 
-- СИГУРНОСТ: `Documents\друм\run_audit.py` съдържа hardcoded OpenRouter API
-  ключ (sk-or-v1-...). Файлът НЕ е в каноничното репо (untracked, repo без
-  commits). Препоръка: ревокация на ключа от OpenRouter. НЕ е изтрит
-  (правило: нищо не се изтрива без разрешение).
+- Ревокирай OpenRouter ключа от `Documents\друм\run_audit.py` (sk-or-v1-...).
+- Прегледай `Desktop\cdp_api_key_secret (2).txt` и
+  `Desktop\проекти\nohumans_tokens_PRIVATE.txt`.
+- Нищо от тях не е в каноничното репо (проверено) и няма да влезе в PDF.
+- Детайли: CLEANUP_LIST.md, секция 4.
 
 ## Остава
 
-- **ГЕЙТ L5** — човешко решение (сценарий "а" от брифа изглежда потвърден, с
-  уговорката: версиите 1-6 са документни ревизии, не кодови итерации).
-- ПРЕ-ЕТАП U: обединение legacy -> _archive_v1-v6, _archive_3_0, _legacy_github_drum.
-- ЕТАП 1-4: модули B1-B12 (тестове >=80% coverage, CI yml, финансов модел
-  waterfall + break-even + 3 сценария, ESG v2 BG/EN, KPI дашборд, B2B
-  прототип, data-room: PITCH/ONE_PAGER/RISK_REGISTER, landing BG/EN).
-- ЕТАП 5: GitHub push (drum-platform, private) + финален PDF
-  /reports/DRUM_Investor_Readiness_Report_v1.pdf.
+- ЕТАП 1: [модули по брифа]
+- ЕТАП 2: B8 финансов модел (waterfall до €0.00 с ДДС, 3 сценария, break-even,
+  cross-subsidy) -> CSV + MD в /docs/data-room/, независима аритметична проверка;
+  кръстосано сравнение с Financial_Model_SYNCED -> FINANCIAL_NOTES.md
+- ЕТАП 3: B6 Carbon Ledger v2 (VCS-ready export, дашборд BG/EN), B9 Ops/KPI
+  дашборд (kill-switch метрики), B2 бот mock adapter за headless демо
+- ЕТАП 4: тестове >=80% coverage + lint; CI .github/workflows/ci.yml;
+  B11 data-room (PITCH.md/ONE_PAGER.md/RISK_REGISTER.md); B10 landing BG/EN;
+  B7 B2B Reverse Marketplace прототип (симулация 50 заявки)
+- ЕТАП 5: gitleaks/trufflehog -> gh repo create drum-platform (private) -> push
+  -> CI статус -> финален PDF /reports/DRUM_Investor_Readiness_Report_v1.pdf
 
 ## Следваща стъпка
 
-Изчаквай решение по ГЕЙТ L5 (сценарий "а" или "б" от брифа).
+ЕТАП 1 (модулите от брифа); след всеки модул — commit.
 
 ## GitHub push статус
 
-PENDING — gh auth: LOGGED IN (hristovdimitri2-hub). Преди push: gitleaks/trufflehog
-скан на цялата git история (задължителен по брифа). OpenRouter ключът от
-run_audit.py НЕ е в историята на каноничното репо (проверено: drum-mvp има 1 commit).
+PENDING — gh auth LOGGED IN (hristovdimitri2-hub). Задължителен gitleaks/
+trufflehog скан преди push. drum-mvp историята е чиста (2 commits, без секрети).

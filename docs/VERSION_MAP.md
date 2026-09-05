@@ -3,6 +3,11 @@
 > Генерирано: ПРЕ-ЕТАП L (read-only инвентаризация). Четимо за нетехнически читател.
 > Източници: локален диск (Desktop, Downloads, Documents, depth ≥ 6, шаблони "Друм"+"drum"),
 > GitHub legacy репо `hristovdimitri2-hub/Drum` (PRIVATE, клонирано в `_legacy_github_drum`).
+>
+> **ОБНОВЕНО след ПРЕ-ЕТАП U:** legacy материалите са консолидирани — виж
+> "Локален ред след U" в долната част. Compendium и DRUM_Concept_v1 са архивирани
+> (уникални, еволюционни етапи).
+
 
 ## Какво открихме накратко
 
@@ -54,3 +59,60 @@ API ключ** (sk-or-v1-...). Файлът е untracked в git repo без comm
 - GitHub legacy: `hristovdimitri2-hub/Drum` — PRIVATE ✅, main, 31 KB, създаден
   2026-08-16, съдържа 8 версии папки само с .lnk файлове.
 - `Documents\друм`: git repo без commits; 1 untracked файл (run_audit.py, 2026-07-03).
+
+---
+
+## Локален ред след ПРЕ-ЕТАП U (сценарий А, потвърден)
+
+```
+Desktop\проекти\DRUM\
+├── drum-mvp\             <- КАНОНИЧНО репо (код + документация + STATUS.md)
+├── _archive_v1-v6\       <- версия 0-7 (документни ревизии + Concept_v1 копия)
+│   ├── 00_първоначален_план
+│   ├── 01_обновление_1 ... 06_обновление_6
+│   ├── 07_финален_проект  (вкл. BOT — източникът на drum-mvp)
+│   └── 08_concept_v1      (DRUM_Concept_v1.docx/.txt — копия)
+├── _archive_3_0\
+│   ├── DRUM_3_0_COMPLETE_ARCHIVE\   (консолидираният 3.0 архив, преместен)
+│   └── unique\                      (уникални материали — копия:
+│       Financial_Model_SYNCED.xlsx, Investor_Deck .pptx/.pdf,
+│       DRUM_Concept_v1, README_ARCHIVE2)
+├── _legacy_github_drum\  <- клон на hristovdimitri2-hub/Drum (само .lnk каталог)
+└── CLEANUP_LIST.md       <- списък за изтриване ОТ ПОТРЕБИТЕЛЯ (U8)
+```
+
+## Инвентаризация на уникалните материали (U6)
+
+### DRUM_3_0_Financial_Model_SYNCED.xlsx (28 KB, 6 листа)
+1. **Assumptions** — пазарни параметри (активни потребители, ~2 доставки/активен/
+   месец, средна стойност на доставка), take rates (facilitation/insurance),
+   Stripe % + фикс такса, lost parcel rate, dispute rate, repeat rate 30/90 дни;
+   разходни параметри. Източници: PiggyBee/Roadie/Nimber historical data.
+2. **Unit Economics** — разбивка на икономиката на една средна доставка (живи формули).
+3. **P&L Forecast** — 3-годишна прогноза.
+4. **Sensitivity** — сценарен анализ.
+5. **ESG Metrics** — месечен CO2 детайл (kg/доставка, тон/месец, €/тон, carbon
+   revenue, 15% към превозвача); GHG Protocol Scope 3 Cat. 4; VCS (Verra)/Gold
+   Standard; аудит TV/SGS/Bureau Veritas.
+6. **Competitor & Graveyard Matrix** — PiggyBee, Gophr, Roadie, Nimber, Grabr + DRUM.
+
+→ ИСТОРИЧЕСКИ РЕФЕРЕНС. Каноничният финансов модел е B8 (кода). При B8:
+кръстосано сравнение на допусканията -> разминаванията в
+`/docs/data-room/FINANCIAL_NOTES.md`.
+
+### Investor Deck (12 слайда, BG)
+1. seed €400K @ €2.4M pre-money (Юли 2026); 2. Проблемът (1.2 млн коли/ден,
+   €6+ Econt, €820M неефективност); 3. Решението (Telegram флоу); 4. Dual-Entity
+   хибрид (търговски + социален двигател); 5. Пазар (BG·RS·TR·RO·GR); 6. Traction
+   (MVP за 8 седмици); 7. Конкурентно предимство (гробище на P2P — 5+DRUM);
+   8. Финанси — "реалистични маржове (5% Year 1-2 -> 8.8% Year 3+)"; 9. Екип
+   (solo founder, търси CTO); 10. Ask €400K @ €2.4M, 18-мес. runway -> Series A
+   (Q1 2028); 11. Kill Switches; 12. End ("1 доставка > 10 плана").
+
+→ НЕ влиза в data-room: остаряла икономика (ask €400K @ €2.4M срещу
+каноничната стълбичка €31K валидация -> €150-250K seed; маржове за
+пресмятане от B8). PITCH.md (B11) е каноничният разказ — числа САМО от B8.
+### Compendium + Concept_v1
+- `DRUM_3_0_COMPLETE_COMPENDIUM.pdf` (2.3 MB) — в _archive_3_0 (в архива).
+- `DRUM_Concept_v1.docx/.txt` (16.06.2026) — копия в `_archive_v1-v6\08_concept_v1\`.
+Отбелязани в тази карта като еволюционни етапи 0 и 9.
