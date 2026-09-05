@@ -9,11 +9,11 @@ const fin = require('../src/services/finance');
 
 test('B8.1: 3 calibrations with documented tickets', () => {
   assert.deepEqual(
-    fin.TICKET_CALEBRATIONS.map((c) => [c.key, c.ticketCents, c.userPaysEur]),
+    fin.TICKET_CALIBRATIONS.map((c) => [c.key, c.ticketCents, c.userPaysEur]),
     [
       ['GTM_ENTRY', 437, 4.5],
-      ['BASE', 775, 8.0],
-      ['PREMIUM', 1380, 13.8],
+      ['BASE', 775, 7.98],
+      ['PREMIUM', 1380, 14.21],
     ]
   );
 });
@@ -54,7 +54,7 @@ test('B8.1: PREMIUM (T=13.80) - retained 1.20 (was 1.27 with old VAT path)', () 
 });
 
 test('B8.1: reconciliation is 0.00 for all calibrations, 1..5000 cents', () => {
-  const tickets = fin.TICKET_CALEBRATIONS.map((c) => c.ticketCents);
+  const tickets = fin.TICKET_CALIBRATIONS.map((c) => c.ticketCents);
   for (let t = 1; t <= 5000; t++) {
     const w = fin.waterfall(t);
     assert.equal(w.reconciliationRemainderCents, 0, 'ticket ' + t + ' does not reconcile');
@@ -63,7 +63,7 @@ test('B8.1: reconciliation is 0.00 for all calibrations, 1..5000 cents', () => {
 });
 
 test('B8.1: carrier is NEVER touched by VAT or Stripe', () => {
-  for (const c of fin.TICKET_CALEBRATIONS) {
+  for (const c of fin.TICKET_CALIBRATIONS) {
     const w = fin.waterfall(c.ticketCents);
     assert.equal(w.carrierCents, Math.round(c.ticketCents * 0.8));
   }

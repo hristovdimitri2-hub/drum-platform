@@ -1,7 +1,7 @@
 /**
  * FINANCE (B8.1) — canonical financial model. SINGLE SOURCE OF TRUTH.
  *
- * PRICE AS A SCENARIO AXIS: TICKET_CALEBRATIONS with 3 documented
+ * PRICE AS A SCENARIO AXIS: TICKET_CALIBRATIONS with 3 documented
  * calibrations (ticket T = the captured amount the 80/15/5 split runs on):
  *   (a) GTM_ENTRY — user pays ≈ €4.50 (T = €4.37): entry price vs Econt.
  *       Explicit model finding: the €0.25 fixed Stripe fee crushes the
@@ -39,30 +39,30 @@ const CORRIDORS = [
 const CORRIDOR_MIX = { 'София-Пловдив': 0.7, 'София-Варна': 0.3 };
 
 // ---- B8.1: price as a scenario axis ---------------------------------------
-const TICKET_CALEBRATIONS = [
+const TICKET_CALIBRATIONS = [
   {
     key: 'GTM_ENTRY',
     label: 'GTM-ENTRY (конкурентно срещу Econt)',
     ticketCents: 437,
-    userPaysEur: 4.5,
+    userPaysEur: money.centsToEur(money.userPaysCents(437)), // €4.50 (canon B8.2)
     note: 'Фикс. Stripe такса смачка маржа — виж FINANCIAL_NOTES',
   },
   {
     key: 'BASE',
     label: 'BASE (среден чек по документите) — data-room канон',
     ticketCents: 775,
-    userPaysEur: 8.0,
+    userPaysEur: money.centsToEur(money.userPaysCents(775)), // €7.98 ≈ €8.00 (canon B8.2)
   },
   {
     key: 'PREMIUM',
     label: 'PREMIUM (сегашни демо цени) — оптимистичен/премиум кош',
     ticketCents: 1380,
-    userPaysEur: 13.8,
+    userPaysEur: money.centsToEur(money.userPaysCents(1380)), // €14.21 (B8.2: VAT on top)
   },
 ];
 
 function calibrationByKey(key) {
-  return TICKET_CALEBRATIONS.find((c) => c.key === key);
+  return TICKET_CALIBRATIONS.find((c) => c.key === key);
 }
 
 /** Floor to the cent — the B8 "до €0.00" watermark (conservative). */
@@ -175,7 +175,7 @@ function yearlyPnl(scenarioName, calibrationKey = DEFAULT_CALIBRATION) {
 module.exports = {
   CORRIDORS,
   CORRIDOR_MIX,
-  TICKET_CALEBRATIONS,
+  TICKET_CALIBRATIONS,
   DEFAULT_CALIBRATION,
   FIXED_MONTHLY,
   SCENARIOS,

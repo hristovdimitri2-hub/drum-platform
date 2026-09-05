@@ -75,3 +75,14 @@ test('MONEY: Stripe canon 1.5% + €0.25 on the captured amount', () => {
   assert.equal(money.stripeFeeCents(437), 32);           // 7 + 25 (GTM-ENTRY)
   assert.equal(money.stripeFeeCents(775), 37);           // 12 + 25 (BASE)
 });
+
+test('MONEY: userPays canon (B8.2) = T + VAT on the fee, to the cent', () => {
+  assert.equal(money.userPaysCents(437), 450);           // GTM-ENTRY → €4.50
+  assert.equal(money.userPaysCents(775), 798);           // BASE → €7.98
+  assert.equal(money.userPaysCents(1380), 1421);         // PREMIUM → €14.21 (B8.2 decision)
+  // closure: userPays − ticket = VAT owed on the drum fee
+  for (const t of [437, 775, 1380]) {
+    const split = money.splitAmounts(t);
+    assert.equal(money.userPaysCents(t) - t, Math.round(split.drumCents * 0.2));
+  }
+});

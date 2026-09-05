@@ -18,6 +18,7 @@ process.env.DEMO_MODE = 'true';
 const store = require('../src/services/store');
 const stripe = require('../src/services/stripe');
 const carbon = require('../src/services/carbon');
+const money = require('../src/services/money');
 const QRCode = require('qrcode');
 
 const hr = (t) => console.log('\n' + '═'.repeat(60) + `\n  ${t}\n` + '═'.repeat(60));
@@ -53,14 +54,16 @@ async function main() {
   console.log(`  Изпращач: ${sender.firstName} ${sender.lastName} (@${sender.username}) — Trust ${sender.trustScore}`);
   console.log(`  Превозвач: ${carrier.firstName} ${carrier.lastName} (@${carrier.username}) — Trust ${carrier.trustScore}`);
 
-  // ── 1. Заявка ── (B8.1 BASE калибровка: T = €7.75 captured)
+  // ── 1. Заявка ── (B8.2 BASE калибровка: T = €7.75, клиент плаща €7.98 вкл. ДДС)
   step(1, 'Изпращачът създава заявка (като /new)');
-  const totalEur = 7.75; // BASE калибровка (T) — виж src/services/finance.js
-  const baseEur = 6.20;  // carrier pool (80% от T)
-  const feeEur = 1.16;   // DRUM такса (15% от T)
-  const insuranceEur = 0.39; // застраховка (5% от T)
+  const ticketEur = 7.75;  // BASE калибровка (T) — виж src/services/finance.js
+  const baseEur = 6.20;    // carrier pool (80% от T)
+  const feeEur = 1.16;     // DRUM такса (15% от T)
+  const insuranceEur = 0.39; // застраховка (5% от T) — ПУЛ РЕЗЕРВ (не приход)
+  const totalEur = +(ticketEur + money.vatOnDrumFee(money.eurToCents(feeEur)).vatCents / 100).toFixed(2);
   console.log(`  Коридор: София → Пловдив | Пратка: [DEMO] Документи в плик`);
-  console.log(`  Цена: превозвач €${baseEur.toFixed(2)} + такса €${feeEur.toFixed(2)} + застраховка €${insuranceEur.toFixed(2)} = €${totalEur.toFixed(2)}`);
+  console.log(`  Ticket T: €${ticketEur.toFixed(2)} = превозвач €${baseEur.toFixed(2)} + такса €${feeEur.toFixed(2)} + застраховка €${insuranceEur.toFixed(2)}`);
+  console.log(`  Клиент плаща: €${totalEur.toFixed(2)} (T + ДДС €${(totalEur - ticketEur).toFixed(2)} върху таксата)`);
 
   // ── 2. Escrow (auth-only) ──
   step(2, 'Stripe escrow — auth-only замразяване');
@@ -126,6 +129,7 @@ async function main() {
     paymentIntentId: escrow.paymentIntentId,
     carrierConnectAccountId: carrierFresh.stripeConnectAccountId,
     totalEur,
+    ticketEur, // B8.2: split върху ticket T; разликата = ДДС върху таксата
   });
   if (!capture.success) throw new Error('Capture failed: ' + capture.error);
   console.log(`  Capture: ${capture.captureId}`);

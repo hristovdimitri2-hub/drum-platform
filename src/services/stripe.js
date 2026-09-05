@@ -90,24 +90,31 @@ async function createEscrowCharge({ amount, customerId, description, metadata })
  * Split of the captured total: 80% carrier (Connect transfer),
  * 15% DRUM (stays in platform balance), 5% insurance pool.
  */
-async function captureAndSplit({ paymentIntentId, carrierConnectAccountId, totalEur }) {
+async function captureAndSplit({ paymentIntentId, carrierConnectAccountId, totalEur, ticketEur }) {
   assertTestMode();
 
   const totalCents = money.eurToCents(totalEur);
-  // CANONICAL split via services/money.js (single money module — B5 rule)
-  const split = money.splitAmounts(totalCents);
+  // B8.2 canon: splits run over the TICKET T (net of VAT-on-top); the
+  // remainder (userPays − ticket) is the VAT owed on the fee.
+  const ticketCents = ticketEur !== undefined ? money.eurToCents(ticketEur) : totalCents;
+  const split = money.splitAmounts(ticketCents);
   const carrierAmountCents = split.carrierCents;
+  const vatCents = totalCents -
+    (split.carrierCents + split.drumCents + split.insuranceCents);
 
   const splitEur = {
     carrierPayoutEur: money.centsToEur(split.carrierCents),
     drumRevenueEur: money.centsToEur(split.drumCents),
     insurancePoolEur: money.centsToEur(split.insuranceCents),
+    vatEur: money.centsToEur(vatCents),
   };
   const splitCents = {
-    totalCents: split.totalCents,
+    totalCents,
+    ticketCents,
     carrierCents: split.carrierCents,
     drumCents: split.drumCents,
     insuranceCents: split.insuranceCents,
+    vatCents,
   };
 
   if (DEMO_MODE || paymentIntentId.startsWith('pi_demo_')) {

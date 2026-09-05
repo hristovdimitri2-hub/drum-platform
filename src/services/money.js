@@ -66,6 +66,20 @@ function stripeFeeCents(totalCents) {
   return Math.round(total * STRIPE.percent) + STRIPE.fixedCents;
 }
 
+/**
+ * USER-PAYS canon (B8.2): the client-facing price = ticket T + the VAT
+ * owed on the DRUM fee (VAT ON TOP, tax-exclusive — B8.1 canon):
+ *   userPays(T) = T + round(20% × round(15% × T))
+ * ONE function here; demo, finance.js and tests all use it.
+ * Calibrated results: T=437 → 450 (€4.50) · T=775 → 798 (€7.98) ·
+ * T=1380 → 1421 (€14.21).
+ */
+function userPaysCents(ticketCents) {
+  const split = splitAmounts(ticketCents);
+  const vat = Math.round(split.drumCents * VAT_RATE);
+  return ticketCents + vat;
+}
+
 module.exports = {
   CARRIER_RATE,
   DRUM_RATE,
@@ -77,4 +91,5 @@ module.exports = {
   splitAmounts,
   vatOnDrumFee,
   stripeFeeCents,
+  userPaysCents,
 };
