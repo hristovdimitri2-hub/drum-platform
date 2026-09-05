@@ -11,6 +11,7 @@
  */
 
 const Stripe = require('stripe');
+const money = require('./money');
 
 const DEMO_MODE = String(process.env.DEMO_MODE || '').toLowerCase() === 'true';
 const API_VERSION = '2025-08-27.basil';
@@ -37,16 +38,6 @@ function assertTestMode() {
       'DRUM MVP runs in Stripe TEST mode only. Use sk_test_... keys.'
   );
 }
-
-/**
- * Split constants (of the captured amount):
- *   80% carrier, 15% DRUM facilitation, 5% insurance pool.
- */
-const SPLIT = {
-  carrier: parseFloat(process.env.CARRIER_PAYOUT_PERCENT || '80') / 100,
-  drum: parseFloat(process.env.FACILITATION_FEE_PERCENT || '15') / 100,
-  insurance: parseFloat(process.env.INSURANCE_PREMIUM_PERCENT || '5') / 100,
-};
 
 let demoCounter = 0;
 
@@ -102,22 +93,35 @@ async function createEscrowCharge({ amount, customerId, description, metadata })
 async function captureAndSplit({ paymentIntentId, carrierConnectAccountId, totalEur }) {
   assertTestMode();
 
-  const totalCents = Math.round(totalEur * 100);
-  const carrierAmountCents = Math.round(totalCents * SPLIT.carrier);
+  const totalCents = money.eurToCents(totalEur);
+  // CANONICAL split via services/money.js (single money module — B5 rule)
+  const split = money.splitAmounts(totalCents);
+  const carrierAmountCents = split.carrierCents;
+
+  const splitEur = {
+    carrierPayoutEur: money.centsToEur(split.carrierCents),
+    drumRevenueEur: money.centsToEur(split.drumCents),
+    insurancePoolEur: money.centsToEur(split.insuranceCents),
+  };
+  const splitCents = {
+    totalCents: split.totalCents,
+    carrierCents: split.carrierCents,
+    drumCents: split.drumCents,
+    insuranceCents: split.insuranceCents,
+  };
 
   if (DEMO_MODE || paymentIntentId.startsWith('pi_demo_')) {
     console.log(
-      `[DEMO] Stripe capture+split: ${paymentIntentId} — carrier €${(carrierAmountCents / 100).toFixed(2)}, ` +
-        `DRUM €${((totalCents * SPLIT.drum) / 100).toFixed(2)}, insurance €${((totalCents * SPLIT.insurance) / 100).toFixed(2)}`
+      `[DEMO] Stripe capture+split: ${paymentIntentId} — carrier €${splitEur.carrierPayoutEur.toFixed(2)}, ` +
+        `DRUM €${splitEur.drumRevenueEur.toFixed(2)}, insurance €${splitEur.insurancePoolEur.toFixed(2)}`
     );
     return {
       success: true,
       demo: true,
       captureId: `ch_demo_${paymentIntentId.replace('pi_demo_', '')}`,
       transferId: carrierConnectAccountId ? `tr_demo_${paymentIntentId.replace('pi_demo_', '')}` : null,
-      carrierPayoutEur: +(carrierAmountCents / 100).toFixed(2),
-      drumRevenueEur: +((totalCents * SPLIT.drum) / 100).toFixed(2),
-      insurancePoolEur: +((totalCents * SPLIT.insurance) / 100).toFixed(2),
+      splitCents,
+      ...splitEur,
     };
   }
 
@@ -148,9 +152,8 @@ async function captureAndSplit({ paymentIntentId, carrierConnectAccountId, total
       success: true,
       captureId: capture.id,
       transferId,
-      carrierPayoutEur: +(carrierAmountCents / 100).toFixed(2),
-      drumRevenueEur: +((totalCents * SPLIT.drum) / 100).toFixed(2),
-      insurancePoolEur: +((totalCents * SPLIT.insurance) / 100).toFixed(2),
+      splitCents,
+      ...splitEur,
     };
   } catch (err) {
     console.error('Stripe capture+split error:', err);
@@ -275,6 +278,6 @@ module.exports = {
   refundEscrow,
   verifyWebhook,
   assertTestMode,
-  SPLIT,
+  money,          // canonical money module re-export (single source of truth)
   DEMO_MODE,
 };

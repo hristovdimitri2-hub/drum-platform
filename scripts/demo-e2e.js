@@ -139,6 +139,19 @@ async function main() {
     stripeTransferId: capture.transferId,
   });
 
+  // Canonical transaction record (B1 schema, split from services/money.js)
+  await store.recordTransaction({
+    shipmentId: shipment.id,
+    type: 'capture',
+    amountCents: capture.splitCents.totalCents,
+    currency: 'eur',
+    stripeId: capture.captureId,
+    splitCarrierCents: capture.splitCents.carrierCents,
+    splitDrumCents: capture.splitCents.drumCents,
+    splitInsuranceCents: capture.splitCents.insuranceCents,
+    isDemo: true,
+  });
+
   // ── 6. Trust Score ──
   step(6, 'Trust Score (event-sourced, прагове 31/50/70/90)');
   const senderTrust = await store.updateTrustScore(sender.id, 'delivery_success_sender');

@@ -41,6 +41,7 @@ const scanCommand = require('./commands/scan');
 const statusCommand = require('./commands/status');
 const helpCommand = require('./commands/help');
 const matchesCommand = require('./commands/matches');
+const evidenceCommand = require('./commands/evidence');
 
 const IS_DEMO = airtableService.isDemoMode === true || stripeService.DEMO_MODE === true;
 
@@ -99,6 +100,7 @@ if (bot) {
   bot.command('scan', scanCommand);
   bot.command('status', statusCommand);
   bot.command('matches', matchesCommand);
+  bot.command('evidence', evidenceCommand);
   bot.command('cancel', async (ctx) => {
     if (ctx.session) delete ctx.session.newShipment;
     await ctx.reply('✅ Текущото действие е отменено.', Markup.removeKeyboard());
@@ -132,7 +134,13 @@ app.post(
     const sig = req.headers['stripe-signature'];
     try {
       const event = stripeService.verifyWebhook(req.body, sig);
+      // Anomaly 2 — replay protection: each webhook id is processed ONCE
+      if (await airtableService.isWebhookProcessed(event.id)) {
+        console.log(`Webhook ${event.id} replayed — ignored (idempotent)`);
+        return res.json({ received: true, replay: true });
+      }
       await handleStripeEvent(event);
+      await airtableService.markWebhookProcessed(event.id, event.type);
       res.json({ received: true });
     } catch (err) {
       console.error('Webhook error:', err.message);
@@ -163,9 +171,21 @@ app.get('/health', (req, res) =>
   res.json({
     status: 'ok',
     mode: IS_DEMO ? 'demo' : 'live-test',
+    backend: airtableService.backend || 'sqlite',
     timestamp: new Date().toISOString(),
   })
 );
+
+// Evidence packet endpoint (B5 anomaly 4 — ONE action, demo star)
+app.get('/api/evidence/:shipmentId', async (req, res) => {
+  try {
+    const anomalies = require('./services/anomalies');
+    const out = await anomalies.buildEvidencePacket(airtableService, req.params.shipmentId);
+    res.json(out);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+});
 // ----------------------- Carbon Ledger dashboard (P1) ----------------------
 // Investor-facing ESG report. In demo mode everything is clearly marked [DEMO].
 app.get('/dashboard/carbon', async (req, res) => {

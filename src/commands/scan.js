@@ -137,6 +137,19 @@ async function handleDeliveryScan(ctx, shipment) {
     stripeTransferId: captureResult.transferId,
   });
 
+  // Canonical transaction record (B1 schema, split from services/money.js)
+  await ctx.airtable.recordTransaction({
+    shipmentId: shipment.id,
+    type: 'capture',
+    amountCents: captureResult.splitCents.totalCents,
+    currency: 'eur',
+    stripeId: captureResult.captureId,
+    splitCarrierCents: captureResult.splitCents.carrierCents,
+    splitDrumCents: captureResult.splitCents.drumCents,
+    splitInsuranceCents: captureResult.splitCents.insuranceCents,
+    isDemo: captureResult.demo === true,
+  });
+
   // Calculate CO2 saved (GHG Protocol Scope 3, Cat. 4 — see services/carbon.js)
   const carbonResult = ctx.carbon.calculateCo2Saved({
     originCity: shipment.originCity,

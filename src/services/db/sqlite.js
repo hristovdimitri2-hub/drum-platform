@@ -137,6 +137,12 @@ function createSchema() {
       value INTEGER NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS webhook_events (
+      id TEXT PRIMARY KEY,
+      type TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_shipments_sender ON shipments(sender_telegram_id);
     CREATE INDEX IF NOT EXISTS idx_shipments_carrier ON shipments(carrier_telegram_id);
     CREATE INDEX IF NOT EXISTS idx_shipments_status ON shipments(status);
@@ -636,6 +642,20 @@ async function clear() {
 
 init();
 
+/* ------------------ Webhook idempotency (anomaly 2) ----------------------- */
+
+async function isWebhookProcessed(eventId) {
+  init();
+  return !!db.prepare('SELECT id FROM webhook_events WHERE id = ?').get(eventId);
+}
+
+async function markWebhookProcessed(eventId, type) {
+  init();
+  db.prepare(
+    'INSERT INTO webhook_events (id, type, created_at) VALUES (?, ?, ?) ON CONFLICT(id) DO NOTHING'
+  ).run(eventId, type || 'unknown', now());
+}
+
 module.exports = {
   backend: 'sqlite',
   dbPath: DB_PATH,
@@ -652,7 +672,9 @@ module.exports = {
   // transactions / qr / disputes
   recordTransaction, listTransactionsByShipment,
   saveQrCode, getQrCode, markQrScanned,
-  createDispute, updateDisputeStatus, listDisputes,
+  createDispute, getDispute, updateDisputeStatus, listDisputes,
+  // webhook idempotency (anomaly 2)
+  isWebhookProcessed, markWebhookProcessed,
   // seed
   resetSeed, clear,
   isDemoMode: false,
