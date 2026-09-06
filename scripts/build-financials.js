@@ -12,11 +12,13 @@
 const fs = require('fs');
 const path = require('path');
 const fin = require('../src/services/finance');
+const b2b = require('../src/services/b2b');
 
 const OUT_DIR = path.join(__dirname, '..', 'docs', 'data-room');
 const eur = (cents) =>
   Math.floor(cents / 100) + '.' +
   String(Math.floor(((cents % 100) + 100) % 100)).padStart(2, '0');
+const econGtm1 = b2b.batchEconomics(1, 437).effectiveRetainedPerParcelCents;
 
 /* ---------------------- Independent arithmetic check ---------------------- */
 
@@ -139,14 +141,30 @@ function buildMarkdown() {
     }
   }
   lines.push('');
-  lines.push('## 4. Стратегически изводи (скелет на икономическия слайд за PITCH.md)');
+  lines.push('## 4. B2B batch economics (B7) — Stripe фикс. такса амортизирана');
+  lines.push('');
+  lines.push('GTM_ENTRY цена, каноничен money модул, до стотинка. Batch = ЕДНА Stripe');
+  lines.push('транзакция върху общата сума (фикс. €0.25 веднъж, не на пратка).');
+  lines.push('');
+  lines.push('| Пратки в batch | Stripe такса (общо) | Спестено vs on-demand | Retained/пратка | Кратност vs on-demand |');
+  lines.push('|---|---|---|---|---|');
+  for (const n of [1, 5, 10, 20, 50]) {
+    const e = b2b.batchEconomics(n, 437);
+    lines.push('| ' + n + ' | EUR ' + eur(e.stripeFeeBatchCents) + ' | EUR ' + eur(e.stripeFixedSavingsCents) +
+      ' | **EUR ' + eur(e.effectiveRetainedPerParcelCents) + '** | ' +
+      (Math.round((e.effectiveRetainedPerParcelCents / econGtm1) * 100) / 100) + '× |');
+  }
+  lines.push('');
+  lines.push('**Извод:** при GTM_ENTRY on-demand retained е EUR 0.21/пратка (фикс. такса смачква);');
+  lines.push('в batch от 10 — EUR 0.43/пратка (2.06×). GTM-ENTRY е възможен САМО с batch.');
+  lines.push('');
+  lines.push('## 5. Стратегически изводи (скелет на икономическия слайд за PITCH.md)');
   lines.push('');
   const gtm = fin.waterfall(fin.TICKET_CALIBRATIONS[0].ticketCents);
   const base = fin.waterfall(fin.TICKET_CALIBRATIONS[1].ticketCents);
   const prem = fin.waterfall(fin.TICKET_CALIBRATIONS[2].ticketCents);
   const ladderG = fin.breakEvenLadder(fin.TICKET_CALIBRATIONS[0].ticketCents);
   const ladderB = fin.breakEvenLadder(fin.TICKET_CALIBRATIONS[1].ticketCents);
-  const ladderP = fin.breakEvenLadder(fin.TICKET_CALIBRATIONS[2].ticketCents);
   lines.push('**Лост 1 — B2B batch (амортизация на фикса):** при GTM_ENTRY €0.25 фикс.');
   lines.push('Stripe такса = 5.7% от ticket €4.37 и retained пада на €' + eur(gtm.platformRetainedCents) + '/доставка.');
   lines.push('Batch от 10 пратки с ЕДНА такса: фикс. се амортизира до €0.025/пратка —');
@@ -174,7 +192,7 @@ function buildMarkdown() {
   lines.push('(' + Math.round(ladderB[3].breakEvenDeliveries / ladderB[1].breakEvenDeliveries * 10) / 10 + '×). При GTM_ENTRY соло-доставка изисква ' +
     ladderG[3].breakEvenDeliveries + '/мес — нереалистично; entry цената работи само с B2B batch.');
   lines.push('');
-  lines.push('## 5. Допускания (изрично маркирани)');
+  lines.push('## 6. Допускания (изрично маркирани)');
   lines.push('- Stripe канон (B8.1): 1.5% + €0.25, база = captured сума (вкл. ДДС). Споделена константа в money.js.');
   lines.push('- ДДС канон (B8.1): 20% ОТГОРЕ на DRUM таксата (tax-exclusive), погълнат от платформата.');
   lines.push('- Обемно-зависими разходи: моделирани като фикс. Y1 burn €16,600/мес; ops/support/disputes не са отделни редове (отворена точка).');

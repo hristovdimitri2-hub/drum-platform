@@ -33,7 +33,7 @@ DRUM е платформа за по-евтини доставки между г
 
   try {
     // Register or update user in Airtable
-    const user = await ctx.airtable.findOrCreateUser({
+    await ctx.airtable.findOrCreateUser({
       telegramId: telegramUser.id,
       firstName: telegramUser.first_name,
       lastName: telegramUser.last_name,

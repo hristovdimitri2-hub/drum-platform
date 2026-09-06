@@ -557,7 +557,7 @@ async function updateTrustScore(userId, eventType, context = {}) {
  */
 async function resetSeed(data) {
   init();
-  const tx = db.begin ? null : null; // node:sqlite: manual transaction below
+
   db.exec('BEGIN');
   try {
     db.exec('DELETE FROM users; DELETE FROM shipments; DELETE FROM transactions; DELETE FROM qr_codes; DELETE FROM trust_history; DELETE FROM disputes; DELETE FROM carbon_ledger; DELETE FROM counters;');

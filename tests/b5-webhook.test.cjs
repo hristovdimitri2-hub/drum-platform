@@ -12,7 +12,6 @@ const test = require('node:test');
 const assert = require('node:assert');
 const { execFileSync } = require('node:child_process');
 const path = require('node:path');
-const crypto = require('crypto');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -30,12 +29,6 @@ const payload = JSON.stringify({
   data: { object: { id: 'pi_test_1', amount: 1200 } },
 });
 
-function sign(secret, body, timestamp = Math.floor(Date.now() / 1000)) {
-  const mac = crypto.createHmac('sha256', secret)
-    .update(`${timestamp}.${body}`)
-    .digest('hex');
-  return `t=${timestamp},v1=${mac}`;
-}
 
 test('B5: valid webhook signature is accepted (real code path)', () => {
   const out = runSnippet(
@@ -47,8 +40,7 @@ test('B5: valid webhook signature is accepted (real code path)', () => {
     `
       const stripe = require('./src/services/stripe');
       const payload = ${JSON.stringify(payload)};
-      const crypto = require('crypto');
-      const t = Math.floor(Date.now() / 1000);
+            const t = Math.floor(Date.now() / 1000);
       const sig = 't=' + t + ',v1=' +
         crypto.createHmac('sha256', 'whsec_test_123').update(t + '.' + payload).digest('hex');
       const event = stripe.verifyWebhook(Buffer.from(payload), sig);
@@ -71,8 +63,7 @@ test('B5: tampered payload is rejected by signature check', () => {
       `
         const stripe = require('./src/services/stripe');
         const payload = ${JSON.stringify(payload)};
-        const crypto = require('crypto');
-        const t = Math.floor(Date.now() / 1000);
+                const t = Math.floor(Date.now() / 1000);
         const sig = 't=' + t + ',v1=' +
           crypto.createHmac('sha256', 'whsec_test_123')
             .update(t + '.' + payload + 'TAMPERED').digest('hex');
@@ -93,8 +84,7 @@ test('B5: wrong webhook secret is rejected', () => {
       `
         const stripe = require('./src/services/stripe');
         const payload = ${JSON.stringify(payload)};
-        const crypto = require('crypto');
-        const t = Math.floor(Date.now() / 1000);
+                const t = Math.floor(Date.now() / 1000);
         const sig = 't=' + t + ',v1=' +
           crypto.createHmac('sha256', 'whsec_OTHER_SECRET')
             .update(t + '.' + payload).digest('hex');

@@ -21,7 +21,7 @@ module.exports = async (ctx) => {
   // Start session for new shipment
   ctx.session.newShipment = { step: 'corridor' };
 
-  const corridorButtons = CORRIDORS.map((c, i) => [`${c.from} → ${c.to}`]);
+  const corridorButtons = CORRIDORS.map((c) => [`${c.from} → ${c.to}`]);
 
   await ctx.reply(
     '📦 *Нова заявка за доставка*\n\nИзбери коридор:',

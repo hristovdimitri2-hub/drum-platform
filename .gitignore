@@ -36,3 +36,6 @@ exports/
 # Demo mode state (in-memory JSON persistence)
 data/
 
+
+# Coverage output
+coverage/

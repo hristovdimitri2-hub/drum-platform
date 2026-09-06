@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+env:
+  # Deterministic port for any HTTP smoke (dashboard binds this in CI-free mode;
+  # demo:e2e is headless and does NOT bind a port, but we pin it anyway).
+  PORT: '3210'
+  DEMO_MODE: 'true'
+  DATA_BACKEND: 'sqlite'
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      - name: Coverage (report; per-module breakdown in log)
+        run: npm run coverage
+
+      - name: Coverage gate (money/trust/carbon/matching >= 80%)
+        run: node scripts/coverage-gate.js
+
+      - name: E2E demo (headless, no external services)
+        run: npm run demo:e2e
+
+      - name: Build financial model (deterministic, must reconcile)
+        run: node scripts/build-financials.js
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+          if-no-files-found: ignore

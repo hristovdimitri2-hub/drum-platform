@@ -20,8 +20,6 @@ process.env.DEMO_MODE = 'true';
 delete process.env.TELEGRAM_BOT_TOKEN;
 
 const store = require('../src/services/store');
-const money = require('../src/services/money');
-const carbon = require('../src/services/carbon');
 const { createMockCtx, transcript } = require('../src/services/telegramMock');
 
 const start = require('../src/commands/start');
@@ -59,6 +57,9 @@ test('B2: contact sharing verifies phone (GDPR-safe in demo)', async () => {
 });
 
 test('B2: /new wizard — corridor → description → value → deadline → confirm', async () => {
+  // NOTE (R2): €12.00 (premium corridor, T=€10.00) is an ARBITRARY user price
+  // for this test scenario — NOT the BASE €7.75 data-room calibration.
+  // The bot basket stays premium; canonical numbers live in finance.js.
   const c = ctx(SENDER, '/new'); // one persistent session per user (like the bot)
   await newCmd(c);
   c.message.text = 'София → Пловдив';
@@ -131,7 +132,7 @@ test('B2: delivery scan → capture+split (canon money) → Trust → CO2', asyn
   // carbon entry with audit trail
   const entries = await store.listCarbonEntries();
   const e = entries.find((x) => x.shipmentId === s.id);
-  assert.equal(e.savedCo2Kg, 25.97);
+  assert.equal(e.savedCo2Kg, 25.38);
   assert.ok(e.factors);
 });
 

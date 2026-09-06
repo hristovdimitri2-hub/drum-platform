@@ -9,7 +9,6 @@
  */
 
 const QRCode = require('qrcode');
-const axios = require('axios');
 
 const QR_API_URL = process.env.QR_API_URL || 'https://api.qrserver.com/v1/create-qr-code/';
 

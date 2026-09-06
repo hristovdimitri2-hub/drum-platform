@@ -39,7 +39,7 @@ module.exports = async (ctx) => {
     return;
   }
 
-  const [_, action, shipmentId] = parts;
+  const [, action, shipmentId] = parts;
 
   try {
     const shipment = await ctx.airtable.getShipment(shipmentId);
@@ -170,7 +170,7 @@ async function handleDeliveryScan(ctx, shipment) {
   });
 
   // Update trust scores (event-sourced; both parties earn delivery_success)
-  const senderTrust = await ctx.airtable.updateTrustScore(shipment.senderId, 'delivery_success_sender');
+  await ctx.airtable.updateTrustScore(shipment.senderId, 'delivery_success_sender');
   const carrierTrust = await ctx.airtable.updateTrustScore(shipment.carrierId, 'delivery_success_carrier');
 
   await ctx.airtable.logTrustEvent({

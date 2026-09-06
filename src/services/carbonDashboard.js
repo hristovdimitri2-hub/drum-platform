@@ -86,7 +86,7 @@ function renderCarbonDashboard({ entries = [], summary, delivered = 0, lang = 'b
   </table>
   <p class="foot">${L.footer
     .replace('{baseline}', String(factors.baselineKgPerKm))
-    .replace('{marginal}', String(factors.marginalShareFactor))}</p>
+    .replace('{marginal}', String(factors.marginalKgPerKm))}</p>
 </div></body></html>`;
 }
 

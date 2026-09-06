@@ -26,15 +26,34 @@
 
 ## 3. Actual (DRUM сценарий) — allocation
 
-Маргинален подход ( консервативен, съобразен с GHG allocation hierarchy):
+Маргинален подход (консервативен, съобразен с GHG allocation hierarchy):
 пратката не създава ново пътуване — ползва вече извършващо се пътуване.
-**MARGINAL_SHARE_FACTOR = 0.005** (0.5% от baseline е attributable на
-един малък пакет в вече движеща се кола).
+**MARGINAL_KG_PER_KM = 0.005 kg CO₂e/km** (абсолютен фактор: допълнителното
+тегло на един малък пакет в вече движеща се кола).
+
+**Канонична формула (B6.1):**
 
 ```
-saved = baseline − actual = km × 0.18 − km × 0.18 × 0.005
-София→Пловдив (145 km): 26.10 − 0.13 = 25.97 kg CO₂e спестено
+saved = (baseline − marginal) × km = (0.18 − 0.005) × km = 0.175 × km
 ```
+
+## 3а. Worked example — реален ledger ред (София → Пловдив)
+
+Пълната аритметика на един запис от Carbon Ledger:
+
+```
+km               = 145          (коридор София-Пловдив, път)
+baseline         = 145 × 0.18   = 26.10 kg CO₂e   (куриерска кола)
+marginal         = 145 × 0.005  = 0.725 kg CO₂e   (моргинална пратка)
+saved            = 26.10 − 0.725 = 25.375 → 25.38 kg CO₂e (round2)
+methodology      = GHG-Protocol-Scope3-Cat4-v1
+factors (audit)  = {"baselineKgPerKm": 0.18, "marginalKgPerKm": 0.005}
+```
+
+**Историческа бележка:** до B6.1 старият код смяташе `actual = baseline ×
+0.005` (0.5% ДЯЛ от baseline) → saved = 25.97 kg за същия коридор. Това беше
+двоен смисъл на „share" — коригирано към абсолютния фактор (0.005 kg/km) по
+ревизия B6.1. Стари записи (25.97) се преизчисляват при повторен seed.
 
 ## 4. Audit trail
 
@@ -45,6 +64,13 @@ saved = baseline − actual = km × 0.18 − km × 0.18 × 0.005
 
 ## 5. Verification path
 
-1. Вътрешна проверка: строу directors/data-room проверка (B8 reconciliation).
+1. Вътрешна проверка: data-room проверка (B8 reconciliation).
 2. Външна: TÜV / SGS / Bureau Veritas (при >1,000 доставки).
 3. VCS (Verra) / Gold Standard регистрация — Year 3+ (извън текущия обхват).
+
+## 6. За бележка (TODO, не блокира): carrier waiver
+
+При VCS/грантово подаване: превозвачът трябва да подпише **waiver**, че не
+претендира същите спестявания като лични carbon credits (предпазва от
+double-counting между платформените и индивидуалните твърдения). Формулярът
+не е изграден — добави се преди първото реално подаване.

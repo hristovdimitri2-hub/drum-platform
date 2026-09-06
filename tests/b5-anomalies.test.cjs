@@ -15,7 +15,6 @@ process.env.DATA_BACKEND = 'sqlite';
 process.env.DEMO_MODE = 'true';
 
 const store = require('../src/services/store');
-const money = require('../src/services/money');
 const anomalies = require('../src/services/anomalies');
 
 async function makeDeliveredShipment() {
@@ -139,7 +138,7 @@ test('B5.4: evidence packet — one action, complete + hashed', async () => {
   });
   await store.createCarbonEntry({
     shipmentId: shipment.id, originCity: 'София', destinationCity: 'Пловдив',
-    baselineCo2Kg: 26.1, actualCo2Kg: 0.13, savedCo2Kg: 25.97,
+    baselineCo2Kg: 26.1, actualCo2Kg: 0.13, savedCo2Kg: 25.38,
     distanceKm: 145, methodology: 'GHG-Protocol-Scope3-Cat4-v1',
   });
 
@@ -152,7 +151,7 @@ test('B5.4: evidence packet — one action, complete + hashed', async () => {
   assert.equal(packet.shipment.id, shipment.id);
   assert.equal(packet.financialTimeline.length, 1);
   assert.equal(packet.financialTimeline[0].splitCents.carrier, 960);
-  assert.equal(packet.carbonLedger.savedCo2Kg, 25.97);
+  assert.equal(packet.carbonLedger.savedCo2Kg, 25.38);
   assert.ok(packet.stripe.mode.startsWith('DEMO'));
 
   // checksum is reproducible: same content -> same hash

@@ -9,13 +9,12 @@
  * (default 0.18 kg CO2e/km — light commercial vehicle, ~50% load, EU mix).
  *
  * Actual (DRUM scenario): the parcel rides in a private car that was
- * already making the trip with an empty trunk. Only the MARGINAL emissions
- * attributable to the extra load are counted:
- *   actual = baseline_van_emissions × (parcel_share_of_van_load) — i.e.
- *   actual = distance × BASELINE × MARGINAL_SHARE_FACTOR
- * (default factor 0.005 → ~0.5% marginal effect of a small parcel in an
- * already-running vehicle; conservative per GHG Protocol allocation
- * hierarchy — mass/allocation of an existing journey).
+ * already making the trip with an empty trunk. The MARGINAL emission
+ * factor is ABSOLUTE (B6.1 canon):
+ *   actual = distance × MARGINAL_KG_PER_KM   (default 0.005 kg CO2e/km)
+ *   saved  = (baseline − marginal) × km = 0.175 × km
+ * (conservative per GHG Protocol allocation hierarchy — marginal weight of
+ * one small parcel in an existing journey).
  *
  * saved = baseline - actual
  *
@@ -26,8 +25,8 @@
 const BASELINE_EMISSIONS_KG_PER_KM = parseFloat(
   process.env.CO2_BASELINE_KG_PER_KM || '0.18'
 );
-const MARGINAL_SHARE_FACTOR = parseFloat(
-  process.env.CO2_MARGINAL_SHARE_FACTOR || '0.005'
+const MARGINAL_KG_PER_KM = parseFloat(
+  process.env.CO2_MARGINAL_KG_PER_KM || '0.005'
 );
 const METHODOLOGY_TAG = 'GHG-Protocol-Scope3-Cat4-v1';
 
@@ -55,9 +54,10 @@ const DEFAULT_DISTANCE_KM = 200;
  *   actualCo2Kg: number,
  *   savedCo2Kg: number,
  *   methodology: string,
- *   factors: {baselineKgPerKm: number, marginalShareFactor: number},
+ *   factors: {baselineKgPerKm: number, marginalKgPerKm: number},
  *   calculatedAt: string,
  * }}
+ * @returns {{distanceKm: number, baselineCo2Kg: number, actualCo2Kg: number, savedCo2Kg: number, methodology: string, factors: {baselineKgPerKm: number, marginalKgPerKm: number}, calculatedAt: string}}
  */
 function calculateCo2Saved({ originCity, destinationCity, distanceKm }) {
   const km =
@@ -66,9 +66,10 @@ function calculateCo2Saved({ originCity, destinationCity, distanceKm }) {
       : CORRIDOR_DISTANCES_KM[`${originCity}-${destinationCity}`] ||
         DEFAULT_DISTANCE_KM;
 
+  // CANON (B6.1): saved = (baseline − marginal) × km = 0.175 × km
   const baselineCo2Kg = round2(km * BASELINE_EMISSIONS_KG_PER_KM);
-  const actualCo2Kg = round2(km * BASELINE_EMISSIONS_KG_PER_KM * MARGINAL_SHARE_FACTOR);
-  const savedCo2Kg = round2(baselineCo2Kg - actualCo2Kg);
+  const actualCo2Kg = round2(km * MARGINAL_KG_PER_KM);
+  const savedCo2Kg = round2((BASELINE_EMISSIONS_KG_PER_KM - MARGINAL_KG_PER_KM) * km);
 
   return {
     distanceKm: km,
@@ -78,7 +79,7 @@ function calculateCo2Saved({ originCity, destinationCity, distanceKm }) {
     methodology: METHODOLOGY_TAG,
     factors: {
       baselineKgPerKm: BASELINE_EMISSIONS_KG_PER_KM,
-      marginalShareFactor: MARGINAL_SHARE_FACTOR,
+      marginalKgPerKm: MARGINAL_KG_PER_KM,
     },
     calculatedAt: new Date().toISOString(),
   };
@@ -119,8 +120,8 @@ module.exports = {
     get baselineKgPerKm() {
       return BASELINE_EMISSIONS_KG_PER_KM;
     },
-    get marginalShareFactor() {
-      return MARGINAL_SHARE_FACTOR;
+    get marginalKgPerKm() {
+      return MARGINAL_KG_PER_KM;
     },
   },
 };
