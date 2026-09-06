@@ -28,8 +28,8 @@ const METHODOLOGY_STATEMENT = {
   factorsSource: 'env-configurable; every ledger entry stores the exact factors used (audit trail)',
 };
 
-function buildExport() {
-  const entries = store.listCarbonEntries();
+async function buildExport() {
+  const entries = await store.listCarbonEntries();
   const summary = carbon.summarize(entries);
   return {
     jsonPath: null, // filled by main()
@@ -53,8 +53,8 @@ function toCsv(entries) {
   return rows.join('\n');
 }
 
-function main() {
-  const out = buildExport();
+async function main() {
+  const out = await buildExport();
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const jsonPath = path.join(OUT_DIR, 'CARBON_EXPORT.json');
   const csvPath = path.join(OUT_DIR, 'CARBON_LEDGER.csv');

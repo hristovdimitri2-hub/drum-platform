@@ -42,7 +42,7 @@ test('B6: audit trail — factors stored with every entry', async () => {
 });
 
 test('B6: VCS-ready export — JSON + CSV with methodology statement', async () => {
-  const out = exportModule.buildExport();
+  const out = await exportModule.buildExport();
   assert.ok(out.entries.length >= 1);
   assert.equal(out.methodologyStatement.standard,
     'GHG Protocol Corporate Value Chain (Scope 3), Category 4 — Upstream Transportation and Distribution');

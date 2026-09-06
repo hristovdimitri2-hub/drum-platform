@@ -33,6 +33,8 @@ const airtableService = require('./services/store'); // demo store or Airtable
 const qrService = require('./services/qr');
 const carbon = require('./services/carbon');
 const carbonDashboard = require('./services/carbonDashboard');
+const opsDashboard = require('./services/opsDashboard');
+const kpi = require('./services/kpi');
 
 const startCommand = require('./commands/start');
 const newCommand = require('./commands/new');
@@ -176,6 +178,23 @@ app.get('/health', (req, res) =>
     timestamp: new Date().toISOString(),
   })
 );
+
+// ------------------- Ops/KPI dashboard (B9) --------------------------------
+app.get('/dashboard/ops', async (req, res) => {
+  try {
+    const lang = req.query.lang === 'en' ? 'en' : 'bg';
+    const [users, shipments, disputes] = await Promise.all([
+      airtableService.listUsers ? airtableService.listUsers() : Promise.resolve([]),
+      airtableService.listAllShipments(),
+      airtableService.listDisputes ? airtableService.listDisputes({}) : Promise.resolve([]),
+    ]);
+    const kpis = kpi.computeKpis({ users, shipments, disputes });
+    res.send(opsDashboard.renderOpsDashboard({ kpis, lang, isDemo: IS_DEMO }));
+  } catch (err) {
+    console.error('Ops dashboard error:', err);
+    res.status(500).send('Ops dashboard error: ' + err.message);
+  }
+});
 
 // Evidence packet endpoint (B5 anomaly 4 — ONE action, demo star)
 app.get('/api/evidence/:shipmentId', async (req, res) => {
