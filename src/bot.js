@@ -32,6 +32,7 @@ const stripeService = require('./services/stripe');
 const airtableService = require('./services/store'); // demo store or Airtable
 const qrService = require('./services/qr');
 const carbon = require('./services/carbon');
+const carbonDashboard = require('./services/carbonDashboard');
 
 const startCommand = require('./commands/start');
 const newCommand = require('./commands/new');
@@ -186,83 +187,26 @@ app.get('/api/evidence/:shipmentId', async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 });
-// ----------------------- Carbon Ledger dashboard (P1) ----------------------
-// Investor-facing ESG report. In demo mode everything is clearly marked [DEMO].
+// ----------------------- Carbon Ledger dashboard (P1/B6) -------------------
+// Investor-facing ESG report, bilingual (BG/EN via ?lang=). Demo mode marks
+// everything [DEMO]. Renderer: src/services/carbonDashboard.js
 app.get('/dashboard/carbon', async (req, res) => {
   try {
+    const lang = req.query.lang === 'en' ? 'en' : 'bg';
     const [entries, shipments] = await Promise.all([
       airtableService.listCarbonEntries(),
       airtableService.listAllShipments(),
     ]);
     const summary = carbon.summarize(entries);
     const delivered = shipments.filter((s) => s.status === 'delivered').length;
-
-    const rows = entries
-      .slice(-50)
-      .reverse()
-      .map(
-        (e) => `<tr>
-          <td>${e.shipmentId || '—'}</td>
-          <td>${e.originCity || '—'} → ${e.destinationCity || '—'}</td>
-          <td>${e.distanceKm ?? '—'}</td>
-          <td>${(e.baselineCo2Kg ?? 0).toFixed(2)}</td>
-          <td>${(e.actualCo2Kg ?? 0).toFixed(2)}</td>
-          <td><b>${(e.savedCo2Kg ?? 0).toFixed(2)}</b></td>
-          <td>${e.methodology || '—'}</td>
-          <td>${(e.createdAt || '').replace('T', ' ').slice(0, 16)}</td>
-        </tr>`
-      )
-      .join('\n');
-
-    res.send(renderDashboard(summary, delivered, rows));
+    res.send(carbonDashboard.renderCarbonDashboard({
+      entries, summary, delivered, lang, isDemo: IS_DEMO, factors: carbon.FACTORS,
+    }));
   } catch (err) {
     console.error('Dashboard error:', err);
     res.status(500).send('Dashboard error: ' + err.message);
   }
 });
-
-function renderDashboard(summary, delivered, rows) {
-  return `<!DOCTYPE html>
-<html lang="bg"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DRUM 3.0 — Carbon Ledger</title>
-<style>
-  body { font-family: system-ui, -apple-system, sans-serif; margin: 0; background: #0d1b12; color: #e8f5ee; }
-  .wrap { max-width: 960px; margin: 0 auto; padding: 24px; }
-  h1 { color: #34d17b; margin: 0 0 4px; }
-  .sub { opacity: .75; margin-bottom: 20px; }
-  .banner { background: #7a1f1f; border: 1px solid #c0392b; padding: 10px 14px; border-radius: 8px; margin-bottom: 20px; font-weight: 600; }
-  .cards { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
-  .card { background: #13291c; border: 1px solid #1f4630; border-radius: 12px; padding: 16px 20px; min-width: 160px; }
-  .card .v { font-size: 26px; font-weight: 700; color: #34d17b; }
-  .card .l { font-size: 12px; opacity: .7; text-transform: uppercase; letter-spacing: .05em; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; background: #13291c; border-radius: 12px; overflow: hidden; }
-  th { text-align: left; background: #1f4630; padding: 10px; }
-  td { padding: 8px 10px; border-top: 1px solid #1f4630; }
-  .foot { margin-top: 20px; font-size: 12px; opacity: .6; }
-</style></head><body><div class="wrap">
-  <h1>🌿 DRUM 3.0 — Carbon Ledger</h1>
-  <div class="sub">CO₂ спестяване на доставка · GHG Protocol Scope 3, Category 4 (Upstream Transportation)</div>
-  ${IS_DEMO ? '<div class="banner">⚠️ DEMO ДАННИ — симулирани транзакции за демонстрация. НЕ са реален traction.</div>' : ''}
-  <div class="cards">
-    <div class="card"><div class="v">${summary.shipments}</div><div class="l">Доставки в ledger</div></div>
-    <div class="card"><div class="v">${summary.savedCo2Kg.toLocaleString('bg-BG')} kg</div><div class="l">CO₂ спестено</div></div>
-    <div class="card"><div class="v">${summary.distanceKm.toLocaleString('bg-BG')} km</div><div class="l">Км споделен превоз</div></div>
-    <div class="card"><div class="v">${delivered}</div><div class="l">Завършени доставки</div></div>
-  </div>
-  <table>
-    <thead><tr>
-      <th>Shipment</th><th>Коридор</th><th>km</th><th>Baseline kg CO₂</th><th>Actual kg CO₂</th><th>Спестено kg CO₂</th><th>Методология</th><th>Дата</th>
-    </tr></thead>
-    <tbody>${rows || '<tr><td colspan="8">Няма записи още — стартирай npm run demo:e2e</td></tr>'}</tbody>
-  </table>
-  <p class="foot">
-    Baseline: ${carbon.FACTORS.baselineKgPerKm} kg CO₂e/km (специализирана куриерска кола) ·
-    Marginal share: ${carbon.FACTORS.marginalShareFactor} (пратка в вече пътуващ автомобил с празен багажник).
-    Всеки запис съдържа факторите, използвани при изчислението (audit trail).
-  </p>
-</div></body></html>`;
-}
 
 // ------------------------------- Start -------------------------------------
 const PORT = process.env.PORT || 3000;

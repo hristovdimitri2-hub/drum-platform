@@ -8,6 +8,7 @@
     "dev": "nodemon src/bot.js",
     "seed": "node scripts/seed-airtable.js",
     "seed:demo": "node scripts/seed-demo.js",
+    "export:carbon": "node scripts/export-carbon.js",
     "demo:e2e": "node scripts/demo-e2e.js",
     "test": "node --test"
   },
