@@ -4,6 +4,8 @@
  * Registers user in Airtable if new, returns welcome message.
  */
 
+const { Markup } = require('telegraf');
+
 module.exports = async (ctx) => {
   const telegramUser = ctx.from;
   const welcomeText = `

@@ -69,10 +69,13 @@ test('B9: honest gaps — NPS is null with note', () => {
 test('B9: active users (30d) counts sender+carrier of recent shipments', async () => {
   const a = await store.findOrCreateUser({ telegramId: 910001, firstName: 'A' });
   const b = await store.findOrCreateUser({ telegramId: 910002, firstName: 'B' });
-  await store.createShipment({
+  const s = await store.createShipment({
     senderId: a.id, senderTelegramId: a.telegramId,
+    originCity: 'София', destinationCity: 'Пловдив', status: 'requested',
+  });
+  await store.updateShipment(s.id, {
     carrierId: b.id, carrierTelegramId: b.telegramId,
-    originCity: 'София', destinationCity: 'Пловдив', status: 'matched',
+    status: 'matched', matchedAt: iso(NOW - 3600000),
   });
   const k = kpi.computeKpis({
     users: await store.listUsers(),
