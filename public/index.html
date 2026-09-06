@@ -8,64 +8,134 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; background: #0d1b12; color: #e8f5ee; line-height: 1.6; }
   .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-  header { padding: 80px 0 60px; text-align: center; }
+  header { padding: 70px 0 50px; text-align: center; position: relative; }
   h1 { font-size: 42px; color: #34d17b; margin-bottom: 16px; }
-  .tagline { font-size: 20px; opacity: .85; max-width: 640px; margin: 0 auto 32px; }
-  .cta { display: inline-block; background: #34d17b; color: #08170f; font-weight: 700; padding: 14px 32px; border-radius: 999px; text-decoration: none; }
+  .tagline { font-size: 20px; opacity: .85; max-width: 660px; margin: 0 auto 32px; }
+  .cta { display: inline-block; background: #34d17b; color: #08170f; font-weight: 700; padding: 13px 30px; border-radius: 999px; text-decoration: none; }
   .cta.secondary { background: transparent; color: #34d17b; border: 2px solid #34d17b; margin-left: 12px; }
-  section { padding: 40px 0; }
-  h2 { font-size: 28px; color: #34d17b; margin-bottom: 20px; }
+  .lang { position: absolute; top: 18px; right: 24px; }
+  .lang button { background: #13291c; color: #34d17b; border: 1px solid #1f4630; padding: 6px 14px; border-radius: 999px; cursor: pointer; font-weight: 700; }
+  section { padding: 36px 0; }
+  h2 { font-size: 28px; color: #34d17b; margin-bottom: 18px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-  .card { background: #13291c; border: 1px solid #1f4630; border-radius: 14px; padding: 24px; }
-  .card h3 { color: #34d17b; margin-bottom: 8px; font-size: 18px; }
-  .esg { background: linear-gradient(135deg, #13291c, #0f2417); border-radius: 16px; padding: 32px; border: 1px solid #1f4630; }
-  .esg .big { font-size: 40px; font-weight: 800; color: #34d17b; }
-  footer { padding: 40px 0 60px; text-align: center; font-size: 13px; opacity: .55; }
+  .card { background: #13291c; border: 1px solid #1f4630; border-radius: 14px; padding: 22px; }
+  .card h3 { color: #34d17b; margin-bottom: 8px; font-size: 17px; }
+  .esg { background: linear-gradient(135deg, #13291c, #0f2417); border-radius: 16px; padding: 30px; border: 1px solid #1f4630; }
+  .esg .big { font-size: 38px; font-weight: 800; color: #34d17b; }
+  .demo { background: #7a1f1f; border: 1px solid #c0392b; padding: 10px 14px; border-radius: 8px; margin-top: 14px; font-weight: 600; }
+  footer { padding: 36px 0 50px; text-align: center; font-size: 13px; opacity: .55; }
   a { color: #34d17b; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; background: #13291c; border-radius: 12px; overflow: hidden; }
+  th { text-align: left; background: #1f4630; padding: 9px; }
+  td { padding: 8px 10px; border-top: 1px solid #1f4630; }
+  .hidden { display: none; }
   @media (max-width: 600px) { h1 { font-size: 30px; } .cta.secondary { margin-left: 0; margin-top: 12px; } }
 </style>
 </head>
 <body>
+<div class="lang">
+  <button onclick="setLang('bg')">BG</button>
+  <button onclick="setLang('en')">EN</button>
+</div>
+
+<!-- ============ BG ============ -->
+<div id="page-bg">
 <header class="container">
   <h1>🥁 DRUM 3.0</h1>
-  <p class="tagline">П2Р логистична платформа: пътуващи с празни багажници пренасят пратки между градовете — по-евтино от куриер, по-зелено от всичко.</p>
-  <a class="cta" href="/dashboard/carbon">Виж Carbon Ledger</a>
-  <a class="cta secondary" href="#how">Как работи</a>
+  <p class="tagline">P2P логистична платформа: пътуващи с празни багажници пренасят пратки между градовете — по-евтино от куриер, по-зелено от всичко.</p>
+  <a class="cta" href="/dashboard/carbon">Carbon Ledger</a>
+  <a class="cta secondary" href="/dashboard/ops">Ops/KPI дашборд</a>
 </header>
 
-<section class="container esg" id="esg">
+<section class="container esg">
   <h2>🌿 ESG по дизайн, не като добавка</h2>
-  <p>Всяка DRUM доставка премахва едно специализирано куриерско пътуване. Изчислението следва
-  <b>GHG Protocol Scope 3, Category 4 (Upstream Transportation)</b>: baseline = отделна куриерска кола,
-  actual = маргиналният ефект на една пратка в вече пътуващ автомобил. Всеки запис в Carbon Ledger е
-  с отворена методология и пълен audit trail — готов за грантови приложения и отчетност.</p>
-  <p style="margin-top:16px"><span class="big">~26 kg CO₂</span><br>спестени средно на доставка София–Пловдив<br>
-  <small style="opacity:.6">(145 km × 0.18 kg/km baseline — виж /dashboard/carbon)</small></p>
-</section>
-
-<section class="container" id="how">
-  <h2>Как работи</h2>
-  <div class="grid">
-    <div class="card"><h3>1. Заявка</h3>Изпращачът създава заявка в Telegram. Плащането се замразява в Stripe escrow (auth-only).</div>
-    <div class="card"><h3>2. Избор</h3>Наличните превозвачи се показват, <b>потребителят избира</b>. Платформата никога не назначава — Strict Agent Model.</div>
-    <div class="card"><h3>3. Pickup QR</h3>Превозвачът сканира QR кода при вземане. Пратката е проследима в реално време.</div>
-    <div class="card"><h3>4. Delivery + Split</h3>При сканиран QR за доставка: capture + split 80/15/5 (превозвач / DRUM / застраховка). Trust Score расте.</div>
-  </div>
+  <p>Всяка DRUM доставка премахва едно специализирано куриерско пътуване.
+  Изчислението следва <b>GHG Protocol Scope 3, Category 4</b> с отворена формула:
+  спестяване = (baseline − marginal) × km = <b>0.175 × km</b>.
+  София–Пловдив (145 km): <span class="big">25.38 kg CO₂e</span> спестено на доставка
+  — пълна методология и audit trail, готово за грантови приложения.</p>
+  <div class="demo">⚠️ Демо режим: числата на този сайт са от симулиран ledger, маркиран [DEMO]. Не са реален traction.</div>
 </section>
 
 <section class="container">
-  <h2>Доверие, изградено с данни</h2>
+  <h2>Икономика (генерирана от кода, до стотинка)</h2>
+  <table>
+    <tr><th>Калибровка</th><th>Клиент плаща</th><th>Превозвач (80%)</th><th>Платформа задържа</th><th>Break-even*</th></tr>
+    <tr><td>GTM-ENTRY (срещу Econt)</td><td>€4.50</td><td>€3.50</td><td>€0.21</td><td>самостоятелно 79,048/мес — нереалистично; само с B2B batch</td></tr>
+    <tr><td><b>BASE (data-room канон)</b></td><td><b>€7.98</b></td><td><b>€6.20</b></td><td><b>€0.56</b></td><td><b>90/мес (lean €3K) · 29,643/мес (scaled €16.6K)</b></td></tr>
+    <tr><td>PREMIUM</td><td>€14.21</td><td>€11.04</td><td>€1.20</td><td>13,834/мес (scaled)</td></tr>
+  </table>
+  <p style="margin-top:10px;font-size:13px;opacity:.6">*При фиксиран месечен burn; пълният waterfall — в data-room. Числата са генерирани от код (B8.2).</p>
+</section>
+
+<section class="container">
+  <h2>Trust протокол — накратко</h2>
   <div class="grid">
-    <div class="card"><h3>Trust Score 0–100</h3>Event-sourced репутация с прагове 31/50/70/90 и автоматични санкции при провал.</div>
-    <div class="card"><h3>Escrow</h3>Парите се замразяват при заявка и се освобождават само при потвърдена доставка.</div>
-    <div class="card"><h3>Carbon Ledger</h3>Килограми, километри и методология за всяка доставка — публичен отчет.</div>
+    <div class="card"><h3>Escrow</h3>Парите се замразяват при заявка (Stripe auth-only) и се освобождават само при потвърдена доставка (QR).</div>
+    <div class="card"><h3>Trust Score 0–100</h3>Event-sourced репутация: +5 превозвач (1/ден, cap +100), +3 изпращач; санкции при провал и спорове; 2 загубени спора за 90 дни → бан.</div>
+    <div class="card"><h3>Тирове</h3>Banned &lt;31 · Limited 31–49 (≤€20) · Standard 50–69 (≤€200) · Verified 70–89 (≤€500) · Premium 90+ (≤€1000, B2B API).</div>
+    <div class="card"><h3>Strict Agent Model</h3>Платформата НИКОГА не назначава превозвач — показва опции, потребителят избира (Uber Spain C-434/15).</div>
   </div>
 </section>
 
 <footer class="container">
-  DRUM 3.0 · Консьерж MVP · <a href="/dashboard/carbon">Carbon Ledger дашборд</a> ·
-  <a href="/health">status</a><br>
-  ⚠️ Демо режим: всички данни в тази инсталация са симулирани и маркирани като DEMO.
+  DRUM 3.0 · <a href="/dashboard/carbon?lang=bg">Carbon Ledger (BG)</a> · <a href="/dashboard/carbon?lang=en">Carbon Ledger (EN)</a> · <a href="/dashboard/ops">Ops/KPI</a> · <a href="/health">status</a>
 </footer>
+</div>
+
+<!-- ============ EN ============ -->
+<div id="page-en" class="hidden">
+<header class="container">
+  <h1>🥁 DRUM 3.0</h1>
+  <p class="tagline">A P2P logistics platform: drivers with empty trunks carry parcels between cities — cheaper than couriers, greener than everything.</p>
+  <a class="cta" href="/dashboard/carbon?lang=en">Carbon Ledger</a>
+  <a class="cta secondary" href="/dashboard/ops?lang=en">Ops/KPI dashboard</a>
+</header>
+
+<section class="container esg">
+  <h2>🌿 ESG by design, not as an afterthought</h2>
+  <p>Every DRUM delivery removes a dedicated courier trip. The calculation follows
+  <b>GHG Protocol Scope 3, Category 4</b> with an open formula: savings =
+  (baseline − marginal) × km = <b>0.175 × km</b>. Sofia–Plovdiv (145 km):
+  <span class="big">25.38 kg CO₂e</span> saved per delivery — full methodology
+  and audit trail, grant-application ready.</p>
+  <div class="demo">⚠️ Demo mode: numbers on this site come from a simulated ledger, marked [DEMO]. Not real traction.</div>
+</section>
+
+<section class="container">
+  <h2>Economics (generated from code, to the cent)</h2>
+  <table>
+    <tr><th>Calibration</th><th>Client pays</th><th>Carrier (80%)</th><th>Platform retains</th><th>Break-even*</th></tr>
+    <tr><td>GTM-ENTRY (vs Econt)</td><td>€4.50</td><td>€3.50</td><td>€0.21</td><td>solo 79,048/mo — unrealistic; B2B batch only</td></tr>
+    <tr><td><b>BASE (data-room canon)</b></td><td><b>€7.98</b></td><td><b>€6.20</b></td><td><b>€0.56</b></td><td><b>90/mo (lean €3K) · 29,643/mo (scaled €16.6K)</b></td></tr>
+    <tr><td>PREMIUM</td><td>€14.21</td><td>€11.04</td><td>€1.20</td><td>13,834/mo (scaled)</td></tr>
+  </table>
+  <p style="margin-top:10px;font-size:13px;opacity:.6">*At fixed monthly burn; full waterfall in the data-room. Numbers generated from code (B8.2).</p>
+</section>
+
+<section class="container">
+  <h2>Trust protocol — in short</h2>
+  <div class="grid">
+    <div class="card"><h3>Escrow</h3>Funds frozen at request (Stripe auth-only), released only on confirmed delivery (QR).</div>
+    <div class="card"><h3>Trust Score 0–100</h3>Event-sourced reputation: +5 carrier (1/day, cap +100), +3 sender; penalties on failures and disputes; 2 lost disputes in 90 days → ban.</div>
+    <div class="card"><h3>Tiers</h3>Banned &lt;31 · Limited 31–49 (≤€20) · Standard 50–69 (≤€200) · Verified 70–89 (≤€500) · Premium 90+ (≤€1000, B2B API).</div>
+    <div class="card"><h3>Strict Agent Model</h3>The platform NEVER assigns a carrier — it shows options, the user chooses (Uber Spain C-434/15).</div>
+  </div>
+</section>
+
+<footer class="container">
+  DRUM 3.0 · <a href="/dashboard/carbon?lang=en">Carbon Ledger (EN)</a> · <a href="/dashboard/ops?lang=en">Ops/KPI</a> · <a href="/health">status</a>
+</footer>
+</div>
+
+<script>
+function setLang(l) {
+  document.getElementById('page-bg').classList.toggle('hidden', l !== 'bg');
+  document.getElementById('page-en').classList.toggle('hidden', l !== 'en');
+  document.documentElement.lang = l;
+}
+const q = new URLSearchParams(location.search).get('lang');
+if (q === 'en') setLang('en');
+</script>
 </body>
 </html>

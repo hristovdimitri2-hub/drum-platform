@@ -5,55 +5,61 @@
 
 ## Текущ етап
 
-**ЕТАП 2 — ЗАВЪРШЕН (B5, B8). Следва: междинен доклад → ЕТАП 3 (B6, B9, B2).**
+**ЕТАП 4 — ЗАВЪРШЕН (R1-R3, CI, B7, B10, B11). Следва: ЕТАП 5 (push + PDF).**
 
 ## Готово (валидно, верифицирано)
 
-- v0.2.0 (91c0b3c): одит + ремонт (7 бъга), Carbon Ledger, demo mode, E2E
-  демо, seed (100 доставки [DEMO]), landing, документация.
-- ПРЕ-ЕТАП L (622b62f) + U (0432f5e): инвентаризация 1-6 (документни ревизии,
-  не код), VERSION_MAP, обединен локален ред, CLEANUP_LIST, U6 инвентаризации.
-- B1 (c22dd55): data adapter интерфейс + SQLite по подразбиране (node:sqlite,
-  7 таблици + counters, индекси); store facade (sqlite/demo/airtable);
-  Postgres път документиран в docs/DATABASE.md (НЕ имплементиран — честно).
-  Критерий ✓: чист clone работи без външни услуги (health/dashboard/landing 200).
-- B4 (2d40d76): пълната Trust Score таблица от Бизнес план Стъпка 2.2 в
-  services/trust.js v2: +5 носач (1/ден, cap +100), +3 изпращач (1/ден,
-  cap +60), -15 неуспех, -50 загубен спор + БАН при 2 за 90 дни, +10 KYC,
-  +5 телефон, +10 реферал (referrer 80+, макс 5), -10 изоставен реферал,
-  +2 реципрочен рейтинг (мин. 3 доставки), -5 лош рейтинг, -1/мес неактивност
-  (floor 30), -25 off-platform; тирове: <31 banned / 31-49 limited (<=EUR 20,
-  1/седмица) / 50-69 standard (<=EUR 200, 10/месец) / 70-89 verified
-  (<=EUR 500, премиум коридори) / 90-100 premium (<=EUR 1000, B2B API).
-- B3 (този commit): Matching v1 (0.4 Trust + 0.3 route + 0.2 history +
-  0.1 price), ТОП 5 с детерминирани tie-break-ове; escalation 2ч boost /
-  6ч ops; нова команда /matches (само ранглиста). STRICT AGENT MODEL:
-  НИКАКВО auto-assign — защитено и с тест (забранени имена + неизменяемост).
-- Тестове: 42/42 ЗЕЛЕНИ (node --test): 6 B1 контрактни + 26 B4 +
-  10 B3 matching. Смоук: health/demo, /dashboard/carbon 200, / 200.
+- ЕТАП 1-3 (вж. git log): B1/B4/B3, B5/B8, B8.1, B8.2, B6/B9/B2 — всички
+  с тестове и комити.
+- ЕТАП 4:
+  - R1: carbon канон saved = (baseline - marginal) x km = 0.175 x km
+    (25.97 -> 25.38 за Сф-Пд; старият "share" смисъл документиран в
+    CARBON_METHODOLOGY.md §3а); self-verifying ledger тест; worked example;
+    carrier waiver TODO бележка.
+  - R2: b2 тест етикетиран — EUR 12 е произволна тестова цена, не канон.
+  - CI: .github/workflows/ci.yml (npm ci -> lint -> test -> coverage ->
+    gate -> demo:e2e -> build-financials); eslint flat config, чист;
+    c8 coverage + GATE >=80% на money/trust/carbon/matching
+    (100% / 96.8% / 99.21% / 100%).
+  - B7: src/services/b2b.js — batch plan (caps 5/стандартна кола, 10/ван),
+    broadcast съобщение, dual mode +1.50/-1.50, batch economics през
+    money.js (retained EUR 0.43/пратка при GTM x10 vs 0.21 on-demand = 2.06x);
+    симулация 50 заявки (детерминирана, seed=7): batch 100% match / ~84ч
+    срещу on-demand 40% / 3ч -> docs/data-room/B7_SIMULATION.md;
+    секция "B2B batch economics" във FINANCIAL_MODEL.md.
+  - B10: landing BG/EN (public/index.html, езиков toggle) — икономическата
+    таблица от B8.2 (GTM 0.21 / BASE 0.56 / PREMIUM 1.20 retained + ladder),
+    Trust протокол, линкове към Carbon + Ops дашборди, [DEMO] етикети.
+  - B11: docs/data-room/: PITCH.md (12 слайда, пълен текст BG, числa само
+    от B8, [[PLACEHOLDER]] екип + traction), ONE_PAGER.md, RISK_REGISTER.md
+    (7 риска + kill switches + KPI мониторинг от B9).
+- Тестове: 99/99 зелени (node --test). Lint: чист (eslint flat).
+  Coverage gate: money 100% / trust 96.8% / carbon 99.21% / matching 100%.
+- Принципи: Strict Agent Model (тестван), Stripe TEST-only guard,
+  [DEMO] маркиране, GDPR минимизация.
 
-## Сигурност (напомняне към потребителя)
+## Сигурност (напомняне)
 
-- Ревокирай OpenRouter ключа в Documents\друм\run_audit.py (sk-or-v1-...).
-- Прегледай Desktop\cdp_api_key_secret (2).txt и
-  Desktop\проекти\nohumans_tokens_PRIVATE.txt.
-- Нищо от тях не е в каноничното репо; няма да влезе в PDF.
+- OpenRouter ключ (Documents\друм\run_audit.py) — ревокация PENDING от
+  потребителя (4-то напомняне). Desktop secrets файлове — преглед PENDING.
+- НЕ са в каноничното репо (проверявано при всеки commit).
 
-## Остава
+## Остава (ЕТАП 5)
 
-- ЕТАП 2: B5 (Stripe флоу + аномалии 1-4), B8 (финансов модел: waterfall до
-  EUR 0.00 с ДДС, 3 сценария, break-even, cross-subsidy такса) -> CSV + MD в
-  /docs/data-room/, независима аритметична проверка; кръстосано сравнение с
-  Financial_Model_SYNCED.xlsx -> FINANCIAL_NOTES.md
-- ЕТАП 3: B6 (Carbon v2: VCS-ready export, дашборд BG/EN), B9 (Ops/KPI
-  дашборд: kill-switch метрики), B2 (бот пълни флоу-ове + mock adapter)
-- ЕТАП 4: тестове >=80% coverage + lint + CI (.github/workflows/ci.yml),
-  B11 data-room (PITCH/ONE_PAGER/RISK_REGISTER), B10 landing BG/EN,
-  B7 B2B batch прототип (симулация 50 заявки)
-- ЕТАП 5: gitleaks/trufflehog -> gh repo create drum-platform (private) ->
-  push -> CI статус -> PDF /reports/DRUM_Investor_Readiness_Report_v1.pdf
+1. gitleaks/trufflehog скан на цялата история (локално, преди push).
+2. gh repo create hristovdimitri2-hub/drum-platform (private) + push
+   (пълната история).
+3. Старото "Drum" repo: README-насочване към drum-platform.
+4. CI ще се изпълни при push — реалният статус отива в PDF.
+5. ФИНАЛЕН PDF: reports/DRUM_Investor_Readiness_Report_v1.pdf
+   (от REPORT.md чрез pandoc/еквивалент; командата описана в README) —
+   титулна (commit, CI статус), executive summary, модули B1-B12
+   (РЕАЛНО vs MOCKED), пълен бъг списък, тестове/coverage, скрийншоти
+   (Carbon BG/EN, landing, Ops/KPI, demo:e2e изход), финанси (waterfall),
+   демо данни, TODO до production, приложение (локално пускане).
+   СИГУРНОСТ: нито един ключ/токен/път с потребител/лични данни.
 
 ## GitHub push статус
 
-PENDING — gh auth LOGGED IN (hristovdimitri2-hub). Задължителен gitleaks/
-trufflehog скан преди push. Локална история: 6 commits, без секрети.
+PENDING — gh auth LOGGED IN (hristovdimitri2-hub). gitleaks/trufflehog
+скан преди push. Локална история: 17 commits, без секрети.

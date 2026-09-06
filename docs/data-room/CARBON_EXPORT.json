@@ -1,6 +1,6 @@
 {
   "exportVersion": 1,
-  "generatedAt": "2026-09-06T16:08:32.004Z",
+  "generatedAt": "2026-09-06T16:26:44.517Z",
   "methodologyStatement": {
     "standard": "GHG Protocol Corporate Value Chain (Scope 3), Category 4 — Upstream Transportation and Distribution",
     "methodologyTag": "GHG-Protocol-Scope3-Cat4-v1",
@@ -21,11 +21,11 @@
     "factorsSource": "env-configurable; every ledger entry stores the exact factors used (audit trail)"
   },
   "summary": {
-    "shipments": 89,
-    "distanceKm": 24515,
-    "baselineCo2Kg": 4412.7,
-    "actualCo2Kg": 21.89,
-    "savedCo2Kg": 4390.81,
+    "shipments": 90,
+    "distanceKm": 24660,
+    "baselineCo2Kg": 4438.8,
+    "actualCo2Kg": 22.62,
+    "savedCo2Kg": 4416.19,
     "byCorridor": {}
   },
   "entries": [
@@ -1630,6 +1630,24 @@
       "verificationStatus": "pending",
       "isDemo": true,
       "createdAt": "2026-09-05T22:07:00.000Z"
+    },
+    {
+      "id": "car-000007",
+      "shipmentId": "shp-000007",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": false,
+      "createdAt": "2026-09-06T16:08:33.074Z"
     }
   ]
 }
