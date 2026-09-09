@@ -1,6 +1,6 @@
 {
   "exportVersion": 1,
-  "generatedAt": "2026-09-06T16:26:44.517Z",
+  "generatedAt": "2026-09-09T10:32:15.929Z",
   "methodologyStatement": {
     "standard": "GHG Protocol Corporate Value Chain (Scope 3), Category 4 — Upstream Transportation and Distribution",
     "methodologyTag": "GHG-Protocol-Scope3-Cat4-v1",
@@ -21,11 +21,11 @@
     "factorsSource": "env-configurable; every ledger entry stores the exact factors used (audit trail)"
   },
   "summary": {
-    "shipments": 90,
-    "distanceKm": 24660,
-    "baselineCo2Kg": 4438.8,
-    "actualCo2Kg": 22.62,
-    "savedCo2Kg": 4416.19,
+    "shipments": 83,
+    "distanceKm": 23645,
+    "baselineCo2Kg": 4256.1,
+    "actualCo2Kg": 118.64,
+    "savedCo2Kg": 4138.29,
     "byCorridor": {}
   },
   "entries": [
@@ -35,17 +35,17 @@
       "originCity": "София",
       "destinationCity": "Варна",
       "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
       "distanceKm": 415,
       "methodology": "GHG-Protocol-Scope3-Cat4-v1",
       "factors": {
         "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
+        "marginalKgPerKm": 0.005
       },
       "verificationStatus": "pending",
       "isDemo": true,
-      "createdAt": "2026-07-11T20:34:00.000Z"
+      "createdAt": "2026-07-15T20:34:00.000Z"
     },
     {
       "id": "demo-carbon-0082",
@@ -53,1587 +53,21 @@
       "originCity": "Пловдив",
       "destinationCity": "София",
       "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
       "distanceKm": 145,
       "methodology": "GHG-Protocol-Scope3-Cat4-v1",
       "factors": {
         "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
+        "marginalKgPerKm": 0.005
       },
       "verificationStatus": "pending",
       "isDemo": true,
-      "createdAt": "2026-07-11T21:12:00.000Z"
+      "createdAt": "2026-07-15T21:12:00.000Z"
     },
     {
       "id": "demo-carbon-0081",
       "shipmentId": "demo-shp-0097",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-12T22:14:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0080",
-      "shipmentId": "demo-shp-0096",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-13T22:09:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0079",
-      "shipmentId": "demo-shp-0095",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-13T22:22:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0078",
-      "shipmentId": "demo-shp-0094",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-14T19:48:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0077",
-      "shipmentId": "demo-shp-0093",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-15T19:04:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0076",
-      "shipmentId": "demo-shp-0091",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-16T19:07:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0075",
-      "shipmentId": "demo-shp-0090",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-16T21:51:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0074",
-      "shipmentId": "demo-shp-0088",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-18T20:43:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0073",
-      "shipmentId": "demo-shp-0087",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-18T22:27:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0071",
-      "shipmentId": "demo-shp-0085",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-19T20:08:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0072",
-      "shipmentId": "demo-shp-0086",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-19T21:38:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0070",
-      "shipmentId": "demo-shp-0084",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-20T19:05:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0069",
-      "shipmentId": "demo-shp-0083",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-20T21:45:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0067",
-      "shipmentId": "demo-shp-0080",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-22T20:18:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0068",
-      "shipmentId": "demo-shp-0081",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-22T21:26:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0065",
-      "shipmentId": "demo-shp-0078",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-23T21:32:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0066",
-      "shipmentId": "demo-shp-0079",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-23T22:38:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0063",
-      "shipmentId": "demo-shp-0076",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-24T20:27:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0064",
-      "shipmentId": "demo-shp-0077",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-24T21:12:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0062",
-      "shipmentId": "demo-shp-0075",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-25T20:38:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0061",
-      "shipmentId": "demo-shp-0074",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-26T19:07:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0060",
-      "shipmentId": "demo-shp-0073",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-26T19:38:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0059",
-      "shipmentId": "demo-shp-0071",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-27T21:45:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0058",
-      "shipmentId": "demo-shp-0070",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-28T19:36:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0057",
-      "shipmentId": "demo-shp-0069",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-29T19:58:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0056",
-      "shipmentId": "demo-shp-0068",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-29T21:41:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0054",
-      "shipmentId": "demo-shp-0066",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-30T20:20:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0055",
-      "shipmentId": "demo-shp-0067",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-30T20:52:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0053",
-      "shipmentId": "demo-shp-0064",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-07-31T20:46:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0052",
-      "shipmentId": "demo-shp-0063",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-01T22:24:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0051",
-      "shipmentId": "demo-shp-0062",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-02T22:18:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0049",
-      "shipmentId": "demo-shp-0059",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-03T19:07:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0050",
-      "shipmentId": "demo-shp-0060",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-03T22:21:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0048",
-      "shipmentId": "demo-shp-0058",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-04T21:11:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0046",
-      "shipmentId": "demo-shp-0056",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-05T19:32:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0047",
-      "shipmentId": "demo-shp-0057",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-05T21:31:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0045",
-      "shipmentId": "demo-shp-0055",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-06T22:58:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0043",
-      "shipmentId": "demo-shp-0049",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-09T19:36:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0044",
-      "shipmentId": "demo-shp-0050",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-09T20:51:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0041",
-      "shipmentId": "demo-shp-0047",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-10T20:25:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0042",
-      "shipmentId": "demo-shp-0048",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-10T20:33:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0040",
-      "shipmentId": "demo-shp-0045",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-11T19:02:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0039",
-      "shipmentId": "demo-shp-0044",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-12T22:32:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0037",
-      "shipmentId": "demo-shp-0042",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-13T20:44:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0038",
-      "shipmentId": "demo-shp-0043",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-13T22:56:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0036",
-      "shipmentId": "demo-shp-0040",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-14T21:00:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0035",
-      "shipmentId": "demo-shp-0038",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-16T21:08:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0034",
-      "shipmentId": "demo-shp-0037",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-16T22:57:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0032",
-      "shipmentId": "demo-shp-0035",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-17T21:02:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0033",
-      "shipmentId": "demo-shp-0036",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-17T22:08:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0030",
-      "shipmentId": "demo-shp-0033",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-18T19:11:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0031",
-      "shipmentId": "demo-shp-0034",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-18T22:36:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0029",
-      "shipmentId": "demo-shp-0032",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-19T20:46:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0028",
-      "shipmentId": "demo-shp-0031",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-20T20:56:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0027",
-      "shipmentId": "demo-shp-0029",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-21T19:18:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0026",
-      "shipmentId": "demo-shp-0028",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-21T20:43:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0025",
-      "shipmentId": "demo-shp-0027",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-22T21:32:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0024",
-      "shipmentId": "demo-shp-0026",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-22T22:19:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0023",
-      "shipmentId": "demo-shp-0025",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-23T20:50:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0022",
-      "shipmentId": "demo-shp-0024",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-24T19:19:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0021",
-      "shipmentId": "demo-shp-0023",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-24T21:07:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0020",
-      "shipmentId": "demo-shp-0022",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-25T19:41:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0019",
-      "shipmentId": "demo-shp-0021",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-25T20:23:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0018",
-      "shipmentId": "demo-shp-0020",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-26T21:35:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0017",
-      "shipmentId": "demo-shp-0019",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-27T19:33:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0016",
-      "shipmentId": "demo-shp-0018",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-27T20:10:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0014",
-      "shipmentId": "demo-shp-0016",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-28T20:04:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0015",
-      "shipmentId": "demo-shp-0017",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-28T22:20:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0013",
-      "shipmentId": "demo-shp-0014",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-29T19:47:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0012",
-      "shipmentId": "demo-shp-0013",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-30T21:39:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0011",
-      "shipmentId": "demo-shp-0012",
-      "originCity": "София",
-      "destinationCity": "Варна",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-31T21:49:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0010",
-      "shipmentId": "demo-shp-0011",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-08-31T22:23:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0008",
-      "shipmentId": "demo-shp-0009",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-09-01T20:55:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0009",
-      "shipmentId": "demo-shp-0010",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-09-01T22:27:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0007",
-      "shipmentId": "demo-shp-0008",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-09-02T20:58:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0005",
-      "shipmentId": "demo-shp-0006",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-09-03T20:13:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0006",
-      "shipmentId": "demo-shp-0007",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-09-03T22:02:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0004",
-      "shipmentId": "demo-shp-0005",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-09-04T19:13:00.000Z"
-    },
-    {
-      "id": "car-000001",
-      "shipmentId": "shp-000001",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": false,
-      "createdAt": "2026-09-05T16:04:27.739Z"
-    },
-    {
-      "id": "car-000002",
-      "shipmentId": "shp-000002",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": false,
-      "createdAt": "2026-09-05T16:55:21.990Z"
-    },
-    {
-      "id": "car-000003",
-      "shipmentId": "shp-000003",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": false,
-      "createdAt": "2026-09-05T17:07:31.037Z"
-    },
-    {
-      "id": "car-000004",
-      "shipmentId": "shp-000004",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": false,
-      "createdAt": "2026-09-05T18:38:56.207Z"
-    },
-    {
-      "id": "car-000005",
-      "shipmentId": "shp-000005",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": false,
-      "createdAt": "2026-09-05T18:40:56.155Z"
-    },
-    {
-      "id": "car-000006",
-      "shipmentId": "shp-000006",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": false,
-      "createdAt": "2026-09-05T18:41:59.240Z"
-    },
-    {
-      "id": "demo-carbon-0002",
-      "shipmentId": "demo-shp-0002",
-      "originCity": "Варна",
-      "destinationCity": "София",
-      "baselineCo2Kg": 74.7,
-      "actualCo2Kg": 0.37,
-      "savedCo2Kg": 74.33,
-      "distanceKm": 415,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-09-05T19:49:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0001",
-      "shipmentId": "demo-shp-0001",
-      "originCity": "Пловдив",
-      "destinationCity": "София",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-09-05T21:31:00.000Z"
-    },
-    {
-      "id": "demo-carbon-0003",
-      "shipmentId": "demo-shp-0003",
-      "originCity": "София",
-      "destinationCity": "Пловдив",
-      "baselineCo2Kg": 26.1,
-      "actualCo2Kg": 0.13,
-      "savedCo2Kg": 25.97,
-      "distanceKm": 145,
-      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
-      "factors": {
-        "baselineKgPerKm": 0.18,
-        "marginalShareFactor": 0.005
-      },
-      "verificationStatus": "pending",
-      "isDemo": true,
-      "createdAt": "2026-09-05T22:07:00.000Z"
-    },
-    {
-      "id": "car-000007",
-      "shipmentId": "shp-000007",
       "originCity": "София",
       "destinationCity": "Пловдив",
       "baselineCo2Kg": 26.1,
@@ -1646,8 +80,1448 @@
         "marginalKgPerKm": 0.005
       },
       "verificationStatus": "pending",
-      "isDemo": false,
-      "createdAt": "2026-09-06T16:08:33.074Z"
+      "isDemo": true,
+      "createdAt": "2026-07-16T22:14:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0080",
+      "shipmentId": "demo-shp-0096",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-17T22:09:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0079",
+      "shipmentId": "demo-shp-0095",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-17T22:22:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0078",
+      "shipmentId": "demo-shp-0094",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-18T19:48:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0077",
+      "shipmentId": "demo-shp-0093",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-19T19:04:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0076",
+      "shipmentId": "demo-shp-0091",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-20T19:07:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0075",
+      "shipmentId": "demo-shp-0090",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-20T21:51:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0074",
+      "shipmentId": "demo-shp-0088",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-22T20:43:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0073",
+      "shipmentId": "demo-shp-0087",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-22T22:27:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0071",
+      "shipmentId": "demo-shp-0085",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-23T20:08:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0072",
+      "shipmentId": "demo-shp-0086",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-23T21:38:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0070",
+      "shipmentId": "demo-shp-0084",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-24T19:05:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0069",
+      "shipmentId": "demo-shp-0083",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-24T21:45:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0067",
+      "shipmentId": "demo-shp-0080",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-26T20:18:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0068",
+      "shipmentId": "demo-shp-0081",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-26T21:26:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0065",
+      "shipmentId": "demo-shp-0078",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-27T21:32:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0066",
+      "shipmentId": "demo-shp-0079",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-27T22:38:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0063",
+      "shipmentId": "demo-shp-0076",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-28T20:27:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0064",
+      "shipmentId": "demo-shp-0077",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-28T21:12:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0062",
+      "shipmentId": "demo-shp-0075",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-29T20:38:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0061",
+      "shipmentId": "demo-shp-0074",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-30T19:07:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0060",
+      "shipmentId": "demo-shp-0073",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-30T19:38:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0059",
+      "shipmentId": "demo-shp-0071",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-07-31T21:45:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0058",
+      "shipmentId": "demo-shp-0070",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-01T19:36:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0057",
+      "shipmentId": "demo-shp-0069",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-02T19:58:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0056",
+      "shipmentId": "demo-shp-0068",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-02T21:41:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0054",
+      "shipmentId": "demo-shp-0066",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-03T20:20:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0055",
+      "shipmentId": "demo-shp-0067",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-03T20:52:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0053",
+      "shipmentId": "demo-shp-0064",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-04T20:46:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0052",
+      "shipmentId": "demo-shp-0063",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-05T22:24:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0051",
+      "shipmentId": "demo-shp-0062",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-06T22:18:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0049",
+      "shipmentId": "demo-shp-0059",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-07T19:07:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0050",
+      "shipmentId": "demo-shp-0060",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-07T22:21:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0048",
+      "shipmentId": "demo-shp-0058",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-08T21:11:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0046",
+      "shipmentId": "demo-shp-0056",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-09T19:32:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0047",
+      "shipmentId": "demo-shp-0057",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-09T21:31:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0045",
+      "shipmentId": "demo-shp-0055",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-10T22:58:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0043",
+      "shipmentId": "demo-shp-0049",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-13T19:36:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0044",
+      "shipmentId": "demo-shp-0050",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-13T20:51:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0041",
+      "shipmentId": "demo-shp-0047",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-14T20:25:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0042",
+      "shipmentId": "demo-shp-0048",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-14T20:33:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0040",
+      "shipmentId": "demo-shp-0045",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-15T19:02:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0039",
+      "shipmentId": "demo-shp-0044",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-16T22:32:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0037",
+      "shipmentId": "demo-shp-0042",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-17T20:44:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0038",
+      "shipmentId": "demo-shp-0043",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-17T22:56:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0036",
+      "shipmentId": "demo-shp-0040",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-18T21:00:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0035",
+      "shipmentId": "demo-shp-0038",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-20T21:08:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0034",
+      "shipmentId": "demo-shp-0037",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-20T22:57:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0032",
+      "shipmentId": "demo-shp-0035",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-21T21:02:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0033",
+      "shipmentId": "demo-shp-0036",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-21T22:08:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0030",
+      "shipmentId": "demo-shp-0033",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-22T19:11:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0031",
+      "shipmentId": "demo-shp-0034",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-22T22:36:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0029",
+      "shipmentId": "demo-shp-0032",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-23T20:46:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0028",
+      "shipmentId": "demo-shp-0031",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-24T20:56:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0027",
+      "shipmentId": "demo-shp-0029",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-25T19:18:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0026",
+      "shipmentId": "demo-shp-0028",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-25T20:43:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0025",
+      "shipmentId": "demo-shp-0027",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-26T21:32:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0024",
+      "shipmentId": "demo-shp-0026",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-26T22:19:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0023",
+      "shipmentId": "demo-shp-0025",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-27T20:50:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0022",
+      "shipmentId": "demo-shp-0024",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-28T19:19:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0021",
+      "shipmentId": "demo-shp-0023",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-28T21:07:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0020",
+      "shipmentId": "demo-shp-0022",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-29T19:41:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0019",
+      "shipmentId": "demo-shp-0021",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-29T20:23:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0018",
+      "shipmentId": "demo-shp-0020",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-30T21:35:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0017",
+      "shipmentId": "demo-shp-0019",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-31T19:33:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0016",
+      "shipmentId": "demo-shp-0018",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-08-31T20:10:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0014",
+      "shipmentId": "demo-shp-0016",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-01T20:04:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0015",
+      "shipmentId": "demo-shp-0017",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-01T22:20:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0013",
+      "shipmentId": "demo-shp-0014",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-02T19:47:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0012",
+      "shipmentId": "demo-shp-0013",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-03T21:39:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0011",
+      "shipmentId": "demo-shp-0012",
+      "originCity": "София",
+      "destinationCity": "Варна",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-04T21:49:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0010",
+      "shipmentId": "demo-shp-0011",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-04T22:23:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0008",
+      "shipmentId": "demo-shp-0009",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-05T20:55:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0009",
+      "shipmentId": "demo-shp-0010",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-05T22:27:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0007",
+      "shipmentId": "demo-shp-0008",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-06T20:58:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0005",
+      "shipmentId": "demo-shp-0006",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-07T20:13:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0006",
+      "shipmentId": "demo-shp-0007",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-07T22:02:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0004",
+      "shipmentId": "demo-shp-0005",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-08T19:13:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0002",
+      "shipmentId": "demo-shp-0002",
+      "originCity": "Варна",
+      "destinationCity": "София",
+      "baselineCo2Kg": 74.7,
+      "actualCo2Kg": 2.08,
+      "savedCo2Kg": 72.63,
+      "distanceKm": 415,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-09T19:49:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0001",
+      "shipmentId": "demo-shp-0001",
+      "originCity": "Пловдив",
+      "destinationCity": "София",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-09T21:31:00.000Z"
+    },
+    {
+      "id": "demo-carbon-0003",
+      "shipmentId": "demo-shp-0003",
+      "originCity": "София",
+      "destinationCity": "Пловдив",
+      "baselineCo2Kg": 26.1,
+      "actualCo2Kg": 0.73,
+      "savedCo2Kg": 25.38,
+      "distanceKm": 145,
+      "methodology": "GHG-Protocol-Scope3-Cat4-v1",
+      "factors": {
+        "baselineKgPerKm": 0.18,
+        "marginalKgPerKm": 0.005
+      },
+      "verificationStatus": "pending",
+      "isDemo": true,
+      "createdAt": "2026-09-09T22:07:00.000Z"
     }
   ]
 }
