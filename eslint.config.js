@@ -24,7 +24,7 @@ export default [
     },
     rules: {
       'no-undef': 'error',
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       'no-constant-condition': 'error',
       'no-dupe-keys': 'error',
       'no-unreachable': 'error',
