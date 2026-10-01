@@ -27,7 +27,7 @@ drum-platform (private) е пушнат, CI SUCCESS, финалният PDF е �
 
 ## Ключови метрики
 
-- Тестове: 99/99 зелени (CI също). Lint: 0 errors.
+- Тестове: 130/130 зелени (CI също). Lint: 0 errors.
 - Coverage gate (>=80%): money 100% / trust 96.8% / carbon 99.21% /
   matching 100%.
 - Secret scan: CLEAN.

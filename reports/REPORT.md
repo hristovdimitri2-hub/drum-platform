@@ -8,7 +8,7 @@
 | **Git commit** | `09e10ef` (последен код-комит — batch3; master → hristovdimitri2-hub/drum-platform; **32 комита** с тази статистика) |
 | **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 36844928347 за `0d66342`; batch3 push: run 36851307584 за `0290bdb` — SUCCESS (130/130 в CI); предишен зелен: 36849877620; latest: run 36851594559 — SUCCESS (за върха `caa756f`), Node 22, ubuntu-latest) |
 | **Тестове** | **139/139** pass (+10 в OSS пакета отделно) · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
-| **Сигурност** | Secret scan на цялата история: CLEAN (36 комита — 32 в master към края на batch3, +4 в batch4) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
+| **Сигурност** | Secret scan на цялата история: CLEAN (37 комита — 32 в master към края на batch3, +4 в batch4, +1 docs) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
 | **Funding matrix** | `docs/FUNDING_CALLS_MATRIX.md` merged (комит `fc3f7ff`): 11 OPEN / 1 UPCOMING / 1 НЕПОТВЪРДЕНО, проверено 2026-10-01 |
 | **Класификация** | За разпространение към потенциални инвеститори. Без ключове, токени, локални пътища или лични данни. |
 
