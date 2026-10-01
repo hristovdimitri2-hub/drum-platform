@@ -1,0 +1,33 @@
+{
+  "name": "open-carbon-evidence",
+  "version": "0.1.0",
+  "description": "OCE — Open Carbon & Evidence: pure CO2 savings math (GHG Protocol Scope 3 Cat. 4) + sha256 photo-evidence layer with GDPR retention. Extracted from DRUM 3.0; no DB, no payments.",
+  "license": "Apache-2.0",
+  "private": true,
+  "main": "src/services/carbon.js",
+  "exports": {
+    "./carbon": "./src/services/carbon.js",
+    "./photo-proof": "./src/services/photoProof.js",
+    "./evidence-paths": "./src/services/evidencePaths.js"
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test tests/*.test.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "co2",
+    "ghg-protocol",
+    "scope3",
+    "carbon-ledger",
+    "evidence",
+    "gdpr",
+    "sha256"
+  ]
+}

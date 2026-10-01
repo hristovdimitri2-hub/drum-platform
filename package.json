@@ -14,9 +14,9 @@
     "demo:e2e": "node scripts/demo-e2e.js",
     "demo:camera": "node scripts/demo-camera.js",
     "lint": "eslint src scripts tests",
-    "coverage": "c8 --reporter=text --reporter=lcov --reporter=json-summary node --test",
+    "coverage": "c8 --reporter=text --reporter=lcov --reporter=json-summary node --test tests/*.test.cjs",
     "coverage:gate": "node scripts/coverage-gate.js",
-    "test": "node --test"
+    "test": "node --test tests/*.test.cjs"
   },
   "dependencies": {
     "airtable": "^0.12.2",
