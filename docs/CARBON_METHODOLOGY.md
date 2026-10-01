@@ -2,7 +2,7 @@
 
 > Methodology statement — приложим към всеки запис в Carbon Ledger.
 > Каноничният изчислител е `src/services/carbon.js`; факторите са
-> конфигурируеми през env (CO2_BASELINE_KG_PER_KM, CO2_MARGINAL_SHARE_FACTOR)
+> конфигурируеми през env (CO2_BASELINE_KG_PER_KM, CO2_MARGINAL_KG_PER_KM)
 > и ВСЕКИ запис пази точните фактори, използвани при изчислението (audit trail).
 
 ## 1. Standard & boundary
