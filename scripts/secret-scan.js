@@ -4,11 +4,17 @@
  * private keys, OpenRouter, generic password assignments.
  * Allowlist: sk_test_ placeholders in .env.example/tests (documented).
  * Exit 1 if a NON-allowlisted secret is found.
+ *
+ * Target directory (batch 6 fix): `node scripts/secret-scan.js [dir]`
+ *   - default = process.cwd() → running from the repo root keeps the exact
+ *     previous behaviour (CI is unaffected — it is not wired to this script);
+ *   - `[dir]` = any git checkout (e.g. a fresh clone of the public repo).
  */
 
 const { execFileSync } = require('child_process');
+const path = require('path');
 
-const REPO = 'C:/Users/AlienWare/Desktop/проекти/DRUM/drum-mvp';
+const REPO = process.argv[2] ? path.resolve(process.argv[2]) : process.cwd();
 
 function git(args) {
   return execFileSync('git', args, { cwd: REPO, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
@@ -48,8 +54,15 @@ function scanBlob(commit, file, content) {
 }
 
 function main() {
-  const commits = git(['rev-list', '--all']).split('\n').filter(Boolean);
-  console.log(`Scanning ${commits.length} commits x all files...`);
+  let commits;
+  try {
+    commits = git(['rev-list', '--all']).split('\n').filter(Boolean);
+  } catch (err) {
+    console.error(`ERROR: cannot read git history of ${REPO} (a git repository required).`);
+    console.error(String(err.message || err).split('\n')[0]);
+    process.exit(2);
+  }
+  console.log(`Scanning ${commits.length} commits x all files in ${REPO}...`);
   const all = [];
   for (const c of commits) {
     const files = git(['ls-tree', '-r', '--name-only', c]).split('\n').filter(Boolean);
