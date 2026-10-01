@@ -79,6 +79,12 @@
   timestamp, shipmentId, chatId — без тях няма доказателство) и се закача
   към отказа. DEMO (без камера): placeholder запис с `demoPlaceholder: true`.
   Evidence пакетът маркира `photoProof.source = REAL | DEMO_PLACEHOLDER | NONE`.
+- **Evidence storage + GDPR (batch 3):** всички пътища са централизирани в
+  `src/services/evidencePaths.js` — снимки/метаданни/пакети/proof-records са в
+  `drum-mvp/data/evidence/` (вътре в repo-то, gitignore-нат; без `..` бягства).
+  Retention: `EVIDENCE_RETENTION_DAYS` = 90 дни (GDPR чл. 5(1)(e)) чрез
+  `npm run evidence:cleanup`. Миграция на стари записи извън repo-то —
+  `docs/GDPR_EVIDENCE.md` §3 (ръчна, нищо не се трие автоматично).
 - **Evidence пакет** (B5.4): една команда (`/evidence <ID>` или
   `GET /api/evidence/<ID>`) → JSON + Markdown + SHA-256 checksum,
   репродуцируем (same content → same hash). Съдържа: shipment, Stripe

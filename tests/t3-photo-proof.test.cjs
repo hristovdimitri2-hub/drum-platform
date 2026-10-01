@@ -193,3 +193,38 @@ test('T3.4: /refuse works without a camera; next photo binds via session', async
   assert.ok(d && d.status === 'open', 'refusal dispute opened');
   assert.equal(anomalies.isProofExpired(await store.getDispute(d.id)), false);
 });
+
+/* ---------- batch 3 / T2: evidence path hygiene + GDPR retention ---------- */
+
+test('T2: evidence paths are INSIDE the repo — no ".." escapes; retention = 90', () => {
+  const ep = require('../src/services/evidencePaths');
+  for (const p of [ep.EVIDENCE_ROOT, ep.EVIDENCE_DIR, ep.PROOFS_DIR]) {
+    assert.ok(!p.split(/[\\/]/).includes('..'), 'no ".." segment in ' + p);
+    assert.ok(p.startsWith(ep.REPO_ROOT), 'resolves inside the repo: ' + p);
+  }
+  assert.equal(ep.EVIDENCE_ROOT, path.join(ep.REPO_ROOT, 'data', 'evidence'));
+  assert.equal(ep.PROOFS_DIR, path.join(ep.EVIDENCE_ROOT, 'proofs'));
+  assert.equal(ep.EVIDENCE_RETENTION_DAYS, 90, 'GDPR default retention');
+  // the runtime modules use the shared constants (no private copies)
+  assert.equal(photoProof.EVIDENCE_DIR, ep.EVIDENCE_DIR);
+  assert.equal(anomalies.PROOFS_DIR, ep.PROOFS_DIR);
+});
+
+test('T2: cleanup removes expired evidence (>90d) and keeps fresh files', () => {
+  const dir = path.join(photoProof.EVIDENCE_DIR, 'shp-t3-clean');
+  fs.mkdirSync(dir, { recursive: true });
+  const oldF = path.join(dir, 'old.jpg');
+  const freshF = path.join(dir, 'fresh.jpg');
+  fs.writeFileSync(oldF, 'old-bytes');
+  fs.writeFileSync(freshF, 'fresh-bytes');
+  const past = new Date(Date.now() - 120 * 86400000); // 120 days old
+  fs.utimesSync(oldF, past, past);
+
+  const res = photoProof.cleanupExpiredEvidence({ days: 90 });
+  assert.equal(res.days, 90);
+  assert.ok(res.removedFiles >= 1, 'expired file removed');
+  assert.ok(!fs.existsSync(oldF), 'expired evidence is gone');
+  assert.ok(fs.existsSync(freshF), 'fresh evidence survives');
+
+  fs.rmSync(dir, { recursive: true, force: true });
+});

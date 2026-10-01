@@ -18,9 +18,12 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { listProofPhotos } = require('./photoProof');
+// batch 3: unified evidence storage — INSIDE the repo (data/evidence, gitignored),
+// no '..' escapes. See docs/GDPR_EVIDENCE.md (retention + legacy migration).
+const { EVIDENCE_ROOT, PROOFS_DIR } = require('./evidencePaths');
 
 const PROOF_WINDOW_HOURS = 24;
-const PROOFS_DIR = path.join(__dirname, '..', '..', '..', 'data', 'proofs');
+// PROOFS_DIR now comes from evidencePaths (batch 3) — inside the repo, no '..'.
 
 /* ---------------------- Anomaly 1: amount mismatch ------------------------ */
 
@@ -230,7 +233,9 @@ async function buildEvidencePacket(store, shipmentId) {
     .update(JSON.stringify(Object.assign({}, packet, { checksum: null })))
     .digest('hex');
 
-  const dir = path.join(__dirname, '..', '..', '..', 'reports', 'evidence');
+  // batch 3: packets live with the shipment's evidence — inside the repo,
+  // gitignored (no more DRUM/reports/evidence outside the repo).
+  const dir = path.join(EVIDENCE_ROOT, shipmentId);
   fs.mkdirSync(dir, { recursive: true });
   const base = 'evidence_' + shipmentId + '_' + packet.generatedAt.replace(/[:.]/g, '-');
   const jsonPath = path.join(dir, base + '.json');

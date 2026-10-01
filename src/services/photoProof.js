@@ -17,7 +17,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-const EVIDENCE_DIR = path.join(__dirname, '..', '..', 'data', 'evidence'); // drum-mvp/data/evidence
+const { EVIDENCE_DIR, EVIDENCE_RETENTION_DAYS } = require('./evidencePaths'); // batch 3: single source, no '..' escapes
 
 function sanitizeShipmentId(id) {
   const s = String(id === undefined || id === null ? '' : id).trim();
@@ -95,4 +95,46 @@ function extractShipmentId(ctx) {
   return null;
 }
 
-module.exports = { EVIDENCE_DIR, saveProofPhoto, listProofPhotos, extractShipmentId, sanitizeShipmentId };
+/**
+ * GDPR retention cleanup — Art. 5(1)(e) storage limitation.
+ * Deletes everything under the evidence root older than
+ * `days` (default EVIDENCE_RETENTION_DAYS = 90) and prunes empty dirs.
+ * Manual entry point: npm run evidence:cleanup. Never throws on missing dir.
+ * @returns {{removedFiles: number, bytes: number, cutoff: string, days: number}}
+ */
+function cleanupExpiredEvidence({ nowMs = Date.now(), days = EVIDENCE_RETENTION_DAYS } = {}) {
+  const cutoff = nowMs - days * 86400000;
+  const out = { removedFiles: 0, bytes: 0, cutoff: new Date(cutoff).toISOString(), days };
+  if (!fs.existsSync(EVIDENCE_DIR)) return out;
+
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(p);
+        continue;
+      }
+      const st = fs.statSync(p);
+      if (st.mtimeMs < cutoff) {
+        out.bytes += st.size;
+        fs.unlinkSync(p);
+        out.removedFiles += 1;
+      }
+    }
+  };
+  walk(EVIDENCE_DIR);
+
+  const prune = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.isDirectory()) {
+        const p = path.join(dir, e.name);
+        prune(p);
+        try { fs.rmdirSync(p); } catch { /* not empty */ }
+      }
+    }
+  };
+  prune(EVIDENCE_DIR);
+  return out;
+}
+
+module.exports = { EVIDENCE_DIR, saveProofPhoto, listProofPhotos, extractShipmentId, sanitizeShipmentId, cleanupExpiredEvidence };

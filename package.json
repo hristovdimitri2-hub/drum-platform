@@ -10,6 +10,7 @@
     "seed:dry": "node scripts/seed-airtable.js --dry-run",
     "seed:demo": "node scripts/seed-demo.js",
     "export:carbon": "node scripts/export-carbon.js",
+    "evidence:cleanup": "node scripts/cleanup-evidence.js",
     "demo:e2e": "node scripts/demo-e2e.js",
     "lint": "eslint src scripts tests",
     "coverage": "c8 --reporter=text --reporter=lcov --reporter=json-summary node --test",
