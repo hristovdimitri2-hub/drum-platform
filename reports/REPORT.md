@@ -6,9 +6,9 @@
 | **Версия** | 0.2.0 (канонично репо: drum-mvp → drum-platform) |
 | **Дата на изготвяне** | 2026-09-09 (актуализация: 2026-10-01 — batch1+batch2) |
 | **Git commit** | `09e10ef` (последен код-комит — batch3; master → hristovdimitri2-hub/drum-platform; **32 комита** с тази статистика) |
-| **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 36844928347 за `0d66342`; batch3 push: run 36851307584 за `0290bdb` — SUCCESS (130/130 в CI); предишен зелен: 36849877620, Node 22, ubuntu-latest) |
-| **Тестове** | **130/130** pass · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
-| **Сигурност** | Secret scan на цялата история: CLEAN (28 комита в master) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
+| **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 36844928347 за `0d66342`; batch3 push: run 36851307584 за `0290bdb` — SUCCESS (130/130 в CI); предишен зелен: 36849877620; latest: run 36851594559 — SUCCESS (за върха `caa756f`), Node 22, ubuntu-latest) |
+| **Тестове** | **139/139** pass (+10 в OSS пакета отделно) · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
+| **Сигурност** | Secret scan на цялата история: CLEAN (35 комита — 32 в master към края на batch3, +3 в batch4) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
 | **Funding matrix** | `docs/FUNDING_CALLS_MATRIX.md` merged (комит `fc3f7ff`): 11 OPEN / 1 UPCOMING / 1 НЕПОТВЪРДЕНО, проверено 2026-10-01 |
 | **Класификация** | За разпространение към потенциални инвеститори. Без ключове, токени, локални пътища или лични данни. |
 
@@ -28,7 +28,7 @@ B2B batch прототип и data-room с финансов модел, гене
 
 **Присъда (готовност за инвеститори, едно изречение):** DRUM е инвестицион-
 ready като *код и методология* — всичко обещано в демо-то работи, тествано
-е (130 теста, CI зелен) и е финансово моделирано с пълна проследимост до
+е (139 теста, CI зелен) и е финансово моделирано с пълна проследимост до
 стотинка, но има **нула реални потребители и доставки** — съответно
 подходящият ask е валидационен (€31K за 90-дневен пилот), не growth капитал.
 
@@ -153,10 +153,13 @@ Airtable backend (реален, без настроен base); demo-store (legac
 
 ## Тестове и качество
 
-- **130 автоматични теста** (node --test), всички зелени локално и в CI:
+- **139 автоматични теста** (node --test), всички зелени локално и в CI:
   B1 store 6 - B2 флоу 8 - B3 matching 10 - B4 trust 26 - B5 money/anomalies/webhook 19 -
   B6 carbon/export 6 - B7 b2b 7 - B8 finance 11 - B9 kpi 6 -
-  T1 checkout/stripe 10 - T2 airtable links 10 - T3 photo proof 7 - T4 web scan 4.
+  T1 checkout/stripe 10 - T2 airtable links 10 - T3 photo proof 7 - T4 web scan 4 -
+  T5 predeploy guards 9.
+- OSS пакет `oss/open-carbon-evidence` (batch 4): отделни 10/10 теста
+  (`cd oss/open-carbon-evidence && npm test`) — не влизат в главните 139.
 - Coverage (c8, lines): money 100% / matching 100% / carbon 99.2% /
   trust 96.8% / services общо 88.6% / db 87.2%. Gate >=80% на 4-те
   критични модула - зелен.
