@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { listProofPhotos } = require('./photoProof');
 
 const PROOF_WINDOW_HOURS = 24;
 const PROOFS_DIR = path.join(__dirname, '..', '..', '..', 'data', 'proofs');
@@ -64,7 +65,7 @@ async function openDeliveryRefusal(store, { shipmentId, openedBy, openedAtMs = D
       type: 'delivery_refusal',
       proofDeadline: deadline,
       proofRequired: true,
-      realPhoto: 'TODO (production)',
+      realPhoto: 'via photo handler (commands/photo.js) → data/evidence/<shipmentId>/',
     }),
   });
   return { dispute: d, proofDeadline: deadline, windowHours: PROOF_WINDOW_HOURS };
@@ -78,8 +79,9 @@ function isProofExpired(dispute, nowMs = Date.now()) {
 }
 
 /**
- * Attach "photo proof". DEMO: writes a placeholder file with metadata
- * (data/proofs/<dispute>.json). REAL PHOTO upload: TODO (production).
+ * Attach "photo proof". REAL photo (meta.photo = photoProof metadata) →
+ * record with demoPlaceholder:false + sha256; DEMO (no camera/no file) →
+ * clearly-marked [DEMO] placeholder record (data/proofs/<dispute>.json).
  */
 async function attachDeliveryProof(store, disputeId, meta = {}) {
   const dispute = await store.getDispute(disputeId);
@@ -88,18 +90,41 @@ async function attachDeliveryProof(store, disputeId, meta = {}) {
     return { ok: false, reason: 'proof window (24h) expired' };
   }
   fs.mkdirSync(PROOFS_DIR, { recursive: true });
+
+  const photo = meta.photo;
+  const isRealPhoto = !!(photo && photo.sha256 && photo.file);
+  const { photo: _photo, ...restMeta } = meta;
   const record = {
     disputeId,
     shipmentId: dispute.shipmentId,
     attachedAt: new Date().toISOString(),
-    demoPlaceholder: true,
-    note: 'DEMO placeholder — real photo upload is TODO (production)',
-    meta,
+    demoPlaceholder: !isRealPhoto,
+    note: isRealPhoto
+      ? 'REAL photo proof — sha256-verified, stored under data/evidence/<shipmentId>/'
+      : 'DEMO placeholder — no camera/photo in this run (anomaly 3)',
+    ...(isRealPhoto
+      ? {
+          photo: {
+            sha256: photo.sha256,
+            file: photo.file,
+            timestamp: photo.timestamp,
+            chatId: photo.chatId,
+            bytes: photo.bytes,
+            source: photo.source || 'telegram',
+          },
+        }
+      : {}),
+    meta: restMeta,
   };
   const file = path.join(PROOFS_DIR, disputeId + '.json');
   fs.writeFileSync(file, JSON.stringify(record, null, 2));
   await store.updateDisputeStatus(disputeId, 'resolved');
-  return { ok: true, proofFile: file };
+  return {
+    ok: true,
+    proofFile: file,
+    demoPlaceholder: !isRealPhoto,
+    sha256: isRealPhoto ? photo.sha256 : null,
+  };
 }
 
 /**
@@ -138,6 +163,29 @@ async function buildEvidencePacket(store, shipmentId) {
   const disputes = allDisputes.filter((d) => d.shipmentId === shipmentId);
   const carbon = (await store.listCarbonEntries()).find((c) => c.shipmentId === shipmentId) || null;
 
+  // Photo proof (batch 2/T3): REAL photos from data/evidence/<shipmentId>/
+  // + dispute attach records ([DEMO] placeholders clearly marked).
+  const proofPhotos = listProofPhotos(shipmentId);
+  const attachRecords = disputes
+    .map((d) => {
+      const pf = path.join(PROOFS_DIR, d.id + '.json');
+      try { return JSON.parse(fs.readFileSync(pf, 'utf8')); } catch { return null; }
+    })
+    .filter(Boolean);
+  const photoProof = {
+    source: proofPhotos.length
+      ? 'REAL'
+      : (attachRecords.some((r) => r.demoPlaceholder) ? 'DEMO_PLACEHOLDER' : 'NONE'),
+    realPhotos: proofPhotos.map((p) => ({
+      file: p.file, sha256: p.sha256, timestamp: p.timestamp,
+      chatId: p.chatId, bytes: p.bytes, source: p.source,
+    })),
+    attachments: attachRecords.map((r) => ({
+      disputeId: r.disputeId, attachedAt: r.attachedAt,
+      demoPlaceholder: r.demoPlaceholder, note: r.note, photo: r.photo || null,
+    })),
+  };
+
   const packet = {
     packetVersion: 1,
     generatedAt: new Date().toISOString(),
@@ -172,6 +220,7 @@ async function buildEvidencePacket(store, shipmentId) {
       stripeId: t.stripeId,
     })),
     disputes,
+    photoProof,
     carbonLedger: carbon,
     checksum: null,
   };
@@ -208,6 +257,15 @@ async function buildEvidencePacket(store, shipmentId) {
       ? disputes.map((d) => '- ' + d.id + ': ' + d.status + ' (' + d.createdAt + ')').join('\n')
       : '_none_',
     '',
+    '## Photo proof',
+    photoProof.source === 'REAL'
+      ? photoProof.realPhotos
+          .map((p) => '- REAL photo: ' + p.file + ' (sha256 ' + p.sha256.slice(0, 16) + '…, ' + p.timestamp + ', chat ' + p.chatId + ')')
+          .join('\n')
+      : photoProof.source === 'DEMO_PLACEHOLDER'
+        ? '- [DEMO] placeholder proof only — no real photo captured'
+        : '- none',
+    '',
     carbon
       ? '## Carbon Ledger\n- ' + carbon.savedCo2Kg + ' kg CO2 saved (' + carbon.methodology + ')'
       : '',
@@ -219,6 +277,7 @@ async function buildEvidencePacket(store, shipmentId) {
 }
 
 module.exports = {
+  PROOFS_DIR,
   PROOF_WINDOW_HOURS,
   checkAmountMismatch,
   isDuplicateCapture,

@@ -7,11 +7,12 @@
  * Captures replies/photos/sent messages for assertions.
  */
 
-function createMockCtx({ from = { id: 1, first_name: 'Test' }, text = '', contact = null } = {}) {
+function createMockCtx({ from = { id: 1, first_name: 'Test' }, text = '', contact = null, photo = null, caption = null, chat = null, session = {} } = {}) {
   const ctx = {
     from,
-    message: { text, contact },
-    session: {},
+    chat: chat || { id: from.id },
+    message: { text, contact, photo, caption },
+    session,
     __replies: [],
     __photos: [],
     __sent: [],

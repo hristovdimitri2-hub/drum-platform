@@ -73,10 +73,12 @@
   split 80/15/5 (remainder → застраховката, гаранция €0.00), VAT върху
   таксата (gross→net+VAT). Stripe, transactions, finance.js и тестовете
   всички го ползват — нула дублирана математика.
-- **Аномалия 3 — реално фото: TODO (production).** DEMO режим записва
-  placeholder файл с метаданни (data/proofs/<dispute>.json) и изрично
-  `demoPlaceholder: true`. Не се моква като "истинска снимка" — видно е
-  в кода и в evidence пакета.
+- **Аномалия 3 — реално фото (batch 2):** `/refuse <ID>` отваря 24ч
+  прозорец; следващото photo съобщение (caption с ID или session от /refuse)
+  се записва в `data/evidence/<shipmentId>/` с пълни метаданни (sha256,
+  timestamp, shipmentId, chatId — без тях няма доказателство) и се закача
+  към отказа. DEMO (без камера): placeholder запис с `demoPlaceholder: true`.
+  Evidence пакетът маркира `photoProof.source = REAL | DEMO_PLACEHOLDER | NONE`.
 - **Evidence пакет** (B5.4): една команда (`/evidence <ID>` или
   `GET /api/evidence/<ID>`) → JSON + Markdown + SHA-256 checksum,
   репродуцируем (same content → same hash). Съдържа: shipment, Stripe

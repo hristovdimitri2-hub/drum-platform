@@ -46,6 +46,8 @@ const statusCommand = require('./commands/status');
 const helpCommand = require('./commands/help');
 const matchesCommand = require('./commands/matches');
 const evidenceCommand = require('./commands/evidence');
+const refuseCommand = require('./commands/refuse');
+const { createPhotoHandler } = require('./commands/photo');
 
 const IS_DEMO = airtableService.isDemoMode === true || stripeService.DEMO_MODE === true;
 
@@ -105,6 +107,11 @@ if (bot) {
   bot.command('status', statusCommand);
   bot.command('matches', matchesCommand);
   bot.command('evidence', evidenceCommand);
+  // Anomaly 3: refusal opens the 24h window; the next PHOTO in the chat
+  // (or with the shipment id in its caption) becomes sha256-verified
+  // evidence under data/evidence/<shipmentId>/ — see commands/photo.js.
+  bot.command('refuse', refuseCommand);
+  bot.on('photo', createPhotoHandler());
   bot.command('cancel', async (ctx) => {
     if (ctx.session) delete ctx.session.newShipment;
     await ctx.reply('✅ Текущото действие е отменено.', Markup.removeKeyboard());

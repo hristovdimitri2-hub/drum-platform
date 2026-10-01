@@ -16,6 +16,7 @@ export default [
         exports: 'writable',
         __dirname: 'readonly',
         Buffer: 'readonly',
+        fetch: 'readonly', // Node 18+ global (photoProof download path)
         setTimeout: 'readonly',
         setInterval: 'readonly',
         clearTimeout: 'readonly',

@@ -25,6 +25,7 @@ module.exports = async (ctx) => {
       `Заявка: ${s.id} (${s.corridor})\n` +
       `Статус: ${s.status} · Stripe: ${packet.stripe.mode}\n` +
       `Транзакции: ${t.length}\n` +
+      `Фото доказателство: ${packet.photoProof ? packet.photoProof.source : 'n/a'}\n` +
       `SHA-256: \`${out.sha256.slice(0, 16)}…\`\n\n` +
       `Файлове:\n${out.jsonPath}\n${out.mdPath}`,
       { parse_mode: 'Markdown' }
