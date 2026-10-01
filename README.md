@@ -129,4 +129,4 @@ UNLICENSED — Private, confidential.
 
 ## Автор
 
-Димитър Вълканов — Founder & CEO, DRUM
+Димитър Христов Вълканов — Founder & CEO, DRUM
