@@ -16,7 +16,7 @@
 | Stripe capture + split | ✅ работещ (TEST) | capture на цялата сума, split 80/15/5 от уловеното; transfer през Connect; в DEMO_MODE — симулирани PI/tr/ch ID-та |
 | Stripe Connect Express onboarding | 🟡 частично | `createCarrierConnectAccount` е готов; няма UI onboarding route в Express (URL-ите са placeholders) |
 | Клиентско плащане (Stripe TEST) | ✅ работещ (TEST) | `POST /api/checkout/:shipmentId` → `public/pay.html` (Stripe Elements; реисползва escrow PI — без дублиран auth). DEMO_MODE — симулирани `pi_demo_*`, нулеви мрежови извиквания; guard отказва `sk_live` **преди** всеки изовик |
-| QR pickup/delivery | ✅ работещ | локална генерация (`qrcode`) + URL fallback (goqr.me); „сканиране" = текст на payload-а в чата (`drum:pickup:ID`) |
+| QR pickup/delivery | ✅ работещ | локална генерация (`qrcode`) + URL fallback (goqr.me); „сканиране" = текст на payload-а в чата (`drum:pickup:ID`) **или камера** (batch 3): `/scan.html` (jsQR CDN) → `POST /api/scan` → реалния /scan command; демо QR PNG: `npm run demo:camera` |
 | Trust Score | ✅ работещ | `src/services/trust.js` — 0–100, прагове 31/50/70/90, event-sourced санкции; консистентен в Airtable И Demo Store |
 | Carbon Ledger | ✅ работещ | `src/services/carbon.js` — калкулатор (GHG Protocol Scope 3 Cat. 4, configurable фактори) + запис с audit trail (`factors`) + дашборд |
 | Carbon дашборд | ✅ работещ | `GET /dashboard/carbon` в `src/bot.js` — агрегати + последните 50 записа + DEMO банер |

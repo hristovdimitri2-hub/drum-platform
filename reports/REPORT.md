@@ -59,8 +59,8 @@ sqlite/demo/airtable; Postgres път **документиран, не импл�
 Пълен флоу: /start → KYC → /new wizard → ops notify → /accept (избор от
 потребителя) → /scan pickup/delivery → /status, /list, /matches, /evidence,
 /cancel, /help. Mock adapter: целият флоу тестван headless — интеграционен
-тест с 8 стъпки. Ограничение: QR „сканиране" = текстов payload (камера →
-Telegram WebApp: TODO).
+тест с 8 стъпки. Камера (batch 3): уебстраница `/scan.html` (jsQR CDN) →
+`POST /api/scan` → реалния /scan command; текстовият payload е запазен.
 
 ### B3 — Matching v1 ✅ (РАНГВА, не назначава)
 Score = 0.4×Trust + 0.3×route + 0.2×history + 0.1×price; ТОП 5;

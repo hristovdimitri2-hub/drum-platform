@@ -48,6 +48,7 @@ const matchesCommand = require('./commands/matches');
 const evidenceCommand = require('./commands/evidence');
 const refuseCommand = require('./commands/refuse');
 const { createPhotoHandler } = require('./commands/photo');
+const scanWeb = require('./services/scanWeb');
 
 const IS_DEMO = airtableService.isDemoMode === true || stripeService.DEMO_MODE === true;
 
@@ -170,6 +171,26 @@ app.post(
   '/api/checkout/:shipmentId',
   checkoutService.createCheckoutRoute({ store: airtableService, stripe: stripeService })
 );
+
+// Camera scan (batch 3 / T3): public/scan.html decodes the QR (jsQR via CDN)
+// and POSTs the payload here → executed through the REAL /scan command
+// (mock-ctx adapter — same production code path as the Telegram text entry).
+app.post('/api/scan', (req, res) => {
+  scanWeb
+    .handleScanRequest({
+      body: req.body,
+      store: airtableService,
+      stripe: stripeService,
+      qr: qrService,
+      carbon,
+    })
+    .then((out) => res.status(out.status).json(out.ok ? out : { error: out.error }))
+    .catch((err) => {
+      console.error('Web scan error:', err.message);
+      res.status(500).json({ error: 'Scan failed' });
+    });
+});
+app.get('/scan', (req, res) => res.redirect('/scan.html'));
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 

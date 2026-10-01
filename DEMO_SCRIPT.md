@@ -51,8 +51,8 @@ npm run demo:e2e
    таксата е €0.23 отгоре, погълнат от платформата).
 6. **Trust Score** — и двете страни +5; прагове 31/50/70/90 со санкции при
    провал. „Репутацията е event-sourced — всеки вот има следа."
-7. **Carbon Ledger** — 25.97 kg CO₂ спестено за София–Пловдив, записано с
-   факторите, използвани при изчислението.
+7. **Carbon Ledger** — 25.38 kg CO₂ спестено за София–Пловдив (145 km × 0.175),
+   записано с факторите, използвани при изчислението.
 
 ## 6:00–8:00 — Пазарът и моделът
 
@@ -84,3 +84,60 @@ npm run demo:e2e
   същият код прави реални auth/capture в Stripe test среда.
 - **„Ако Telegram блокне?"** — Ботът е през официален Bot API; независимо от него
   уеб дашбордът и ledger-ът работят.
+
+
+---
+
+## Приложение — Институционално демо с РЕАЛНА камера (стъпка по стъпка)
+
+Архитектура (batch 3): статична страница **`/scan.html`** (getUserMedia + jsQR
+през CDN — без npm зависимости) + **`POST /api/scan`**, който изпълнява payload-а
+през **реалния `/scan` command** (production код: capture → split → Trust → CO₂).
+Текстовият вход (бот + ръчно поле) е запазен. HTTPS не е нужен на `localhost`.
+
+### Стъпки — от чист clone до сканиране (~5 минути)
+
+```bash
+# 1. Чист clone + инсталация (няма нужда от ключове)
+git clone https://github.com/hristovdimitri2-hub/drum-platform.git drum-platform
+cd drum-platform
+npm ci
+cp .env.example .env        # Windows: copy .env.example .env — остави DEMO_MODE=true
+
+# 2. Свежи [DEMO] данни
+npm run seed:demo
+
+# 3. Подготовка на camera заявка (status=matched, с QR като PNG)
+npm run demo:camera
+#    → печата shipment ID + payload-ове; записва public/demo-qr/pickup.png и
+#      delivery.png (gitignored — не влизат в git)
+
+# 4. Стартирай сървъра
+npm start                   # → http://localhost:3000
+```
+
+5. **Сканиране — три начина (избери спрямо залата):**
+   - **а) Един лаптоп (най-просто):** таб 1 → `http://localhost:3000/demo-qr/pickup.png`;
+     таб 2 → `http://localhost:3000/scan.html` → „Стартирай камерата" → насочи
+     камерата към таба с QR. Повтори с `delivery.png`.
+   - **б) Телефон:** браузерите блокират камерата на HTTP извън localhost —
+     задължителен е HTTPS тунел (`cloudflared tunnel --url http://localhost:3000`
+     или `ngrok http 3000`) → отвори `https://<тунел>/scan.html`, QR-ите са на
+     екрана на лаптопа.
+   - **в) Без камера (офлайн/аварийно):** ръчното поле на `/scan.html` — въведи
+     `drum:pickup:<ID>` / `drum:delivery:<ID>` (payload-овете печата `demo:camera`;
+     ползват се и без интернет — CDN-ът не е нужен).
+6. **Какво се вижда на екрана:** pickup → статус `picked_up`; delivery →
+   capture + split 80/15/5 (DEMO рейлсове), Trust Score +5/+3 и новият CO₂
+   запис в `/dashboard/carbon`. Всичко [DEMO], без външни услуги.
+7. **След демото (GDPR):** `npm run evidence:cleanup` — retention 90 дни
+   (вж. `docs/GDPR_EVIDENCE.md`).
+
+### Ограничения (честно, казвай ги ако питат)
+
+- Web сканирането е демо/опс вход: при pickup идентичността се извежда от
+  самата заявка (превозвачът), не от Telegram — бот-патят запазва реалните
+  проверки за идентичност; production входът остава ботът.
+- jsQR се зарежда от CDN — при пълно отсъствие на интернет ползвай ръчното поле.
+- `public/demo-qr/` е генерирано съдържание (gitignored); пре-генерира се с
+  `npm run demo:camera`.

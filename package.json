@@ -12,6 +12,7 @@
     "export:carbon": "node scripts/export-carbon.js",
     "evidence:cleanup": "node scripts/cleanup-evidence.js",
     "demo:e2e": "node scripts/demo-e2e.js",
+    "demo:camera": "node scripts/demo-camera.js",
     "lint": "eslint src scripts tests",
     "coverage": "c8 --reporter=text --reporter=lcov --reporter=json-summary node --test",
     "coverage:gate": "node scripts/coverage-gate.js",

@@ -39,3 +39,6 @@ data/
 
 # Coverage output
 coverage/
+
+# Generated camera-demo QR codes (batch 3)
+public/demo-qr/

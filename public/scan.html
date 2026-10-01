@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DRUM — Сканер с камера (QR)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 520px; margin: 30px auto; padding: 0 16px; color: #1a1a2e; }
+    h1 { font-size: 1.3em; }
+    .badge { display: inline-block; background: #ffeaa7; border-radius: 4px; padding: 2px 8px; font-size: 0.85em; }
+    #video { width: 100%; border-radius: 10px; background: #000; min-height: 240px; }
+    button { background: #1a1a2e; color: #fff; border: 0; border-radius: 8px; padding: 11px 16px; font-size: 0.95em; cursor: pointer; margin-top: 10px; width: 100%; }
+    button.secondary { background: #555; }
+    input[type=text] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1em; box-sizing: border-box; margin-top: 10px; }
+    .ok { background: #d4edda; border: 1px solid #a3d9b1; border-radius: 8px; padding: 12px; white-space: pre-wrap; margin-top: 12px; }
+    .err { background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; padding: 12px; margin-top: 12px; }
+    .muted { color: #666; font-size: 0.85em; }
+    code { background: #f1f1f1; padding: 2px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>📷 DRUM — сканиране с камера <span class="badge">QR вход</span></h1>
+  <p class="muted">Насочи камерата към QR кода (pickup/delivery). Работи на
+    <code>localhost</code> без HTTPS; телефон през LAN изисква HTTPS тунел
+    (вж. DEMO_SCRIPT.md). Текстовият вход остава наличен по-долу.</p>
+  <video id="video" autoplay playsinline muted></video>
+  <button id="start">Стартирай камерата</button>
+  <button id="stop" class="secondary" style="display:none">Спри камерата</button>
+
+  <div>
+    <input type="text" id="manual" placeholder="Ръчен вход: drum:delivery:shp-000001" />
+    <button id="manualBtn" class="secondary">Изпрати ръчно (без камера)</button>
+  </div>
+
+  <div id="status"></div>
+  <div id="result"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <script>
+    (function () {
+      var video = document.getElementById('video');
+      var statusEl = document.getElementById('status');
+      var resultEl = document.getElementById('result');
+      var stream = null;
+      var raf = null;
+      var busy = false;
+
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      async function submit(payload) {
+        if (busy) return;
+        busy = true;
+        statusEl.innerHTML = '<span class="muted">Payload: <code>' + esc(payload) + '</code> …</span>';
+        try {
+          var res = await fetch('/api/scan', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ payload: payload }),
+          });
+          var data = await res.json();
+          if (!res.ok) {
+            resultEl.innerHTML = '<div class="err">⚠️ ' + esc(data.error || ('HTTP ' + res.status)) + '</div>';
+          } else {
+            var statusLine = data.shipment ? ('Заявка ' + data.shipment.id + ' → статус: ' + data.shipment.status) : '';
+            resultEl.innerHTML = '<div class="ok">' + esc(statusLine) + (statusLine ? '\n\n' : '') + esc(data.replies || '') + '</div>';
+          }
+        } catch (e) {
+          resultEl.innerHTML = '<div class="err">⚠️ Грешка при връзката: ' + esc(e.message) + '</div>';
+        }
+        busy = false;
+      }
+
+      function decodeLoop() {
+        if (!stream) return;
+        var canvas = document.createElement('canvas');
+        var ctx2d = canvas.getContext('2d', { willReadFrequently: true });
+        var tick = function () {
+          if (!stream) return;
+          if (video.readyState === video.HAVE_ENOUGH_DATA && video.videoWidth) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx2d.drawImage(video, 0, 0);
+            var img = ctx2d.getImageData(0, 0, canvas.width, canvas.height);
+            var code = window.jsQR
+              ? window.jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' })
+              : null;
+            if (code && code.data && /^drum:/.test(code.data)) {
+              stopCamera();
+              submit(code.data);
+              return;
+            }
+          }
+          raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+      }
+
+      async function startCamera() {
+        if (!window.jsQR) {
+          statusEl.innerHTML = '<div class="err">⚠️ jsQR не се зареди (нужна е интернет връзка към CDN) — ползвай ръчния вход.</div>';
+          return;
+        }
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        } catch (e) {
+          statusEl.innerHTML = '<div class="err">⚠️ Камерата е недоступна (' + esc(e.message) + '). На HTTP работи само localhost — вж. DEMO_SCRIPT.md.</div>';
+          return;
+        }
+        video.srcObject = stream;
+        document.getElementById('start').style.display = 'none';
+        document.getElementById('stop').style.display = 'block';
+        statusEl.innerHTML = '<span class="muted">Камерата е активна — насочи към QR…</span>';
+        decodeLoop();
+      }
+
+      function stopCamera() {
+        if (raf) cancelAnimationFrame(raf);
+        raf = null;
+        if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); }
+        stream = null;
+        video.srcObject = null;
+        document.getElementById('start').style.display = 'block';
+        document.getElementById('stop').style.display = 'none';
+      }
+
+      document.getElementById('start').addEventListener('click', startCamera);
+      document.getElementById('stop').addEventListener('click', function () {
+        stopCamera();
+        statusEl.innerHTML = '';
+      });
+      document.getElementById('manualBtn').addEventListener('click', function () {
+        var v = document.getElementById('manual').value.trim();
+        if (v) submit(v);
+      });
+    })();
+  </script>
+</body>
+</html>
