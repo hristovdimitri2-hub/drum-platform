@@ -5,8 +5,8 @@
 | **Проект** | DRUM 3.0 — P2P логистична платформа (празни багажници ↔ пратки) |
 | **Версия** | 0.2.0 (канонично репо: drum-mvp → drum-platform) |
 | **Дата на изготвяне** | 2026-09-09 (актуализация: 2026-10-01 — batch1+batch2) |
-| **Git commit** | `09e10ef` (последен код-комит — batch3; master → hristovdimitri2-hub/drum-platform; **31 комита** с тази статистика) |
-| **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 36844928347 за `0d66342`; последен зелен преди batch3 push: run 36849877620 за `3d9d595`, Node 22, ubuntu-latest) |
+| **Git commit** | `09e10ef` (последен код-комит — batch3; master → hristovdimitri2-hub/drum-platform; **32 комита** с тази статистика) |
+| **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 36844928347 за `0d66342`; batch3 push: run 36851307584 за `0290bdb` — SUCCESS (130/130 в CI); предишен зелен: 36849877620, Node 22, ubuntu-latest) |
 | **Тестове** | **130/130** pass · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
 | **Сигурност** | Secret scan на цялата история: CLEAN (28 комита в master) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
 | **Funding matrix** | `docs/FUNDING_CALLS_MATRIX.md` merged (комит `fc3f7ff`): 11 OPEN / 1 UPCOMING / 1 НЕПОТВЪРДЕНО, проверено 2026-10-01 |
