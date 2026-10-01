@@ -4,7 +4,7 @@
 > дата → комити → тестове (главен пакет, освен ако е отбелязано) → CI run id.
 > Източници: `git log` (хешове/дати) + `gh run list` (CI, проверено 2026-10-01).
 > Експорт на вътрешна task history от VS Code НЕ е достъпен през този агент —
-> таблицата е единственият източник. **Няма push на batch4 — CI колоната е „—"**.
+> таблицата е единственият източник. (01.10 по-късно: batch4 Е push-нат в master → CI 36866551345 ok; вж. ред 13.)
 
 | # | batch | date | commits | tests_after | ci_runs |
 |---|---|---|---|---|---|
@@ -20,7 +20,9 @@
 | 10 | batch2 (DESNZ citation, фото evidence) | 2026-10-01 | 902e826, 0d66342 | 119 → 124 | 36844928347 (ok) |
 | 11 | funding-research (FUNDING_CALLS_MATRIX) | 2026-10-01 | fc3f7ff (+merge 44ad77f) | 124 (docs-only) | 36849877620 (ok, merge в master) |
 | 12 | batch3 (evidence hygiene, камера, stats) | 2026-10-01 | 908041e, 3d9d595, 388da20, 09e10ef, 0290bdb, caa756f | 124 → 126 → 130 | 36845627042 (ok), 36851307584 (ok), 36851594559 (ok) |
-| 13 | batch4 (OCE extraction, guards, paid, docs) | 2026-10-01 | 6b2a31b, 06276a7, +T3 commit | 130 → 139 (main) + 10 (OSS, отделно) | — (локални комити, без push) |
+| 13 | batch4 (OCE extraction, guards, paid, docs) | 2026-10-01 | 6b2a31b, 06276a7, eb4c1d5, 1582fee, 2f1f050 | 130 → 139 (main) + 10 (OSS, отделно) | 36866551345 (ok, master = 2f1f050) |
+| 14 | batch5 (публично репо open-carbon-evidence) | 2026-10-01 | c3b190a (отделен репозиторий hristovdimitri2-hub/open-carbon-evidence) | 10 (OSS) | — (публично репо, без CI) |
+| 15 | batch6 (hardening: README паритет, secret-scan cwd, npm audit fix) | 2026-10-01 | 4d6771f, 5a75b15, 2aec2fb (клон chatbox/batch6-hardening) | 139 → 142 (main) | — (локални комити, без push) |
 
 ## CSV (за автоматична обработка)
 
@@ -38,7 +40,9 @@
 10,2026-10-01,902e826+0d66342,124,36844928347:ok
 11,2026-10-01,fc3f7ff+44ad77f,124,36849877620:ok
 12,2026-10-01,908041e+3d9d595+388da20+09e10ef+0290bdb+caa756f,130,36845627042:ok+36851307584:ok+36851594559:ok
-13,2026-10-01,6b2a31b+06276a7+T3,139+10OSS,-
+13,2026-10-01,6b2a31b+06276a7+eb4c1d5+1582fee+2f1f050,139+10OSS,36866551345:ok
+14,2026-10-01,c3b190a:public,10OSS,-
+15,2026-10-01,4d6771f+5a75b15+2aec2fb,142,-
 ```
 
 ## Бележки
@@ -49,4 +53,7 @@
 - **ci_runs** = GitHub Actions run id (`gh run list`, repo
   hristovdimitri2-hub/drum-platform); `fail` → `ok` следващите комити го
   оправят (Etape 4/5). Ранове от преди 2026-09-09 няма — тогава е първият push.
-- batch4 е локален клон `chatbox/batch4-foss` — push само с изрична дума.
+- batch4 е push-нат в master (`2f1f050`, CI 36866551345 ok, 2026-10-01); batch6
+  (клон `chatbox/batch6-hardening`, 142 теста) е локален — push само с изрична дума.
+- batch6 е верифициран независимо (Chatbox, 01.10.2026): 142/142, npm audit 0,
+  lint 0, OSS 10/10, нула сурови ключове в историята на клона.
