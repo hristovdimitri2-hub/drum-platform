@@ -86,6 +86,53 @@ async function createEscrowCharge({ amount, customerId, description, metadata })
 }
 
 /**
+ * Checkout — the client-side payment step (Stripe TEST mode).
+ *
+ * Returns a clientSecret for the shipment's EXISTING escrow PaymentIntent
+ * (retrieved server-side — no duplicate authorisation), creating a fresh
+ * auth-only intent only when there is none (or retrieval fails).
+ *
+ * - assertTestMode() runs FIRST: an sk_live key is refused before any call.
+ * - DEMO_MODE: fully simulated (pi_demo_*), ZERO network calls.
+ * - Amount arrives in cents from the caller (stored shipment value);
+ *   NO money math happens here — the 80/15/5 split stays in money.js
+ *   and is applied at CAPTURE time, not at checkout.
+ */
+async function createCheckoutIntent({ amountCents, existingPaymentIntentId, description, metadata }) {
+  assertTestMode();
+
+  if (DEMO_MODE) {
+    if (existingPaymentIntentId && String(existingPaymentIntentId).startsWith('pi_demo_')) {
+      return {
+        success: true,
+        demo: true,
+        paymentIntentId: existingPaymentIntentId,
+        clientSecret: `${existingPaymentIntentId}_secret_demo`,
+        status: 'requires_capture',
+      };
+    }
+    return createEscrowCharge({ amount: amountCents, description, metadata });
+  }
+
+  // Live-test mode: reuse the existing intent when possible.
+  if (existingPaymentIntentId && String(existingPaymentIntentId).startsWith('pi_')) {
+    try {
+      const paymentIntent = await stripe.paymentIntents.retrieve(existingPaymentIntentId);
+      return {
+        success: true,
+        paymentIntentId: paymentIntent.id,
+        clientSecret: paymentIntent.client_secret,
+        status: paymentIntent.status,
+      };
+    } catch (err) {
+      console.error('Stripe checkout retrieve error (falling back to a fresh intent):', err.message);
+    }
+  }
+
+  return createEscrowCharge({ amount: amountCents, description, metadata });
+}
+
+/**
  * Capture payment and split payout to carrier.
  * Split of the captured total: 80% carrier (Connect transfer),
  * 15% DRUM (stays in platform balance), 5% insurance pool.
@@ -279,6 +326,7 @@ function verifyWebhook(payload, signature) {
 
 module.exports = {
   createEscrowCharge,
+  createCheckoutIntent,
   captureAndSplit,
   createCarrierConnectAccount,
   createCustomer,

@@ -144,6 +144,7 @@ module.exports.handleTextInput = async (ctx) => {
             `✅ *Заявката е създадена!*\n\n` +
             `🆔 ID: *${shipment.id}*\n` +
             `💳 Stripe: Парите са замразени (€${session.priceBreakdown.total})\n` +
+            `💳 Плащане: ${process.env.APP_URL || 'http://localhost:3000'}/pay.html?shipment=${shipment.id}\n` +
             `📍 QR кодове ще бъдат генерирани след намиране на превозвач.\n\n` +
             `Екипът ще намери превозвач в следващите 24 часа. Ще получиш известие тук.`,
             { parse_mode: 'Markdown' }

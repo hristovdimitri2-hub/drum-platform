@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DRUM — Плащане (Stripe TEST)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; color: #1a1a2e; }
+    h1 { font-size: 1.4em; }
+    .badge { display: inline-block; background: #ffeaa7; border-radius: 4px; padding: 2px 8px; font-size: 0.85em; }
+    .ok { background: #d4edda; border: 1px solid #a3d9b1; border-radius: 8px; padding: 12px; }
+    .err { background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; padding: 12px; }
+    button { background: #1a1a2e; color: #fff; border: 0; border-radius: 8px; padding: 12px 20px; font-size: 1em; cursor: pointer; width: 100%; margin-top: 12px; }
+    code { background: #f1f1f1; padding: 2px 5px; border-radius: 4px; word-break: break-all; }
+    #status { margin: 16px 0; }
+    .muted { color: #666; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h1>🥁 DRUM — плащане <span class="badge">Stripe TEST</span></h1>
+  <div id="status">Зареждане…</div>
+  <div id="form"></div>
+  <p class="muted">Плащането се замразява (escrow) и се освобождава само след потвърдена доставка (QR).</p>
+
+  <script>
+    (function () {
+      var statusEl = document.getElementById('status');
+      var formEl = document.getElementById('form');
+
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      function show(cls, html) { statusEl.innerHTML = '<div class="' + cls + '">' + html + '</div>'; }
+      function fail(msg) { show('err', '⚠️ ' + esc(msg)); }
+
+      var params = new URLSearchParams(window.location.search);
+      var shipmentId = params.get('shipment');
+
+      async function init() {
+        if (!shipmentId) return fail('Липсва параметър ?shipment=');
+
+        show('', 'Създаване на плащане…');
+        var checkout;
+        try {
+          var res = await fetch('/api/checkout/' + encodeURIComponent(shipmentId), { method: 'POST' });
+          checkout = await res.json();
+          if (!res.ok) return fail('Грешка: ' + (checkout.error || res.status));
+        } catch (e) {
+          return fail('Грешка при връзката: ' + e.message);
+        }
+
+        var amount = (checkout.amountCents / 100).toFixed(2);
+        var eur = '\u20AC';
+
+        // DEMO_MODE: simulated rails — Stripe.js is NOT loaded (zero network calls)
+        if (checkout.demo) {
+          return show('ok',
+            '✅ [DEMO] Симулирано плащане — сумата е замразена в escrow.<br>' +
+            'PaymentIntent: <code>' + esc(checkout.paymentIntentId) + '</code><br>' +
+            'Сума: ' + eur + amount + ' · статус: ' + esc(checkout.paymentIntentStatus));
+        }
+
+        // Already authorised (e.g. returning from a 3D-Secure redirect)
+        if (checkout.paymentIntentStatus === 'requires_capture') {
+          return show('ok',
+            '✅ Плащането е авторизирано (замразено). Парище се освобождават при доставка.<br>' +
+            'PaymentIntent: <code>' + esc(checkout.paymentIntentId) + '</code>');
+        }
+
+        if (!checkout.publishableKey) return fail('Липсва STRIPE_PUBLISHABLE_KEY в сървъра.');
+        if (!checkout.clientSecret) return fail('Липсва clientSecret.');
+
+        // Stripe.js (CDN) + Payment Element
+        var stripe = await new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.src = 'https://js.stripe.com/v3/';
+          s.onload = function () { resolve(window.Stripe(checkout.publishableKey)); };
+          s.onerror = function () { reject(new Error('Не можа да се зареди js.stripe.com')); };
+          document.head.appendChild(s);
+        });
+
+        var elements = stripe.elements({ clientSecret: checkout.clientSecret });
+        var paymentElement = elements.create('payment');
+        paymentElement.mount('#form');
+
+        var form = document.createElement('form');
+        var btn = document.createElement('button');
+        btn.type = 'submit';
+        btn.textContent = 'Плати ' + eur + amount + ' (TEST карта)';
+        form.appendChild(btn);
+        formEl.appendChild(form);
+
+        show('', 'Сума: ' + eur + amount + ' — попълни тестова карта напр. 4242 4242 4242 4242.');
+
+        form.addEventListener('submit', async function (ev) {
+          ev.preventDefault();
+          var result = await stripe.confirmPayment({
+            elements: elements,
+            confirmParams: {
+              return_url: window.location.href.split('?')[0] + '?shipment=' + encodeURIComponent(shipmentId),
+            },
+            redirect: 'if_required',
+          });
+          if (result.error) return fail('Грешка при плащането: ' + result.error.message);
+          var pi = result.paymentIntent;
+          if (pi && pi.status === 'requires_capture') {
+            return show('ok',
+              '✅ Плащането е авторизирано (замразено). Парище се освобождават при доставка.<br>' +
+              'PaymentIntent: <code>' + esc(pi.id) + '</code>');
+          }
+          show('ok', 'Плащането приключи — статус: ' + esc(pi ? pi.status : 'ok'));
+        });
+      }
+
+      init().catch(function (e) { fail(e.message); });
+    })();
+  </script>
+</body>
+</html>

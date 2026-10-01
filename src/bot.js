@@ -35,6 +35,7 @@ const carbon = require('./services/carbon');
 const carbonDashboard = require('./services/carbonDashboard');
 const opsDashboard = require('./services/opsDashboard');
 const kpi = require('./services/kpi');
+const checkoutService = require('./services/checkout');
 
 const startCommand = require('./commands/start');
 const newCommand = require('./commands/new');
@@ -153,6 +154,16 @@ app.post(
 );
 
 app.use(express.json());
+
+// Client-side checkout (Stripe TEST mode only) — smallest server step:
+// returns the stored shipment's escrow PaymentIntent clientSecret for
+// public/pay.html (Stripe Elements). The amount comes from the stored
+// record; the 80/15/5 split stays in money.js (applied at capture).
+app.post(
+  '/api/checkout/:shipmentId',
+  checkoutService.createCheckoutRoute({ store: airtableService, stripe: stripeService })
+);
+
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 async function handleStripeEvent(event) {
