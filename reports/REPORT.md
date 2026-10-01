@@ -5,10 +5,11 @@
 | **Проект** | DRUM 3.0 — P2P логистична платформа (празни багажници ↔ пратки) |
 | **Версия** | 0.2.0 (канонично репо: drum-mvp → drum-platform) |
 | **Дата на изготвяне** | 2026-09-09 (актуализация: 2026-10-01 — batch1+batch2) |
-| **Git commit** | `44ad77f` (master → hristovdimitri2-hub/drum-platform; **28 комита** в master след тази актуализация) |
-| **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 36844928347 за `0d66342`, Node 22, ubuntu-latest) |
-| **Тестове** | **124/124** pass · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
+| **Git commit** | `09e10ef` (последен код-комит — batch3; master → hristovdimitri2-hub/drum-platform; **31 комита** с тази статистика) |
+| **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 36844928347 за `0d66342`; последен зелен преди batch3 push: run 36849877620 за `3d9d595`, Node 22, ubuntu-latest) |
+| **Тестове** | **130/130** pass · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
 | **Сигурност** | Secret scan на цялата история: CLEAN (28 комита в master) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
+| **Funding matrix** | `docs/FUNDING_CALLS_MATRIX.md` merged (комит `fc3f7ff`): 11 OPEN / 1 UPCOMING / 1 НЕПОТВЪРДЕНО, проверено 2026-10-01 |
 | **Класификация** | За разпространение към потенциални инвеститори. Без ключове, токени, локални пътища или лични данни. |
 
 ---
@@ -27,7 +28,7 @@ B2B batch прототип и data-room с финансов модел, гене
 
 **Присъда (готовност за инвеститори, едно изречение):** DRUM е инвестицион-
 ready като *код и методология* — всичко обещано в демо-то работи, тествано
-е (124 теста, CI зелен) и е финансово моделирано с пълна проследимост до
+е (130 теста, CI зелен) и е финансово моделирано с пълна проследимост до
 стотинка, но има **нула реални потребители и доставки** — съответно
 подходящият ask е валидационен (€31K за 90-дневен пилот), не growth капитал.
 
@@ -152,10 +153,10 @@ Airtable backend (реален, без настроен base); demo-store (legac
 
 ## Тестове и качество
 
-- **124 автоматични теста** (node --test), всички зелени локално и в CI:
+- **130 автоматични теста** (node --test), всички зелени локално и в CI:
   B1 store 6 - B2 флоу 8 - B3 matching 10 - B4 trust 26 - B5 money/anomalies/webhook 19 -
   B6 carbon/export 6 - B7 b2b 7 - B8 finance 11 - B9 kpi 6 -
-  T1 checkout/stripe 10 - T2 airtable links 10 - T3 photo proof 5.
+  T1 checkout/stripe 10 - T2 airtable links 10 - T3 photo proof 7 - T4 web scan 4.
 - Coverage (c8, lines): money 100% / matching 100% / carbon 99.2% /
   trust 96.8% / services общо 88.6% / db 87.2%. Gate >=80% на 4-те
   критични модула - зелен.
