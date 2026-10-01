@@ -10,11 +10,12 @@
 | Telegram бот (Telegraf) | ✅ работещ | `src/bot.js`, `src/commands/*` — /start /new /list /accept /scan /status /cancel /help; contact handler; text wizard |
 | Ops channel нотификации | ✅ работещ | нова заявка, pickup, delivery → `OPS_CHANNEL_ID` |
 | Typeform интеграция | 🟡 схема | `docs/TYPEFORM_FIELDS.md` — полетата са дефинирани, няма web-hook приемник в кода (MVP: /new wizard в бота) |
-| Airtable схема | ✅ дефинирана + код | `docs/AIRTABLE_SCHEMA.md` + `scripts/seed-airtable.js` (създава таблици; link полетата — ръчно) + `src/services/airtable.js` |
+| Airtable схема | ✅ дефинирана + код | `docs/AIRTABLE_SCHEMA.md` + `scripts/seed-airtable.js` (автоматично: таблици + **Shipments link полета** + legacy upgrade + backfill; `npm run seed:dry` преглед) + `src/services/airtable.js` (link запис с legacy fallback) |
 | Demo Store | ✅ работещ | `src/services/demo-store.js` — същия интерфейс, in-memory + `data/demo-state.json`, всичко маркирано `isDemo: true` |
 | Stripe Connect escrow | ✅ работещ (TEST) | `src/services/stripe.js` — PaymentIntent `capture_method: manual`; **guard: отказва sk_live ключове** |
 | Stripe capture + split | ✅ работещ (TEST) | capture на цялата сума, split 80/15/5 от уловеното; transfer през Connect; в DEMO_MODE — симулирани PI/tr/ch ID-та |
 | Stripe Connect Express onboarding | 🟡 частично | `createCarrierConnectAccount` е готов; няма UI onboarding route в Express (URL-ите са placeholders) |
+| Клиентско плащане (Stripe TEST) | ✅ работещ (TEST) | `POST /api/checkout/:shipmentId` → `public/pay.html` (Stripe Elements; реисползва escrow PI — без дублиран auth). DEMO_MODE — симулирани `pi_demo_*`, нулеви мрежови извиквания; guard отказва `sk_live` **преди** всеки изовик |
 | QR pickup/delivery | ✅ работещ | локална генерация (`qrcode`) + URL fallback (goqr.me); „сканиране" = текст на payload-а в чата (`drum:pickup:ID`) |
 | Trust Score | ✅ работещ | `src/services/trust.js` — 0–100, прагове 31/50/70/90, event-sourced санкции; консистентен в Airtable И Demo Store |
 | Carbon Ledger | ✅ работещ | `src/services/carbon.js` — калкулатор (GHG Protocol Scope 3 Cat. 4, configurable фактори) + запис с audit trail (`factors`) + дашборд |
@@ -56,8 +57,8 @@
 
 ## TODO до production (приоритизирано)
 
-1. **P0:** реални Stripe TEST ключове + свързване на Stripe Elements/Checkout за client_secret (escrow в момента се създава server-side, но клиентско плащане минава през Typeform/ manual MVP).
-2. **P0:** Airtable link полета (Shipments.Sender/Carrier → Users) — ръчна стъпка след `npm run seed`.
+1. **✅ ЧАСТИЧНО (batch 1):** клиентско плащане е изградено — `POST /api/checkout/:shipmentId` + `public/pay.html` (Stripe Elements, реисползва съществуващия escrow PI; DEMO — симулирано; sk_live guard). Остава: реални Stripe TEST ключове + карта тест срещу живия TEST акаунт.
+2. **✅ (batch 1):** Airtable link полета (Shipments.Sender/Carrier → Users) — `npm run seed` ги създава автоматично (нови бази) и мигрира стари (rename „… (legacy)" → link полето → backfill); `npm run seed:dry` е credential-free преглед. Бази без полета: airtable.js прави fallback (scalar/премахване), без счупване на записа.
 3. **P1:** превръщане на Trust Events + Carbon Ledger ID полета в link полета (сега са текстови).
 4. **P1:** QR сканиране с камера (Telegram WebApp) вместо текстов payload.
 5. **P1:** Redis session + rate limiting; логване в structured logger.

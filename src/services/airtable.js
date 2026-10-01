@@ -24,6 +24,61 @@ const TRUST_EVENTS_TABLE = process.env.AIRTABLE_TRUST_EVENTS_TABLE || 'Trust Eve
 const CARBON_LEDGER_TABLE = process.env.AIRTABLE_CARBON_LEDGER_TABLE || 'Carbon Ledger';
 
 /**
+ * Link fields (Shipments → Users): written as record-id ARRAYS.
+ * Created automatically by scripts/seed-airtable.js; bases seeded by the
+ * older script still have singleLineText fields — planWriteFallback
+ * downgrades the write (scalar) or drops unknown fields instead of failing.
+ */
+const SHIPMENT_LINK_FIELDS = ['Sender ID', 'Carrier ID'];
+
+/**
+ * Fallback ladder for writes containing link fields. Returns the next
+ * fields payload to try, or null (caller rethrows the original error):
+ *   1. 422 cast/INVALID_VALUE → base still has the legacy TEXT field →
+ *      retry with the scalar record id.
+ *   2. 422 UNKNOWN_FIELD_NAME → the field doesn't exist at all → drop the
+ *      link fields (the rest of the payload still writes; run `npm run seed`).
+ * Non-422 errors, or payloads without link fields → null.
+ */
+function planWriteFallback(err, fields, linkFieldNames = []) {
+  const status = err && (err.statusCode || (err.response && err.response.statusCode));
+  if (status !== 422) return null;
+  const linkKeys = linkFieldNames.filter((k) => Object.prototype.hasOwnProperty.call(fields, k));
+  if (!linkKeys.length) return null;
+  const type = typeof err.error === 'string' ? err.error : (err.error && err.error.type) || '';
+  const message = (err && err.message) || (err.error && err.error.message) || '';
+  const unknown = type === 'UNKNOWN_FIELD_NAME' || /unknown field/i.test(message);
+  if (unknown) {
+    const rest = { ...fields };
+    for (const k of linkKeys) delete rest[k];
+    return Object.keys(rest).length ? rest : null;
+  }
+  const next = { ...fields };
+  let changed = false;
+  for (const k of linkKeys) {
+    if (Array.isArray(next[k])) {
+      next[k] = next[k][0];
+      changed = true;
+    }
+  }
+  return changed ? next : null;
+}
+
+/** Runs a create/update, applying planWriteFallback up to 4 attempts. */
+async function writeWithLinkFallback(run, fields, linkFieldNames) {
+  let current = fields;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await run(current);
+    } catch (err) {
+      const next = planWriteFallback(err, current, linkFieldNames);
+      if (!next || attempt >= 3) throw err;
+      current = next;
+    }
+  }
+}
+
+/**
  * Find or create user by Telegram ID
  */
 async function findOrCreateUser({ telegramId, firstName, lastName, username, language }) {
@@ -100,8 +155,9 @@ async function updateTrustScore(userId, eventType) {
  * Shipment operations
  */
 async function createShipment(data) {
-  const record = await base(SHIPMENTS_TABLE).create({
-    'Sender ID': data.senderId,
+  const fields = {
+    // Link field: record-id ARRAY (fallback downgrades to scalar on legacy bases)
+    ...(data.senderId ? { 'Sender ID': [data.senderId] } : {}),
     'Sender Telegram ID': data.senderTelegramId,
     'Origin City': data.originCity,
     'Destination City': data.destinationCity,
@@ -115,8 +171,13 @@ async function createShipment(data) {
     'Stripe Payment Intent ID': data.stripePaymentIntentId,
     'Status': data.status,
     'Created At': new Date().toISOString(),
-  });
+  };
 
+  const record = await writeWithLinkFallback(
+    (f) => base(SHIPMENTS_TABLE).create(f),
+    fields,
+    SHIPMENT_LINK_FIELDS
+  );
   return mapShipment(record);
 }
 
@@ -132,7 +193,7 @@ async function getShipment(shipmentId) {
 
 async function updateShipment(shipmentId, fields) {
   const updateFields = {};
-  if (fields.carrierId) updateFields['Carrier ID'] = fields.carrierId;
+  if (fields.carrierId) updateFields['Carrier ID'] = [fields.carrierId]; // link array (legacy fallback below)
   if (fields.carrierTelegramId) updateFields['Carrier Telegram ID'] = fields.carrierTelegramId;
   if (fields.carrierStripeAccountId) updateFields['Carrier Stripe Account ID'] = fields.carrierStripeAccountId;
   if (fields.status) updateFields['Status'] = fields.status;
@@ -143,7 +204,11 @@ async function updateShipment(shipmentId, fields) {
   if (fields.deliveryScannedAt) updateFields['Delivery Scanned At'] = fields.deliveryScannedAt;
   if (fields.stripeTransferId) updateFields['Stripe Transfer ID'] = fields.stripeTransferId;
 
-  const updated = await base(SHIPMENTS_TABLE).update(shipmentId, updateFields);
+  const updated = await writeWithLinkFallback(
+    (f) => base(SHIPMENTS_TABLE).update(shipmentId, f),
+    updateFields,
+    SHIPMENT_LINK_FIELDS
+  );
   return mapShipment(updated);
 }
 
@@ -261,11 +326,15 @@ function mapUser(record) {
 
 function mapShipment(record) {
   const f = record.fields;
+  // Link fields come back as record-id ARRAYS; legacy bases store scalar
+  // text (the old `?.[0]` returned the FIRST CHARACTER of a string — bug
+  // caught by tests/t2-airtable-links.test.cjs).
+  const firstId = (v) => (Array.isArray(v) ? v[0] : v);
   return {
     id: record.id,
-    senderId: f['Sender ID']?.[0] || f['Sender ID'],
+    senderId: firstId(f['Sender ID']),
     senderTelegramId: f['Sender Telegram ID'],
-    carrierId: f['Carrier ID']?.[0] || f['Carrier ID'],
+    carrierId: firstId(f['Carrier ID']),
     carrierTelegramId: f['Carrier Telegram ID'],
     carrierStripeAccountId: f['Carrier Stripe Account ID'],
     originCity: f['Origin City'],
@@ -303,4 +372,12 @@ module.exports = {
   logTrustEvent,
   createCarbonEntry,
   listCarbonEntries,
+  // internals exposed for unit tests (batch 1 / task 2)
+  __test: {
+    mapUser,
+    mapShipment,
+    planWriteFallback,
+    writeWithLinkFallback,
+    SHIPMENT_LINK_FIELDS,
+  },
 };

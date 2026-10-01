@@ -7,6 +7,7 @@
     "start": "node src/bot.js",
     "dev": "nodemon src/bot.js",
     "seed": "node scripts/seed-airtable.js",
+    "seed:dry": "node scripts/seed-airtable.js --dry-run",
     "seed:demo": "node scripts/seed-demo.js",
     "export:carbon": "node scripts/export-carbon.js",
     "demo:e2e": "node scripts/demo-e2e.js",

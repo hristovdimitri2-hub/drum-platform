@@ -45,6 +45,7 @@
 | Sender Telegram ID | Number | Integer |
 | Carrier ID | Link to Users | — |
 | Carrier Telegram ID | Number | Integer |
+| Carrier Stripe Account ID | Single line text | — (записва се при `/accept`) |
 | Origin City | Single line text | — |
 | Destination City | Single line text | — |
 | Description | Long text | — |
@@ -119,34 +120,47 @@ GHG Protocol Scope 3 Category 4 — Upstream Transportation and Distribution.
 
 ### Methodology
 
+> ⚠️ Каноничната методология е в `docs/CARBON_METHODOLOGY.md` (R1 корекция).
+> Marginal е **абсолютен 0.005 kg CO2/km**, не дял от baseline:
+
 ```
-Baseline CO2 = Distance (km) × 0.18 kg CO2/km   [courier scenario]
-Actual CO2   = Distance (km) × 0.18 × 0.005      [marginal capacity, ~0.5%]
-Saved CO2    = Baseline - Actual
+Baseline CO2 = Distance (km) × 0.18 kg CO2/km    [courier scenario]
+Actual CO2   = Distance (km) × 0.005 kg CO2/km   [marginal capacity — absolute]
+Saved CO2    = Baseline - Actual = Distance × 0.175
 ```
 
-Example: София → Пловдив (150 km), 2 kg пратка
-- Baseline: 150 × 0.18 = 27.00 kg CO2
-- Actual: 150 × 0.18 × 0.005 = 0.135 kg CO2
-- Saved: 27.00 - 0.135 = **26.865 kg CO2**
+Example: София → Пловдив (145 km), 2 kg пратка
+- Baseline: 145 × 0.18 = 26.10 kg CO2
+- Actual: 145 × 0.005 = 0.725 kg CO2
+- Saved: 26.10 − 0.725 = **25.38 kg CO2**
 
 ---
 
 ## Setup инструкции
 
-1. Създай нов Airtable base
-2. Създай 4 таблици с горните полета
+1. Създай нов Airtable base + token с `schema.bases:write` scope
+2. Пусни seed скрипта (създава всичките 4 таблици):
+   ```bash
+   npm run seed        # live (изисква .env ключове)
+   npm run seed:dry    # преглед на плана БЕЗ ключове/мрежа
+   ```
 3. Field types трябва да са точно както е описано (особено Number vs Single line text)
-4. Link fields: свържи `Shipments.Sender ID` → `Users`, `Shipments.Carrier ID` → `Users`
-5. Trust Events: `User ID` → `Users`, `Shipment ID` → `Shipments`
-6. Carbon Ledger: `Shipment ID` → `Shipments`
+4. **Link полета — автоматично:** `Shipments.Sender ID` и `Shipments.Carrier ID`
+   се създават като `multipleRecordLinks → Users` директно при създаване на
+   таблицата (seed-ът първо създава `Users`, после реисползва неговия id).
+   Стари бази (создадени с текстови Sender/Carrier): seed-ът ги мигрира сам —
+   rename на старото поле → `… (legacy)`, добавяне на link полето, backfill на
+   съществуващите редове. Записите през `src/services/airtable.js` пишат
+   record-id масиви с fallback към legacy текст (без счупване на стара база).
+5. Trust Events `User ID`/`Shipment ID` и Carbon Ledger `Shipment ID` —
+   все още текстови (ръчни като link полета; ARCHITECTURE TODO #3, P1).
 
 ## Quick setup script
 
-За автоматично създаване на таблиците, използвай:
+За автоматично създаване на таблиците + link полетата:
 
 ```bash
-npm run seed
+npm run seed        # изисква Airtable Metadata API token
+npm run seed:dry    # credential-free: печата целия план (таблици, link
+                    # полета, legacy upgrade, backfill, rate-limit политика)
 ```
-
-Този скрипт ще създаде нужните полета автоматично (изисква Airtable Metadata API).
