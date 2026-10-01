@@ -10,7 +10,8 @@
 - **Standard:** GHG Protocol Corporate Value Chain (Scope 3) Standard,
   **Category 4 — Upstream Transportation and Distribution**.
 - **Scope на изчислението:** една пратка, превозвана от частен автомобил,
-  който вече извършва пътуването (празен багажник). Well-to-wheel CO₂e.
+  който вече извършва пътуването (празен багажник). Tank-to-wheel CO₂e
+  (CO₂ + CH₄ + N₂O); WTT е изключен — вж. §2 „Boundary уточнение".
   Не се включват: последваща продажба на carbon credits, електрификация
   сценарии, първи/последен mile до точката на среща.
 - **Exclusions:** последните миля (first/last mile до точката на среща),
@@ -20,9 +21,45 @@
 
 Специализирана куриерска доставка на същата пратка по същия маршрут:
 **BASELINE_EMISSIONS_KG_PER_KM = 0.18 kg CO₂e/km** (light commercial vehicle,
-~50% натоварване, EU енергийна смес). Ориентир: EEA/DEFRA LV диапазон
-0.15–0.25 — източникът се доказва при грантово приложение (TODO: цитирай
-конкретна публикация и година при VCS подаване).
+~50% натоварване).
+
+**Източник (copy-paste проверим):**
+
+- **Организация:** Department for Energy Security and Net Zero (DESNZ, UK) —
+  наследник на BEIS; серията „UK Government GHG Conversion Factors for
+  Company Reporting" (по-рано DEFRA/BEIS).
+- **Публикация:** *Greenhouse gas reporting: conversion factors 2026*,
+  **data year 2026**, публикувана **2026-07-31**.
+  URL: https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026
+- **Файл/версия:** `ghg-conversion-factors-2026-flat-format-revised.xlsx`
+  („flat file for automatic processing, updated July 2026"), лист
+  **„Factors by Category"**, категория **Delivery vehicles → Vans**, единица
+  **kg CO2e per vehicle-km**, колона „GHG Conversion Factor 2026".
+  URL: https://assets.publishing.service.gov.uk/media/6a6c9748862aaf18d9c62ac9/ghg-conversion-factors-2026-flat-format-revised.xlsx
+- **Methodology report (същата публикация):** https://assets.publishing.service.gov.uk/media/6a2940543b15d05a7ce3202e/2026-GHG-conversion-factors-methodology-report.pdf
+
+**Извлечени стойности от таблицата (verify: отвори файла → същия лист):**
+
+| Клас ван | Diesel (kg CO2e/km) | Petrol (kg CO2e/km) |
+|---|---|---|
+| Class I (до 1.305 t) | **0.15833** | 0.19781 |
+| Class II (1.305–1.74 t) | **0.19376** | 0.20453 |
+| Class III (1.74–3.5 t) | 0.28046 | 0.33161 |
+| Average (до 3.5 t) | 0.25716 | 0.20905 |
+
+**Защо точно 0.18:** пратките на DRUM са ≤2 kg → контрафактуумът е малък
+куриерски ван (Class I–II, 0.158–0.205 kg CO2e/km); **0.18 е центърът на
+Class I–II diesel диапазона**: (0.15833 + 0.19376) / 2 = 0.176 ≈ **0.18** —
+валиден централен избор при ~50% натоварване (по-тежкият Class III,
+0.280, се изключва като нерепрезентативен за ≤2 kg пратки).
+
+**Boundary уточнение:** цитираният фактор е direct/tank-to-wheel — колоната
+„kg CO2e" включва CO₂ + CH₄ + N₂O (за Class I diesel: 0.15667 + 0.0000049 +
+0.00165 ≈ 0.15833). Well-to-tank (WTT) компонентът за Class II diesel е
+0.046 kg/km (същата публикация, „WTT- vans") и е **изключен** от baseline —
+това прави спестяването консервативно (базата е подценена). UK факторите
+служат като proxy за EU/UK смес; tank-to-wheel стойностите не зависят от
+енергийната смес (горивна зависимост), само WTT го прави.
 
 ## 3. Actual (DRUM сценарий) — allocation
 
@@ -44,7 +81,7 @@ saved = (baseline − marginal) × km = (0.18 − 0.005) × km = 0.175 × km
 ```
 km               = 145          (коридор София-Пловдив, път)
 baseline         = 145 × 0.18   = 26.10 kg CO₂e   (куриерска кола)
-marginal         = 145 × 0.005  = 0.725 kg CO₂e   (моргинална пратка)
+marginal         = 145 × 0.005  = 0.725 kg CO₂e   (маргинална пратка)
 saved            = 26.10 − 0.725 = 25.375 → 25.38 kg CO₂e (round2)
 methodology      = GHG-Protocol-Scope3-Cat4-v1
 factors (audit)  = {"baselineKgPerKm": 0.18, "marginalKgPerKm": 0.005}
