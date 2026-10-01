@@ -49,6 +49,7 @@ const evidenceCommand = require('./commands/evidence');
 const refuseCommand = require('./commands/refuse');
 const { createPhotoHandler } = require('./commands/photo');
 const scanWeb = require('./services/scanWeb');
+const stripeEvents = require('./services/stripeEvents');
 
 const IS_DEMO = airtableService.isDemoMode === true || stripeService.DEMO_MODE === true;
 
@@ -151,7 +152,10 @@ app.post(
         console.log(`Webhook ${event.id} replayed — ignored (idempotent)`);
         return res.json({ received: true, replay: true });
       }
-      await handleStripeEvent(event);
+      const paid = await stripeEvents.handleStripeEvent(event, airtableService);
+      if (paid.handled) {
+        console.log(`Shipment ${paid.shipmentId}: ${paid.from} → ${paid.to} (payment authorised)`);
+      }
       await airtableService.markWebhookProcessed(event.id, event.type);
       res.json({ received: true });
     } catch (err) {
@@ -175,38 +179,19 @@ app.post(
 // Camera scan (batch 3 / T3): public/scan.html decodes the QR (jsQR via CDN)
 // and POSTs the payload here → executed through the REAL /scan command
 // (mock-ctx adapter — same production code path as the Telegram text entry).
-app.post('/api/scan', (req, res) => {
-  scanWeb
-    .handleScanRequest({
-      body: req.body,
-      store: airtableService,
-      stripe: stripeService,
-      qr: qrService,
-      carbon,
-    })
-    .then((out) => res.status(out.status).json(out.ok ? out : { error: out.error }))
-    .catch((err) => {
-      console.error('Web scan error:', err.message);
-      res.status(500).json({ error: 'Scan failed' });
-    });
-});
+// Batch 4 guard: localhost без токен; нелокален IP → SCAN_API_TOKEN (401 иначе).
+app.post(
+  '/api/scan',
+  scanWeb.createScanRoute({
+    store: airtableService,
+    stripe: stripeService,
+    qr: qrService,
+    carbon,
+  })
+);
 app.get('/scan', (req, res) => res.redirect('/scan.html'));
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
-
-async function handleStripeEvent(event) {
-  console.log(`Stripe event: ${event.type}`);
-  switch (event.type) {
-    case 'payment_intent.succeeded':
-      // TODO: update Airtable shipment status
-      break;
-    case 'payment_intent.payment_failed':
-      // TODO: notify sender
-      break;
-    default:
-      // Ignore unhandled events
-  }
-}
 
 // Health check
 app.get('/health', (req, res) =>

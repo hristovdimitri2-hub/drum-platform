@@ -200,7 +200,7 @@ async function listShipmentsByUser(telegramId) {
 
 async function listPendingShipments() {
   return Object.values(state.shipments)
-    .filter((s) => s.status === 'requested')
+    .filter((s) => s.status === 'requested' || s.status === 'paid')
     .sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1))
     .map((s) => ({ ...s }));
 }

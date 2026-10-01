@@ -233,7 +233,7 @@ async function listShipmentsByUser(telegramId) {
 async function listPendingShipments() {
   const records = await base(SHIPMENTS_TABLE)
     .select({
-      filterByFormula: `{Status} = "requested"`,
+      filterByFormula: 'OR({Status} = "requested", {Status} = "paid")',
       sort: [{ field: 'Created At', direction: 'asc' }],
     })
     .firstPage();

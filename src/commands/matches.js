@@ -24,7 +24,7 @@ module.exports = async (ctx) => {
       await ctx.reply('Заявката не е намерена.');
       return;
     }
-    if (shipment.status !== 'requested') {
+    if (shipment.status !== 'requested' && shipment.status !== 'paid') {
       await ctx.reply(`Заявката вече е в статус *${shipment.status}* — списъкът е информативен.`, {
         parse_mode: 'Markdown',
       });

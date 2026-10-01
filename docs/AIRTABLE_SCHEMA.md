@@ -59,7 +59,7 @@
 | Stripe Transfer ID | Single line text | — |
 | Pickup QR Code | Attachment | Image |
 | Delivery QR Code | Attachment | Image |
-| Status | Single select | `requested`, `matched`, `picked_up`, `in_transit`, `delivered`, `cancelled`, `disputed` |
+| Status | Single select | `requested`, `paid`, `matched`, `picked_up`, `in_transit`, `delivered`, `cancelled`, `disputed` |
 | Matched At | Date | ISO format |
 | Pickup Scanned At | Date | ISO format |
 | Delivery Scanned At | Date | ISO format |
@@ -68,10 +68,16 @@
 ### Status flow
 
 ```
-requested → matched → picked_up → delivered
-   ↓           ↓         ↓
+requested → paid → matched → picked_up → delivered
+   ↓         ↓        ↓          ↓
+cancelled (само от ops/изпращач; paid = картата авторизирана, парите замразени)
 cancelled  cancelled  disputed → (resolved → delivered OR cancelled)
 ```
+
+- `paid` (batch 4): преминава се автоматично при Stripe webhook
+  `payment_intent.amount_capturable_updated` (карта авторизирана / escrow
+  замразен). `/accept` и `/matches` приемат `paid` наред с `requested`
+  (двата са „преди прием"); pending списъците включват и двете.
 
 ---
 

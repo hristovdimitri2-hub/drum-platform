@@ -17,6 +17,7 @@ module.exports = async (ctx) => {
     for (const s of shipments.slice(0, 10)) {
       const statusEmoji = {
         requested: '⏳',
+        paid: '💳',
         matched: '🤝',
         picked_up: '🚗',
         in_transit: '📍',

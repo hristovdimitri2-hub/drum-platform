@@ -33,7 +33,8 @@ module.exports = async (ctx) => {
       return;
     }
 
-    if (shipment.status !== 'requested') {
+    // batch 4: 'paid' = card authorised (escrow frozen) — same pre-accept state as 'requested'
+    if (shipment.status !== 'requested' && shipment.status !== 'paid') {
       await ctx.reply(`⚠️ Заявката вече е ${shipment.status}. Не може да се приеме.`);
       return;
     }

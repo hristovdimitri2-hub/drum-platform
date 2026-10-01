@@ -11,10 +11,46 @@
  * the Telegram text path keeps the real identity check); delivery has no
  * party check (recipient scans). Limitation documented in ARCHITECTURE.md.
  * The legacy text payload path is untouched — this is an additional entry.
+ *
+ * Access guard (batch 4 / T2): localhost/127.0.0.1 pass WITHOUT a token
+ * (demo /scan.html + demo-camera keep working); every non-local IP must
+ * send `Authorization: Bearer <SCAN_API_TOKEN>` or `X-Demo-Token:
+ * <SCAN_API_TOKEN>` (env) — otherwise 401.
  */
 
+const crypto = require('node:crypto');
 const { createMockCtx, transcript } = require('./telegramMock');
 const scanCommand = require('../commands/scan');
+
+const LOCAL_IPS = new Set(['127.0.0.1', '::1', '::ffff:127.0.0.1']);
+
+/** Length-gated timing-safe token comparison. */
+function tokenMatches(provided, expected) {
+  if (typeof provided !== 'string' || typeof expected !== 'string' || !expected) return false;
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
+
+/**
+ * @returns {{allowed: true, local: boolean}|{allowed: false, reason: string}}
+ */
+function checkScanAccess({ ip, headers }) {
+  const h = headers || {};
+  if (LOCAL_IPS.has(ip)) return { allowed: true, local: true };
+
+  const expected = process.env.SCAN_API_TOKEN;
+  let provided = null;
+  const auth = h.authorization;
+  if (typeof auth === 'string' && auth.startsWith('Bearer ')) provided = auth.slice(7).trim();
+  if (!provided && h['x-demo-token']) provided = String(h['x-demo-token']).trim();
+
+  if (!expected) return { allowed: false, reason: 'SCAN_API_TOKEN is not configured' };
+  if (!provided) return { allowed: false, reason: 'token required for non-local requests' };
+  if (!tokenMatches(provided, expected)) return { allowed: false, reason: 'invalid token' };
+  return { allowed: true, local: false };
+}
 
 /** `drum:pickup:ID` / `drum:delivery:ID` — same format as the bot/QR. */
 function parsePayload(payload) {
@@ -73,4 +109,25 @@ async function handleScanRequest({ body, store, stripe, qr, carbon }) {
   };
 }
 
-module.exports = { handleScanRequest, parsePayload };
+/**
+ * Express route factory: access guard (batch 4) → scan handling.
+ * Local IPs bypass the token; non-local need SCAN_API_TOKEN (401 otherwise).
+ */
+function createScanRoute({ store, stripe, qr, carbon }) {
+  return async (req, res) => {
+    const access = checkScanAccess({ ip: req.ip, headers: req.headers });
+    if (!access.allowed) {
+      res.status(401).json({ error: 'Unauthorized: ' + access.reason });
+      return;
+    }
+    try {
+      const out = await handleScanRequest({ body: req.body, store, stripe, qr, carbon });
+      res.status(out.status).json(out.ok ? out : { error: out.error });
+    } catch (err) {
+      console.error('Web scan error:', err.message);
+      res.status(500).json({ error: 'Scan failed' });
+    }
+  };
+}
+
+module.exports = { handleScanRequest, parsePayload, checkScanAccess, createScanRoute, LOCAL_IPS };

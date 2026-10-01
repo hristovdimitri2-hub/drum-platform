@@ -324,7 +324,7 @@ async function listShipmentsByUser(telegramId) {
 
 async function listPendingShipments() {
   init();
-  return db.prepare("SELECT * FROM shipments WHERE status = 'requested' ORDER BY created_at ASC").all().map(mapShipmentRow);
+  return db.prepare("SELECT * FROM shipments WHERE status IN ('requested', 'paid') ORDER BY created_at ASC").all().map(mapShipmentRow);
 }
 
 async function listAllShipments() {

@@ -241,6 +241,7 @@ const tables = [
         options: {
           choices: [
             { name: 'requested' },
+            { name: 'paid' },
             { name: 'matched' },
             { name: 'picked_up' },
             { name: 'in_transit' },
