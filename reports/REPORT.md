@@ -4,11 +4,11 @@
 |---|---|
 | **Проект** | DRUM 3.0 — P2P логистична платформа (празни багажници ↔ пратки) |
 | **Версия** | 0.2.0 (канонично репо: drum-mvp → drum-platform) |
-| **Дата на изготвяне** | 2026-09-09 |
-| **Git commit** | `9f07722` (pushнат: master → hristovdimitri2-hub/drum-platform) |
-| **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 34340264082, Node 22, ubuntu-latest) |
-| **Тестове** | 99/99 pass · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
-| **Сигурност** | Secret scan на цялата история: CLEAN (16+ commits) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
+| **Дата на изготвяне** | 2026-09-09 (актуализация: 2026-10-01 — batch1+batch2) |
+| **Git commit** | `0d66342` (master → hristovdimitri2-hub/drum-platform; **25 комита** в master след тази актуализация) |
+| **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 36844928347 за `0d66342`, Node 22, ubuntu-latest) |
+| **Тестове** | **124/124** pass · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
+| **Сигурност** | Secret scan на цялата история: CLEAN (25 комита) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
 | **Класификация** | За разпространение към потенциални инвеститори. Без ключове, токени, локални пътища или лични данни. |
 
 ---
@@ -27,7 +27,7 @@ B2B batch прототип и data-room с финансов модел, гене
 
 **Присъда (готовност за инвеститори, едно изречение):** DRUM е инвестицион-
 ready като *код и методология* — всичко обещано в демо-то работи, тествано
-е (99 теста, CI зелен) и е финансово моделирано с пълна проследимост до
+е (124 теста, CI зелен) и е финансово моделирано с пълна проследимост до
 стотинка, но има **нула реални потребители и доставки** — съответно
 подходящият ask е валидационен (€31K за 90-дневен пилот), не growth капитал.
 
@@ -91,6 +91,11 @@ idempotency · 3 отказан подпис (24ч photo-proof; DEMO photo = pla
 (B6.1 корекция: marginal е абсолютен 0.005 kg/km); audit trail с факторите
 във всеки запис; worked example; self-verifying ledger тест; VCS-ready
 export (CSV+JSON); дашборд BG/EN. Carrier waiver — TODO бележка ❌.
+**Източник на 0.18 (2026-10-01):** DESNZ (UK), *Greenhouse gas reporting:
+conversion factors 2026* (2026-07-31), лист „Factors by Category", категория
+Delivery vehicles → Vans, kg CO2e/vehicle-km: Class I **0.15833**, Class II
+**0.19376** — 0.18 е центърът на диапазона им; пълна препратка с URL-и:
+`docs/CARBON_METHODOLOGY.md` §2.
 
 ### B7 — B2B batch прототип ✅
 Седмичен batch, caps 5/10, broadcast „гарантиран €X, N пратки", dual mode
@@ -147,9 +152,10 @@ Airtable backend (реален, без настроен base); demo-store (legac
 
 ## Тестове и качество
 
-- 99 автоматични теста (node --test), всички зелени локално и в CI:
-  B1 store 6 - B4 trust 26 - B3 matching 10 - B5 money/anomalies/webhook 20 -
-  B6 carbon/export 6 - B7 b2b 7 - B8 finance 15 - B9 kpi 7 - B2 флоу 8.
+- **124 автоматични теста** (node --test), всички зелени локално и в CI:
+  B1 store 6 - B2 флоу 8 - B3 matching 10 - B4 trust 26 - B5 money/anomalies/webhook 19 -
+  B6 carbon/export 6 - B7 b2b 7 - B8 finance 11 - B9 kpi 6 -
+  T1 checkout/stripe 10 - T2 airtable links 10 - T3 photo proof 5.
 - Coverage (c8, lines): money 100% / matching 100% / carbon 99.2% /
   trust 96.8% / services общо 88.6% / db 87.2%. Gate >=80% на 4-те
   критични модула - зелен.
