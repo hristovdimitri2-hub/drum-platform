@@ -24,10 +24,13 @@ drum-platform (private) е пушнат, CI SUCCESS, финалният PDF е �
 - Етап 5: secret scan CLEAN (16+16 commits) -> drum-platform PRIVATE pushed
   (Dependabot ON; secret scanning 422 - изисква Advanced Security) -> CI
   SUCCESS -> PDF: reports/DRUM_Investor_Readiness_Report_v1.pdf (627 KB).
+- 2026-10-05: REPORT/PDF v2 (одит-кондиции V1–V5 на GLM):
+  reports/DRUM_Investor_Readiness_Report_v2.pdf — числата са от
+  runner / SQL / GitHub API, не ръчно.
 
 ## Ключови метрики
 
-- Тестове: 130/130 зелени (CI също). Lint: 0 errors.
+- Тестове: 142/142 зелени (runner 2026-10-05; CI също — run 37293230956). Lint: 0 errors.
 - Coverage gate (>=80%): money 100% / trust 96.8% / carbon 99.21% /
   matching 100%.
 - Secret scan: CLEAN.

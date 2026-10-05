@@ -12,7 +12,7 @@ const { marked } = require('marked');
 const ROOT = path.join(__dirname, '..');
 const REPORT_MD = path.join(ROOT, 'reports', 'REPORT.md');
 const REPORT_HTML = path.join(ROOT, 'reports', 'REPORT.html');
-const REPORT_PDF = path.join(ROOT, 'reports', 'DRUM_Investor_Readiness_Report_v1.pdf');
+const REPORT_PDF = path.join(ROOT, 'reports', 'DRUM_Investor_Readiness_Report_v2.pdf');
 
 const EDGE_CANDIDATES = [
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
@@ -32,7 +32,7 @@ function mdToHtml(md) {
 
 function htmlShell(bodyHtml) {
   return `<!DOCTYPE html><html lang="bg"><head><meta charset="utf-8">
-<title>DRUM 3.0 — Investor Readiness Report v1</title>
+<title>DRUM 3.0 — Investor Readiness Report v2</title>
 <style>
   @page { size: A4; margin: 18mm 15mm; }
   body { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 11pt; color: #1a2b20; line-height: 1.5; }

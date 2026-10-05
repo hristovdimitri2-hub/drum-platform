@@ -1,14 +1,14 @@
-# DRUM 3.0 — Investor Readiness Report v1
+# DRUM 3.0 — Investor Readiness Report v2
 
 | | |
 |---|---|
 | **Проект** | DRUM 3.0 — P2P логистична платформа (празни багажници ↔ пратки) |
 | **Версия** | 0.2.0 (канонично репо: drum-mvp → drum-platform) |
-| **Дата на изготвяне** | 2026-09-09 (актуализация: 2026-10-01 — batch1+batch2) |
-| **Git commit** | `09e10ef` (последен код-комит — batch3; master → hristovdimitri2-hub/drum-platform; **32 комита** с тази статистика) |
-| **CI статус** | ✅ **SUCCESS** (GitHub Actions: npm ci → lint → test → coverage gate → demo:e2e → build-financials; run 36844928347 за `0d66342`; batch3 push: run 36851307584 за `0290bdb` — SUCCESS (130/130 в CI); предишен зелен: 36849877620; latest: run 36851594559 — SUCCESS (за върха `caa756f`), Node 22, ubuntu-latest) |
-| **Тестове** | **139/139** pass (+10 в OSS пакета отделно) · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
-| **Сигурност** | Secret scan на цялата история: CLEAN (37 комита — 32 в master към края на batch3, +4 в batch4, +1 docs) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
+| **Дата на изготвяне** | 2026-09-09 · регенерация v2: 2026-10-05 (одит-кондиции V1–V5; всички числа от runner / SQL / GitHub API, не ръчно) |
+| **Git commit** | докладът е регенериран към `aa3a660` — master (hristovdimitri2-hub/drum-platform), **43 комита** към момента; последен код-комит `5a75b15` (2026-10-01), оттогава docs/lockfile-only |
+| **CI статус** | ✅ **SUCCESS** — GitHub Actions run `37293230956` за `aa3a660`, 2026-10-05: npm ci → lint → test → coverage gate → demo:e2e → build-financials (Node 22, ubuntu-latest; проверено през GitHub API) |
+| **Тестове** | **142/142** pass — runner `node --test tests/*.test.cjs`, 2026-10-05, 201.9s, node v24.19.0 (+10 в OSS пакета отделно, 0.19s) · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
+| **Сигурност** | Secret scan на цялата история: **CLEAN** (scripts/secret-scan.js, 2026-10-05, 43 комита) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
 | **Funding matrix** | `docs/FUNDING_CALLS_MATRIX.md` merged (комит `fc3f7ff`): 11 OPEN / 1 UPCOMING / 1 НЕПОТВЪРДЕНО, проверено 2026-10-01 |
 | **Класификация** | За разпространение към потенциални инвеститори. Без ключове, токени, локални пътища или лични данни. |
 
@@ -28,7 +28,7 @@ B2B batch прототип и data-room с финансов модел, гене
 
 **Присъда (готовност за инвеститори, едно изречение):** DRUM е инвестицион-
 ready като *код и методология* — всичко обещано в демо-то работи, тествано
-е (139 теста, CI зелен) и е финансово моделирано с пълна проследимост до
+е (142 теста, CI зелен) и е финансово моделирано с пълна проследимост до
 стотинка, но има **нула реални потребители и доставки** — съответно
 подходящият ask е валидационен (€31K за 90-дневен пилот), не growth капитал.
 
@@ -150,16 +150,20 @@ Airtable backend (реален, без настроен base); demo-store (legac
 | 12 | VAT-inclusive (0.34) срещу документиран VAT-on-top (0.414) | канон VAT-on-top; старият път премахнат |
 | 13 | Coverage data с Windows backslashes не се match-ваше в gate | нормализация на пътищата |
 | 14 | ESLint: 11 unused vars (вкл. axios в qr.js, tx в sqlite.js) | изчистени; lint е CI gate |
+| 15 | **Етап 1** — floating-point split: 80/15/5 в евро с дробна точка (0.8×x) даваше стотинки с остатък — split-ът не се затваряше до €0.00 | каноничен money модул в СТОТИНКИ: `splitCents`, `amount_cents INTEGER` — float е премахнат от парчетата |
+| 16 | **Етап 1** — обратен коридор Варна→София липсваше: заявки/мачове в обратната посока намираха нула | коридорите са симетрични във всички източници (seed/finance: София↔Варна €15 и обратно; carbon: `Варна-София` 415 km) + matching приема ЕИТЕ посока |
+| 17 | **Етап 1** — seed-ът блокираше на NOT NULL колони (нов ред без задължително поле → SQLITE_CONSTRAINT) | схемата държи DEFAULT на всяка задължителна колона (`trust_score DEFAULT 50`, `status DEFAULT 'requested'` ...) + seed попълва всички задължителни полета |
 
 ## Тестове и качество
 
-- **139 автоматични теста** (node --test), всички зелени локално и в CI:
+- **142 автоматични теста** (node --test), всички зелени локално и в CI (runner 2026-10-05):
   B1 store 6 - B2 флоу 8 - B3 matching 10 - B4 trust 26 - B5 money/anomalies/webhook 19 -
   B6 carbon/export 6 - B7 b2b 7 - B8 finance 11 - B9 kpi 6 -
   T1 checkout/stripe 10 - T2 airtable links 10 - T3 photo proof 7 - T4 web scan 4 -
-  T5 predeploy guards 9.
+  T5 predeploy guards 9 = 139; +3 поведенчески теста (комит 5a75b15,
+  2026-10-01) = **142/142**.
 - OSS пакет `oss/open-carbon-evidence` (batch 4): отделни 10/10 теста
-  (`cd oss/open-carbon-evidence && npm test`) — не влизат в главните 139.
+  (`cd oss/open-carbon-evidence && npm test`) — не влизат в главните 142.
 - Coverage (c8, lines): money 100% / matching 100% / carbon 99.2% /
   trust 96.8% / services общо 88.6% / db 87.2%. Gate >=80% на 4-те
   критични модула - зелен.
@@ -192,7 +196,7 @@ Airtable backend (реален, без настроен base); demo-store (legac
   DRUM (15%): 1.16 | Застраховка (5%): 0.39
 -- Стъпка 6: Trust Score -- Изпращач 50->53 - Превощач 50->55
 -- Стъпка 7: Carbon Ledger --
-  Baseline 26.10 - Actual 0.73 = СПЕСТЕНО 25.38 kg CO2e
+  Baseline 26.100 - Actual 0.725 = СПЕСТЕНО 25.375 kg CO2e
 ```
 
 ## Финансов модел (BASE калибровка, T = EUR 7.75)
@@ -219,8 +223,16 @@ FINANCIAL_NOTES.md (6 разминавания със стария Excel, док
 
 ## Демо данни (изрично НЕ traction)
 
-- 40 фиктивни потребителя, 106 заявки [DEMO] (83 delivered), 90 carbon
-  записа, ~4,138 kg CO2 спестено (симулирано), Trust Events: event-sourced.
+- 40 фиктивни потребителя, 106 заявки = 100 [DEMO] (seed, is_demo=1) +
+  6 от demo:e2e (09.09 ×1, 01.10 ×5); delivered = 89 (83 [DEMO] + 6 e2e).
+  Carbon Ledger = 89 записа — 1:1 с delivered: SQL join 2026-10-05 върху
+  data/drum.db → 0 сирачета, 0 доставки без запис. Симулирано спестено
+  ~4,290.57 kg CO2 (от тях ~4,138.32 са [DEMO] seed). Trust Events:
+  event-sourced. Бележка (V3): числата в v1 („83 delivered / 90 carbon“)
+  не се затваряха в нито един от двата store-а (legacy json = 83/83;
+  sqlite = 89/89) — смесени източници; коригирано след SQL проверка.
+  Наблюдение: 6-те e2e реда са с is_demo=0 (транзакциите им са
+  isDemo=true) — кандидат за малък флаг-фикс.
 - Всеки запис: isDemo true + описания [DEMO]...; дашбордите показват
   червено предупреждение; landing честно заявява демо статуса.
 - GDPR: само фиктивни имена/IDs; без телефони; escrow/payments симулирани.
@@ -234,26 +246,26 @@ FINANCIAL_NOTES.md (6 разминавания със стария Excel, док
 - P1: QR сканиране с камера (Telegram WebApp); structured logging + Redis
   sessions; NPS анкетен модул; ops/support/disputes разходи като явни редове
   във finance.js; реално photo upload (аномалия 3 - сега placeholder).
-- P2: Typeform webhook; GPS разстояния + официален емисиен фактор (EEA/DEFRA
-  цитиран); carrier waiver формуляр (VCS).
+- P2: Typeform webhook; GPS разстояния + официален емисиен фактор (DESNZ —
+  цитиран в docs/CARBON_METHODOLOGY.md); carrier waiver формуляр (VCS).
 - P3: Postgres имплементация; rate limiting; алгоритъм matching v2 (Year 2+).
 
 ## Приложение - локално пускане на демото
 
 ```
-git clone https://github.com/hristovdimitri2-hub/drum-platform
+# Достъп при NDA: репото е частно — clone URL по искане към основателя
 cd drum-platform
 npm install
 copy .env.example .env      (Windows; Unix: cp)
-npm run seed:demo           # 106 [DEMO] доставки + Carbon Ledger
+npm run seed:demo           # 100 [DEMO] доставки + Carbon Ledger
 npm run demo:e2e            # пълна транзакция: escrow -> QR -> capture -> CO2
 npm start                   # http://localhost:3000
 ```
 
 - Landing: / - Carbon Ledger: /dashboard/carbon - Ops/KPI: /dashboard/ops
 - Изисквания: Node >=22.5 (node:sqlite). Без външни услуги в DEMO_MODE.
-- Повторяемост на PDF: npm install marked -> node scripts/build-report.js ->
-  Edge/Chrome headless --print-to-pdf (командата е в README.md).
+- Повторяемост на PDF: npm install marked -> node scripts/build-report.js
+  (генерира REPORT.html + PDF през Edge headless, една команда).
 
 *Отчетът е полу-автоматичен: числата идват от кода (services/money,
 finance, carbon, kpi), скрийншотите са реални headless-заредени страници,
