@@ -24,10 +24,10 @@ two public-safe layers that are useful on their own:
   **DRUM 3.0** — a private P2P logistics platform still in development.
   Everything outside this list stays in the private platform: matching,
   trust scoring, payments (Stripe escrow/split), batch.
-- **Provenance:** extracted from DRUM 3.0 — parent suite **139 tests at
-  extraction time** (2026-10-01), **142/142 as of 2026-10-05**
-  (runner-verified, 0 failures). The parent suite and the platform itself
-  are **private**; only this package is public.
+- **Provenance:** extracted from **DRUM 3.0** — a private P2P logistics
+  platform. Parent-suite test counts are deliberately NOT recorded here
+  (numbers age — take them from runner output only). Only this package
+  is public.
 - **Status:** 10/10 tests on a clean clone · **0 external users** ·
   **0 production deployments / 0 production verifications** · not
   published to npm (`private: true`). An **instrument, not a network**.
@@ -109,8 +109,8 @@ agent (Cline) under direct human supervision:
   DESNZ 2026 emission-factor citation below (checked against the official
   GOV.UK publication: Class I 0.15833 / Class II 0.19376 → 0.18 midpoint).
 - **Verified by running:** `npm test` → 10/10 for this package, plus
-  139/139 in the parent project's suite at extraction time (2026-10-01);
-  parent suite re-run 2026-10-05: **142/142 pass, 0 fail**.
+  the parent project's suite (runner output only — no number recorded;
+  numbers age, so this README does not repeat them).
 - **Human responsibility:** the methodology (GHG Protocol Scope 3,
   Category 4, marginal allocation) and every release/approval decision
   remain with the project owner; the AI agent does not certify these
