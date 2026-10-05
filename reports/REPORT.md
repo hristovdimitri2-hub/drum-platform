@@ -7,7 +7,7 @@
 | **Дата на изготвяне** | 2026-09-09 · регенерация v2: 2026-10-05 (одит-кондиции V1–V5; всички числа от runner / SQL / GitHub API, не ръчно) |
 | **Git commit** | докладът е регенериран към `aa3a660` — master (hristovdimitri2-hub/drum-platform), **43 комита** към момента; последен код-комит `5a75b15` (2026-10-01), оттогава docs/lockfile-only |
 | **CI статус** | ✅ **SUCCESS** — GitHub Actions run `37293230956` за `aa3a660`, 2026-10-05: npm ci → lint → test → coverage gate → demo:e2e → build-financials (Node 22, ubuntu-latest; проверено през GitHub API) |
-| **Тестове** | **142/142** pass — runner `node --test tests/*.test.cjs`, 2026-10-05, 201.9s, node v24.19.0 (+10 в OSS пакета отделно, 0.19s) · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
+| **Тестове** | **142/142** pass — runner `node --test tests/*.test.cjs`, 2026-10-05, 202.1s (повторен прогон след всички фиксове), node v24.19.0 (+10 в OSS пакета отделно, 0.19s) · lint чист · coverage gate: money 100% / trust 96.8% / carbon 99.2% / matching 100% |
 | **Сигурност** | Secret scan на цялата история: **CLEAN** (scripts/secret-scan.js, 2026-10-05, 43 комита) · private repo · Dependabot alerts ON · secret scanning: изисква Advanced Security (не е налично — документирано) |
 | **Funding matrix** | `docs/FUNDING_CALLS_MATRIX.md` merged (комит `fc3f7ff`): 11 OPEN / 1 UPCOMING / 1 НЕПОТВЪРДЕНО, проверено 2026-10-01 |
 | **Класификация** | За разпространение към потенциални инвеститори. Без ключове, токени, локални пътища или лични данни. |
