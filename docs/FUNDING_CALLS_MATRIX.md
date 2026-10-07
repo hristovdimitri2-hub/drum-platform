@@ -16,8 +16,8 @@
 | 1 | CEF Transport 2026 Call (CINEA) | EU | не е посочена на листинга | НЕЯСНО | OPEN | 2026-10-06 | https://cinea.ec.europa.eu/funding-opportunities/calls-proposals_en | 2026-10-01 | A | Транспорт, но инфраструктурни проекти; 5 дни срок — не е реалистично за софтуерен MVP. |
 | 2 | Horizon Europe — Climate-Neutral & Smart Cities Mission (€85.5M пул) | EU | €85.5M (пул на call-а) | НЕЯСНО | OPEN | 2026-10-08 | https://cinea.ec.europa.eu/funding-opportunities/calls-proposals_en | 2026-10-01 | A | Изисква градски консорциум — solo founder без партньорства не подава; слаб fit. |
 | 3 | Horizon Europe — Batteries & mobility call (€263M пул) | EU | €263M (пул на call-а) | НЕЯСНО | OPEN | 2026-10-08 | https://cinea.ec.europa.eu/funding-opportunities/calls-proposals_en | 2026-10-01 | A | Дълбока иновация/консорциум; DRUM е пазарен продукт — слаб fit. |
-| 4 | EIT Urban Mobility — Student Entrepreneur Grant Scheme (SEGS), cut-off 2 | EU | до €6 000/проект | **НЕ** (студенти/завършили EIT-labelled програми; firma не се изисква) | OPEN | 2026-10-14 | https://www.eit.europa.eu/our-activities/opportunities/student-entrepreneur-grant-scheme-segs-open-call | 2026-10-01 | A | Само ако основателят е/е бил студент в EIT-labelled програма на EIT Urban Mobility — иначе не сме цел. |
-| 5 | NGI OIS Restack — 1st Open Call | EU (NGI/EC) | €5 000–€50 000 | **НЕ** (дословно: „open to anyone including … individuals") | OPEN | 2026-11-03 | https://ngi.eu/get-funded/ | 2026-10-01 | A | Идеални пари за идеен етап, но ИЗИСКВА FOSS резултати — DRUM е затворен; подаване само с освободен open-source компонент (напр. matching/протокол). |
+| 4 | EIT Urban Mobility — Student Entrepreneur Grant Scheme (SEGS), cut-off 2 | EU | до €6 000/проект | **НЕ** (студенти/завършили EIT-labelled програми; firma не се изисква) | ОТКАЗАН (07.10: основателят не е студент/завършил в EIT-labelled програма) | 2026-10-14 | https://www.eit.europa.eu/our-activities/opportunities/student-entrepreneur-grant-scheme-segs-open-call | 2026-10-01 | A | Само ако основателят е/е бил студент в EIT-labelled програма на EIT Urban Mobility — иначе не сме цел. |
+| 5 | NGI OIS Restack — 1st Open Call | EU (NGI/EC) | €5 000–€50 000 | **НЕ** (дословно: „open to anyone including … individuals") | ПОДЕДЕНО 01.10.2026 21:55, ref 2026-11-1e5 (решение ~фев–апр 2027) | 2026-11-03 | https://ngi.eu/get-funded/ | 2026-10-01 | A | Идеални пари за идеен етап, но ИЗИСКВА FOSS резултати — DRUM е затворен; подаване само с освободен open-source компонент (напр. matching/протокол). |
 | 6 | NGI CodeSupply — 1st Open Call | EU (NGI/EC) | €5 000–€50 000 | **НЕ** (дословно: „open to anyone … individuals") | OPEN | 2026-11-03 | https://ngi.eu/get-funded/ | 2026-10-01 | A | Слаб тематичен fit — темата е software supply-chain metadata; изисква open-source резултати. |
 | 7 | EIT Urban Mobility — Financial Support to Startups 2026, cut-off 4 | EU | до €2.5M/компания (co-invest) | **ДА** (дословно: „open to all legal entities established in the Member States of the European Union") | OPEN | 2026-11-16 | https://www.eit.europa.eu/our-activities/opportunities/financial-support-startups-open-call-2026 | 2026-10-01 | A | НАЙ-ДОБЪР секторен fit — „Urban logistics" е изричен сектор; но иска юр. лице + активен fundraising рунд + MVP → първа стъпка: учредяване ЕООД. |
 | 8 | EIT Community NEB — Enhance NEB Open Call 2027 | EU | до €92 500/проект (4 проекта) | НЕЯСНО | OPEN | 2026-11-17 | https://www.eit.europa.eu/our-activities/opportunities/enhance-neb-open-call-2027 | 2026-10-01 | A | Само партньори от ПРЕШЛИ Connect/Co-create NEB проекти — DRUM не е участвал, не сме цел. |
@@ -29,7 +29,7 @@
 
 ## ТОП 3 за подаване веднага (само OPEN, без юр. лице)
 
-**1. NGI OIS Restack — €5 000–50 000, краен срок 2026-11-03, 12:00 CET**
+**1. NGI OIS Restack — ✅ ПОДЕДЕНО 01.10.2026 21:55 (ref 2026-11-1e5, Restack Fund €30 000/6 мес.); срокът 03.11 е спазен месец по-рано, решението излиза ~фев–апр 2027**
 (https://ngi.eu/get-funded/ — проверено на: 2026-10-01). Какво се иска:
 проект в областта на open internet (FOSS софтуер/хардуер, open standards,
 open data/open science), 6–12 месеца, крайният резултат ТРЯБВА да е под
@@ -50,7 +50,7 @@ individuals", т.е. **без юридическо лице**. Време за �
 подаване само ако Reformulation: напр. отворен registry на версии/зависимости
 в проекта; иначе това е паралелен, не органичен канал.
 
-**3. EIT Urban Mobility SEGS — до €6 000, краен срок 2026-10-14, 17:00 CEST**
+**3. EIT Urban Mobility SEGS — ❌ ОТПАДНА 07.10 (основателят не е студент в EIT-labelled програма); оригиналният срок 2026-10-14, 17:00 CEST**
 (https://www.eit.europa.eu/our-activities/opportunities/student-entrepreneur-grant-scheme-segs-open-call —
 проверено на: 2026-10-01). Какво се иска: малък грант за студенти/скорошни
 завършили на EIT-labelled програми на EIT Urban Mobility, за развиване на
