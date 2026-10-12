@@ -13,7 +13,7 @@
 |---|---|
 | Сума | **€150K seed** (един номер; €31K = първата фаза на кръга) |
 | Дял | **15%** — пред-оценка €850K, пост-оценка €1M |
-| Лицето | **DRUM Tech EOOD** (България) — ако до изпращането не е регистрирано, изречението се сменя на „newly incorporated Bulgarian EOOD" |
+| Лицето | **DRUM Tech EOOD** (България) — НЕ е регистрирана към 12.10.2026, затова изречението е сменено на „a Bulgarian EOOD currently being incorporated“. След регистрацията (до 31.10) се връща „our Bulgarian EOOD (DRUM Tech)“. |
 | Тестове | **142/142**, зелено CI |
 | Икономика | €0.56/доставка задържан platform fee (7.2%) при BASE |
 | GO барове (90 дни) | 100+ активни · 500+ доставки · repeat ≥35% · NPS ≥50 |
@@ -44,8 +44,8 @@ Status, honestly: the platform is built and fully tested — 142/142 tests,
 green CI, the whole escrow → QR → payout → CO₂ flow works end to end. Real
 users: zero. That is exactly what this round is for.
 
-We are raising **€150K for 15% (€1M post-money)** in our Bulgarian EOOD
-(DRUM Tech), on standard seed terms. First 90 days: a paid validation on the
+We are raising **€150K for 15% (€1M post-money)** in DRUM Tech — a Bulgarian
+EOOD currently being incorporated — on standard seed terms. First 90 days: a paid validation on the
 Sofia↔Plovdiv corridor against fixed bars — 100+ active users, 500+
 deliveries, ≥35% repeat rate. Then: 3 corridors, B2B batch engine, team of 3.
 
