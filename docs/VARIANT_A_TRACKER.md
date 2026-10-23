@@ -46,6 +46,7 @@ incorporated“ (фирмата още не е регистрирана). Отг
 > Пълен списък + шаблон В1: **`VARIANT_A_WAVE4_ANGELS.md`**. Одобрение „Да" за В1: 23.10.2026.
 > **Батч 1 = 7/7 изпратени от Димитър на 23.10.2026 (18:30–18:36, Gmail)** — `WAVE4_BATCH1_READY.md` — записано в редове 12–18.
 > Часове не се водят занапред (решение на Димитър 23.10). При отговор → `WAVE3_REPLY_PACK.md`, само след одобрение.
+> **Отговори (23.10): 1/7 → BlackPeak отказ** — Niklas Pichler, същия ден 3 мин след писмото: фонд за растеж в късна фаза, не инвестират в seed (точно очакваният слаб фит). Приключено, без последващо действие.
 > Потвърдени имейли: Eleven `hello@11.vc` · Silverline `evgeny.angelov@`+`office@silverlinecapital.net` ·
 > Vitosha `hello@vitosha.vc` · Invenio `office@invenio.partners` · Sofia Ventures `stefan@sofiaventures.eu` ·
 > Anka `minh@anka.vc` · BlackPeak (кратки `*@blackpeak-capital.com` — риск, ползвай и формата) ·
@@ -60,7 +61,7 @@ incorporated“ (фирмата още не е регистрирана). Отг
 | 15 | Invenio Partners | office@invenio.partners | **23.10.2026** | — | фит по-слаб (PE растеж) |
 | 16 | Sofia Ventures | stefan@sofiaventures.eu | **23.10.2026** | — | чакаме отговор |
 | 17 | Anka VC | minh@anka.vc | **23.10.2026** | — | чакаме отговор |
-| 18 | BlackPeak Capital | np@blackpeak-capital.com (+ контактна форма) | **23.10.2026** | — | риск: кратките имейли са от обфускация → ако bounce, формата |
+| 18 | BlackPeak Capital | np@blackpeak-capital.com (+ контактна форма) | **23.10.2026** | **23.10.2026 — отказ (Niklas Pichler)** | ЗАТВОРЕН. Цитат: „BlackPeak е фонд на растеж в късна фаза, затова не можем да инвестираме в сделки с рисков капитал и тази възможност е извън нашата инвестиционна стратегия." = точно очакваният слаб фит. Няма отговор — приключено. |
 | 19 | The Edge Solutions | malvina.ilieva@theedge.solutions | НЕ се изпраща (задържан) | — | проверено 23.10 по сайта: услуги/pre-акселератор/академия — НЕ инвестират |
 | 20–26 | Forty5, BrightCap, CEO Angels, Integral, Ocean, PostScriptum, New Vision | само контактни форми | — | — | попълват се от Димитър |
 
