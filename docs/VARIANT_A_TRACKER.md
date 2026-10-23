@@ -45,7 +45,7 @@ incorporated“ (фирмата още не е регистрирана). Отг
 
 > Пълен списък + шаблон В1: **`VARIANT_A_WAVE4_ANGELS.md`**. Одобрение „Да" за В1: 23.10.2026.
 > **Готовият батч 1 (7 писма, копиране и пращане от Димитър): `WAVE4_BATCH1_READY.md`** — ред 12–18.
-> След изпращане се записват дата + ЧАС тук; follow-up = +7 дни.
+> Часове НЕ са нужни (решение на Димитър 23.10): изпраща когато реши; ако пожелае, записваме само датата.
 > Потвърдени имейли: Eleven `hello@11.vc` · Silverline `evgeny.angelov@`+`office@silverlinecapital.net` ·
 > Vitosha `hello@vitosha.vc` · Invenio `office@invenio.partners` · Sofia Ventures `stefan@sofiaventures.eu` ·
 > Anka `minh@anka.vc` · BlackPeak (кратки `*@blackpeak-capital.com` — риск, ползвай и формата) ·
@@ -54,13 +54,13 @@ incorporated“ (фирмата още не е регистрирана). Отг
 
 | # | Фонд | Имейл/форма | Изпратено | Отговор | Следваща стъпка |
 |---|------|-------------|-----------|---------|-----------------|
-| 12 | Eleven Ventures | hello@11.vc | — (батч 1, одобрен В1 23.10; чакаме час) | — | след изпращане: follow-up +7 дни |
-| 13 | Silverline Capital | evgeny.angelov@silverlinecapital.net | — (батч 1, одобрен В1 23.10; чакаме час) | — | фит по-слаб (mezzanine/mid-market); follow-up +7 дни |
-| 14 | Vitosha Venture Partners | hello@vitosha.vc | — (батч 1, одобрен В1 23.10; чакаме час) | — | след изпращане: follow-up +7 дни |
-| 15 | Invenio Partners | office@invenio.partners | — (батч 1, одобрен В1 23.10; чакаме час) | — | фит по-слаб (PE растеж); follow-up +7 дни |
-| 16 | Sofia Ventures | stefan@sofiaventures.eu | — (батч 1, одобрен В1 23.10; чакаме час) | — | след изпращане: follow-up +7 дни |
-| 17 | Anka VC | minh@anka.vc | — (батч 1, одобрен В1 23.10; чакаме час) | — | след изпращане: follow-up +7 дни |
-| 18 | BlackPeak Capital | np@blackpeak-capital.com (+ контактна форма) | — (батч 1, одобрен В1 23.10; чакаме час) | — | риск: кратките имейли са от обфускация на сайта → ако bounce, формата |
+| 12 | Eleven Ventures | hello@11.vc | — (батч 1 одобрен 23.10 — изпраща се когато реши) | — | 4-те силни първо; ако се следи: +7 дни след изпращане |
+| 13 | Silverline Capital | evgeny.angelov@silverlinecapital.net | — (батч 1 одобрен 23.10 — изпраща се когато реши) | — | фит по-слаб (mezzanine/mid-market) |
+| 14 | Vitosha Venture Partners | hello@vitosha.vc | — (батч 1 одобрен 23.10 — изпраща се когато реши) | — | ако се следи: +7 дни след изпращане |
+| 15 | Invenio Partners | office@invenio.partners | — (батч 1 одобрен 23.10 — изпраща се когато реши) | — | фит по-слаб (PE растеж) |
+| 16 | Sofia Ventures | stefan@sofiaventures.eu | — (батч 1 одобрен 23.10 — изпраща се когато реши) | — | ако се следи: +7 дни след изпращане |
+| 17 | Anka VC | minh@anka.vc | — (батч 1 одобрен 23.10 — изпраща се когато реши) | — | ако се следи: +7 дни след изпращане |
+| 18 | BlackPeak Capital | np@blackpeak-capital.com (+ контактна форма) | — (батч 1 одобрен 23.10 — изпраща се когато реши) | — | риск: кратките имейли са от обфускация → ако bounce, формата |
 | 19 | The Edge Solutions | malvina.ilieva@theedge.solutions | НЕ се изпраща (задържан) | — | проверено 23.10 по сайта: услуги/pre-акселератор/академия — НЕ инвестират |
 | 20–26 | Forty5, BrightCap, CEO Angels, Integral, Ocean, PostScriptum, New Vision | само контактни форми | — | — | попълват се от Димитър |
 
