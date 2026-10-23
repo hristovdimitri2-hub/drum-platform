@@ -41,6 +41,27 @@ incorporated“ (фирмата още не е регистрирана). Отг
 (шаблони A1–A7 + FAQ). 4-те въпроса РЕШЕНИ 11.10.2026 (€150K · 15% · €1M post ·
 ЕООД · употреба 40/45/50/15). Следващият план по фази → **`PLAN_NEXT_STEPS.md`**.
 
+## Wave 4 — Ангелски фондове и VC (проучена 23.10.2026, НИЩО не е изпратено)
+
+> Пълен списък + шаблон В1: **`VARIANT_A_WAVE4_ANGELS.md`**. Чакаме одобрение на писмото.
+> Потвърдени имейли: Eleven `hello@11.vc` · Silverline `evgeny.angelov@`+`office@silverlinecapital.net` ·
+> Vitosha `hello@vitosha.vc` · Invenio `office@invenio.partners` · Sofia Ventures `stefan@sofiaventures.eu` ·
+> Anka `minh@anka.vc` · BlackPeak (кратки `*@blackpeak-capital.com` — риск, ползвай и формата) ·
+> The Edge (2 лични). Само чрез форми: Forty5, BrightCap, CEO Angels, Integral, Ocean, PostScriptum, New Vision.
+> ⚠️ Старият „45+ списък" от паметта НЕ съществува като файл — този е събран наново от официалните сайтове (23.10).
+
+| # | Фонд | Имейл/форма | Изпратено | Отговор | Следваща стъпка |
+|---|------|-------------|-----------|---------|-----------------|
+| 12 | Eleven Ventures | hello@11.vc | — | — | след одобрение на В1 |
+| 13 | Silverline Capital | evgeny.angelov@silverlinecapital.net | — | — | след одобрение на В1 |
+| 14 | Vitosha Venture Partners | hello@vitosha.vc | — | — | след одобрение на В1 |
+| 15 | Invenio Partners | office@invenio.partners | — | — | след одобрение на В1 |
+| 16 | Sofia Ventures | stefan@sofiaventures.eu | — | — | след одобрение на В1 |
+| 17 | Anka VC | minh@anka.vc | — | — | след одобрение на В1 |
+| 18 | BlackPeak Capital | np@blackpeak-capital.com (+ контактна форма) | — | — | риск: кратките имейли са от обфускация на сайта |
+| 19 | The Edge Solutions | malvina.ilieva@theedge.solutions | — | — | първо провери дали инвестират |
+| 20–26 | Forty5, BrightCap, CEO Angels, Integral, Ocean, PostScriptum, New Vision | само контактни форми | — | — | попълват се от Димитър |
+
 ## Бележки
 - Текстовете на писмата: `emails_wave1.txt`, `emails_wave2.txt` (sandbox) + този документ.
 - Econt: проверено 10.10.2026 — сайтът не публикува имейл; партньорски портал partners.econt.com също няма. Само уеб форма.
