@@ -11,6 +11,8 @@
  *   6. Notify sender
  */
 
+const money = require('../services/money');
+
 module.exports = async (ctx) => {
   const args = ctx.message.text.split(' ').slice(1);
 
@@ -71,12 +73,20 @@ module.exports = async (ctx) => {
     });
 
     // 5. Send QR codes to carrier
+    // P0 fix: the displayed payout must equal the ACTUAL payout. The carrier is
+    // paid 80% of the CAPTURED TOTAL (money.splitAmounts, applied at delivery
+    // scan), not 80% of the base fare. Advertising `baseEur * 0.8` understated
+    // the real payout by the whole 15%+5% surcharge (e.g. Sofia→Plovdiv:
+    // shown €8.00, actually paid €9.60).
+    const payout = money.splitAmounts(money.eurToCents(shipment.totalEur));
+    const payoutEur = money.centsToEur(payout.carrierCents);
+
     await ctx.reply(
       `✅ *Приета заявка!*\n\n` +
       `🆔 ${shipmentId}\n` +
       `📍 ${shipment.originCity} → ${shipment.destinationCity}\n` +
       `📦 ${shipment.description}\n` +
-      `💰 Печалба: €${(shipment.baseEur * 0.8).toFixed(2)} (80% от €${shipment.baseEur})\n\n` +
+      `💰 Печалба: €${payoutEur.toFixed(2)} (80% от €${Number(shipment.totalEur).toFixed(2)} в escrow)\n\n` +
       `*Pickup QR код:*`,
       { parse_mode: 'Markdown' }
     );

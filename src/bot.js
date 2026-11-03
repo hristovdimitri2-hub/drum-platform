@@ -36,6 +36,7 @@ const carbonDashboard = require('./services/carbonDashboard');
 const opsDashboard = require('./services/opsDashboard');
 const kpi = require('./services/kpi');
 const checkoutService = require('./services/checkout');
+const auth = require('./services/auth');
 
 const startCommand = require('./commands/start');
 const newCommand = require('./commands/new');
@@ -66,6 +67,21 @@ for (const key of requiredEnv) {
   }
 }
 stripeService.assertTestMode();
+
+// P0 security: the operational surface (/dashboard/*, /api/evidence, /api/checkout)
+// requires ADMIN_TOKEN. Fail closed — warn loudly when it is unset.
+if (!auth.isConfigured()) {
+  console.warn(
+    '⚠️  ADMIN_TOKEN is not set — /dashboard/ops, /dashboard/carbon, ' +
+      '/api/evidence/:id and /api/checkout/:id are DISABLED (401). ' +
+      'Set ADMIN_TOKEN to enable them.'
+  );
+}
+
+/** Suffix shown next to dashboard URLs in the startup banner. */
+function adminHint() {
+  return auth.isConfigured() ? '  🔑 (login: password = ADMIN_TOKEN)' : '  ⛔ (ADMIN_TOKEN not set)';
+}
 
 if (IS_DEMO) {
   console.log('╔══════════════════════════════════════════════════════╗');
@@ -167,12 +183,48 @@ app.post(
 
 app.use(express.json());
 
+// ------------------- Operator authentication (P0 security) -----------------
+// Login form → HttpOnly, SameSite=Strict cookie holding ADMIN_TOKEN.
+// The cookie value is the token itself (constant-time compared server-side);
+// no session store is required, which keeps this dependency-free. Rotating
+// ADMIN_TOKEN invalidates every existing cookie.
+app.get('/login', (req, res) => {
+  if (auth.isConfigured() && auth.checkAccess(req).allowed) return res.redirect('/dashboard/ops');
+  res.set('Cache-Control', 'no-store');
+  res.send(auth.renderLoginPage({ error: '', next: req.query.next || '/dashboard/ops' }));
+});
+
+app.post('/login', express.urlencoded({ extended: false }), (req, res) => {
+  const body = req.body || {};
+  const expected = auth.adminToken();
+  const nextUrl = typeof body.next === 'string' && body.next.startsWith('/') ? body.next : '/dashboard/ops';
+
+  if (!expected) {
+    res
+      .status(503)
+      .send(auth.renderLoginPage({ error: 'ADMIN_TOKEN не е конфигуриран на сървъра.', next: nextUrl }));
+    return;
+  }
+  if (!auth.tokenMatches(body.token, expected)) {
+    res.status(401).send(auth.renderLoginPage({ error: 'Грешен токен.', next: nextUrl }));
+    return;
+  }
+  const secure = String(process.env.APP_URL || '').startsWith('https://') ? '; Secure' : '';
+  res.setHeader(
+    'Set-Cookie',
+    `${auth.COOKIE_NAME}=${encodeURIComponent(expected)}; HttpOnly; SameSite=Strict; Path=/${secure}`
+  );
+  res.redirect(nextUrl);
+});
+
 // Client-side checkout (Stripe TEST mode only) — smallest server step:
 // returns the stored shipment's escrow PaymentIntent clientSecret for
 // public/pay.html (Stripe Elements). The amount comes from the stored
 // record; the 80/15/5 split stays in money.js (applied at capture).
+// P0 security: this returns a chargeable clientSecret → ADMIN_TOKEN required.
 app.post(
   '/api/checkout/:shipmentId',
+  auth.requireAdminApi,
   checkoutService.createCheckoutRoute({ store: airtableService, stripe: stripeService })
 );
 
@@ -204,7 +256,8 @@ app.get('/health', (req, res) =>
 );
 
 // ------------------- Ops/KPI dashboard (B9) --------------------------------
-app.get('/dashboard/ops', async (req, res) => {
+// P0 security: exposes all users/shipments/disputes → ADMIN_TOKEN required.
+app.get('/dashboard/ops', auth.requireAdminPage, async (req, res) => {
   try {
     const lang = req.query.lang === 'en' ? 'en' : 'bg';
     const [users, shipments, disputes] = await Promise.all([
@@ -221,7 +274,8 @@ app.get('/dashboard/ops', async (req, res) => {
 });
 
 // Evidence packet endpoint (B5 anomaly 4 — ONE action, demo star)
-app.get('/api/evidence/:shipmentId', async (req, res) => {
+// P0 security: exposes the financial timeline, disputes and photo hashes.
+app.get('/api/evidence/:shipmentId', auth.requireAdminApi, async (req, res) => {
   try {
     const anomalies = require('./services/anomalies');
     const out = await anomalies.buildEvidencePacket(airtableService, req.params.shipmentId);
@@ -233,7 +287,8 @@ app.get('/api/evidence/:shipmentId', async (req, res) => {
 // ----------------------- Carbon Ledger dashboard (P1/B6) -------------------
 // Investor-facing ESG report, bilingual (BG/EN via ?lang=). Demo mode marks
 // everything [DEMO]. Renderer: src/services/carbonDashboard.js
-app.get('/dashboard/carbon', async (req, res) => {
+// P0 security: exposes all carbon entries + shipments → ADMIN_TOKEN required.
+app.get('/dashboard/carbon', auth.requireAdminPage, async (req, res) => {
   try {
     const lang = req.query.lang === 'en' ? 'en' : 'bg';
     const [entries, shipments] = await Promise.all([
@@ -266,7 +321,8 @@ if (bot && process.env.TELEGRAM_WEBHOOK_URL) {
   // Development: polling mode
   app.listen(PORT, () => {
     console.log(`🌐 Web server running on port ${PORT} (webhooks endpoint ready)`);
-    console.log(`🌿 Carbon dashboard: http://localhost:${PORT}/dashboard/carbon`);
+    console.log(`🔒 Ops/KPI dashboard: http://localhost:${PORT}/dashboard/ops${adminHint()}`);
+    console.log(`🌿 Carbon dashboard:  http://localhost:${PORT}/dashboard/carbon${adminHint()}`);
     console.log(`🏠 Landing:           http://localhost:${PORT}/`);
   });
   bot.launch().then(() => {
@@ -278,7 +334,8 @@ if (bot && process.env.TELEGRAM_WEBHOOK_URL) {
   app.listen(PORT, () => {
     console.log('⚠️  TELEGRAM_BOT_TOKEN not set — bot disabled, dashboard-only mode.');
     console.log(`🌐 Web server running on port ${PORT}`);
-    console.log(`🌿 Carbon dashboard: http://localhost:${PORT}/dashboard/carbon`);
+    console.log(`🔒 Ops/KPI dashboard: http://localhost:${PORT}/dashboard/ops${adminHint()}`);
+    console.log(`🌿 Carbon dashboard:  http://localhost:${PORT}/dashboard/carbon${adminHint()}`);
     console.log(`🏠 Landing:           http://localhost:${PORT}/`);
   });
 }
