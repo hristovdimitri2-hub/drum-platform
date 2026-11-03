@@ -28,20 +28,20 @@ Today, evidence for carbon removal projects is a digital photo — the most easi
 ## Segment 3 — Meet DRUM (0:30–1:00)
 
 **EN:**
-We built DRUM — an open-source evidence layer for carbon removal and environmental claims. Point your phone at an event: a tree planted, a shipment received, a ton of biochar stored. DRUM seals the photo cryptographically — hash, timestamp, content-addressed record written before the image itself — binds it to the operational event and the CO2 calculation, with its emission factors, so the number can be re-derived, not just read. An open core means anyone can re-verify every proof, end to end, by themselves.
+We built DRUM — an open-source evidence layer for peer-to-peer logistics and environmental claims. Point your phone at an event: a tree planted, a shipment received, a ton of biochar stored. DRUM seals the photo cryptographically — hash, timestamp, content-addressed record written before the image itself — binds it to the operational event and the CO2 calculation, with its emission factors, so the number can be re-derived, not just read. An open core means anyone can re-verify every proof, end to end, by themselves.
 
 **BG:**
-Ние изградихме DRUM — отворен слой за доказателства за махане на въглерод и екологични твърдения. Насочиш ли телефона към събитие — засадено дърво, получена пратка, съхранена тон биовъглен — DRUM криптографски запечатва снимката: хеш, клеймо време, запис, написан преди самия файл, обвързан с оперативното събитие и с изчислението за CO2, за да може числото да се преброи наново, а не просто да се прочете. Отвореният код означава, че всеки може да провери всяко доказателство сам.
+Ние изградихме DRUM — отворен слой за доказателства за доставки от човек на човек и екологични твърдения. Насочиш ли телефона към събитие — засадено дърво, получена пратка, съхранена тон биовъглен — DRUM криптографски запечатва снимката: хеш, клеймо време, запис, написан преди самия файл, обвързан с оперативното събитие и с изчислението за CO2, за да може числото да се преброи наново, а не просто да се прочете. Отвореният код означава, че всеки може да провери всяко доказателство сам.
 
 ---
 
 ## Segment 4 — How it works (1:00–1:40)
 
 **EN:**
-Capture-time sealing: no metadata, no evidence — every photo gets a sidecar record with timestamp, event ID and content hash, written before the file, with GDPR-compliant 90-day retention. Cross-validation: under the project we add automated checks against satellite and remote-sensing data, so contradictory evidence is flagged automatically instead of during periodic human audits. Machine-to-machine verification over open payment standards — HTTP 402 — at about 0.005 US dollars per check: audit-grade evidence 100–1000 times cheaper than a manual audit cycle costing 10,000 to 50,000 euro.
+Capture-time sealing: no metadata, no evidence — every photo gets a sidecar record with timestamp, event ID and content hash, written before the file, with GDPR-compliant 90-day retention. Cross-validation: under the project we add automated checks against satellite and remote-sensing data, so contradictory evidence is flagged automatically instead of during periodic human audits. Automated machine verification — built during the project — at a cost target of only a small fraction of a manual audit cycle costing 10,000 to 50,000 euro: evidence checked 100% instead of statistically sampled.
 
 **BG:**
-Запечатване при заснемане: без метаданни — няма доказателство. Всеки файл получава придружаващ запис с време, ID на събитието и хеш на съдържанието, записан преди самия файл, със срок за съхранение от 90 дни по GDPR. Кръстосана проверка: в рамките на проекта добавяме автоматични проверки чрез спътникови данни, така че противоречията да се откриват автоматично, а не на периодични проверки от хора. Плащания между машини чрез отворените стандарти HTTP 402 — около 0,005 щатски долара на проверка: доказателство с ниво на одит 100 до 1000 пъти по-евтино от ръчен одит за 10 000 до 50 000 евро.
+Запечатване при заснемане: без метаданни — няма доказателство. Всеки файл получава придружаващ запис с време, ID на събитието и хеш на съдържанието, записан преди самия файл, със срок за съхранение от 90 дни по GDPR. Кръстосана проверка: в рамките на проекта добавяме автоматични проверки чрез спътникови данни, така че противоречията да се откриват автоматично, а не на периодични проверки от хора. Автоматизирана машино-проверка — изгражда се по време на проекта — на цена, която е само малка дялова част от ръчен одит за 10 000 до 50 000 евро: проверка на 100% от доказателствата вместо статистическа извадка.
 
 ---
 

@@ -8,11 +8,11 @@ DRUM-OCE
 
 ## 2. Short Summary (Step 2 — кратко резюме, ~950 знака)
 ```
-DRUM is an open-source evidence layer for carbon removal and environmental claims. Field photos are sealed at capture with SHA-256 hashes, timestamps and content-addressed storage ("no metadata -> no evidence") and bound to operational events with a re-derivable CO2 audit trail (GHG Protocol Scope 3, Cat. 4). A working MVP already exists: 142/142 platform tests, 10/10 tests in the published Apache-2.0 package (Open Carbon Evidence), a reproducible demo dataset - and honestly, 0 external users so far. The grant funds the leap to external pilots: remote-sensing cross-validation, machine-to-machine verification over open payment standards at about USD 0.005 per check, and conformity with the EU Carbon Removal Certification Framework (Regulation (EU) 2024/3012). Solo applicant, pre-incorporation; an SME will be established before grant agreement signature. Requested: EUR 2,500,000 EIC lump sum.
+DRUM is an open-source evidence layer for peer-to-peer spare-capacity logistics and its environmental claims (carbon-removal MRV is the expansion market from month 12). Field photos are sealed at capture with SHA-256 hashes, timestamps and content-addressed storage ("no metadata -> no evidence") and bound to operational events with a re-derivable CO2 audit trail (GHG Protocol Scope 3, Cat. 4). A working MVP already exists: 142/142 platform tests, 10/10 tests in the published Apache-2.0 package (Open Carbon Evidence), a reproducible demo dataset - and honestly, 0 external users so far. The grant funds the leap to external pilots: remote-sensing cross-validation, automated machine-to-machine verification (a work package of this project, targeted to a small fraction of the cost of the manual verification cycles it replaces), and conformity with the EU Carbon Removal Certification Framework (Regulation (EU) 2024/3012). Solo applicant, pre-incorporation; an SME will be established before grant agreement signature. Requested: EUR 2,500,000 EIC lump sum.
 ```
 Къса версия (~400 знака), ако полето е по-малко:
 ```
-DRUM is an open-source evidence layer for carbon removal claims: photos sealed with SHA-256 + timestamps at capture, bound to operational events with a re-derivable CO2 audit trail. Working MVP (142/142 tests, published Apache-2.0 package), 0 external users so far - honest status. Grant funds external pilots, remote-sensing cross-validation and EU CRCF conformity. Individual applicant, SME before grant signature. Requested: EUR 2,500,000.
+DRUM is an open-source evidence layer for peer-to-peer spare-capacity logistics and environmental claims: photos sealed with SHA-256 + timestamps at capture, bound to operational events with a re-derivable CO2 audit trail. Working MVP (142/142 tests, published Apache-2.0 package), 0 external users so far - honest status. Grant funds external pilots, remote-sensing cross-validation and EU CRCF conformity. Individual applicant, SME before grant signature. Requested: EUR 2,500,000.
 ```
 
 ## 3. Половета в Part A (web forms) — типичните въпроси и честните отговори
@@ -24,7 +24,7 @@ DRUM is an open-source platform combining peer-to-peer logistics operations with
 
 **TRL (Technology Readiness Level):**
 - TRL at start of the project: **5** (интегриран прототип, валидиран край-до-край в демо среда — 142/142 теста)
-- TRL at end of the project: **9** (цел: TRL 8 на месец 18, TRL 9 на месец 24 — същото е записано и в Part B)
+- TRL at end of the project: **8** (цел: TRL 7 на месец 18, TRL 8 на месец 24 — същото е записано и в Part B; EIC грантът финансира TRL 6–8)
 
 **Financials (SME declaration, ако се иска):**
 - Turnover (last closed financial year): **EUR 0** (pre-revenue)
@@ -43,7 +43,7 @@ DRUM is an open-source platform combining peer-to-peer logistics operations with
 - [ ] Acronym = DRUM-OCE, Short Summary е попълнено
 - [ ] Качени: `Pitch_Deck_DRUM-OCE_honest.pdf` (10 стр.), `Part_B_DRUM-OCE_honest.pdf` (5 стр.), `Consent_DRUM-OCE.xlsx`, **новото видео** (пре-записано по `EIC_VIDEO_SCRIPT_v2.md`)
 - [ ] Всички числа в портала = същите като в честните документи
-- [ ] Submit **преди 18:00 на 4.11** (не в последните 10 минути — порталът се задръства)
+- [ ] Срок: short кандидатури се групират всеки първи вторник, 17:00 Брюксел (следващо: 01.12.2026); 04.11.2026 е само за ПЪЛНА кандидатура (Стъпка 2). Подай 1–2 дни преди групирането (не в последните 10 минути).
 
 ---
 *Човешки отчет: Това са готовите текстове — акроним, кратко резюме и отговорите за формите на програмата (всичко с честни числа). Копи-пействаш сам в портала, защото аз не пипам нищо там. Има и чеклист какво трябва да е маркирано, преди да натиснеш бутона.*

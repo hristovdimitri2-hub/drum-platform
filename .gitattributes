@@ -1,0 +1,15 @@
+# Autodetect text files; normalize to LF in the repo (PowerShell/Windows tools expect CRLF on checkout)
+* text=auto
+
+# Windows tooling keeps CRLF
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Explicitly binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.xlsx binary
+*.docx binary

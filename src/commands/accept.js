@@ -76,7 +76,7 @@ module.exports = async (ctx) => {
       `🆔 ${shipmentId}\n` +
       `📍 ${shipment.originCity} → ${shipment.destinationCity}\n` +
       `📦 ${shipment.description}\n` +
-      `💰 Печалба: €${(shipment.baseEur * 0.8).toFixed(2)} (80% от €${shipment.baseEur})\n\n` +
+      `💰 Печалба: €${(shipment.totalEur * 0.8).toFixed(2)} (80% от €${shipment.totalEur})\n\n` +
       `*Pickup QR код:*`,
       { parse_mode: 'Markdown' }
     );
