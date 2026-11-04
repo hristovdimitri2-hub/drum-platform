@@ -21,6 +21,7 @@ const { listProofPhotos } = require('./photoProof');
 // batch 3: unified evidence storage — INSIDE the repo (data/evidence, gitignored),
 // no '..' escapes. See docs/GDPR_EVIDENCE.md (retention + legacy migration).
 const { EVIDENCE_ROOT, PROOFS_DIR } = require('./evidencePaths');
+const { logger } = require('./security'); // P2: no silent catches
 
 const PROOF_WINDOW_HOURS = 24;
 // PROOFS_DIR now comes from evidencePaths (batch 3) — inside the repo, no '..'.
@@ -76,7 +77,19 @@ async function openDeliveryRefusal(store, { shipmentId, openedBy, openedAtMs = D
 
 function isProofExpired(dispute, nowMs = Date.now()) {
   let reason = {};
-  try { reason = JSON.parse(dispute.reason || '{}'); } catch { /* ignore */ }
+  try {
+    reason = JSON.parse(dispute.reason || '{}');
+  } catch (err) {
+    // A malformed dispute reason means the 24h refusal window cannot be
+    // evaluated. Falling back to "not expired" is the safe behaviour (it keeps
+    // the proof path open), but the data-integrity problem is logged instead of
+    // being silently swallowed.
+    logger.warn('anomalies.dispute_reason_malformed', {
+      disputeId: (dispute && dispute.id) || null,
+      reason: err.message,
+    });
+    reason = {};
+  }
   if (reason.type !== 'delivery_refusal' || !reason.proofDeadline) return false;
   return new Date(reason.proofDeadline).getTime() < nowMs;
 }
@@ -172,7 +185,21 @@ async function buildEvidencePacket(store, shipmentId) {
   const attachRecords = disputes
     .map((d) => {
       const pf = path.join(PROOFS_DIR, d.id + '.json');
-      try { return JSON.parse(fs.readFileSync(pf, 'utf8')); } catch { return null; }
+      try {
+        return JSON.parse(fs.readFileSync(pf, 'utf8'));
+      } catch (err) {
+        // A dispute without an attach record is normal (ENOENT). A corrupt or
+        // unreadable record inside a chargeback evidence packet is exactly the
+        // kind of thing that must not disappear silently.
+        if (err.code !== 'ENOENT') {
+          logger.warn('anomalies.attach_record_unreadable', {
+            disputeId: d.id,
+            code: err.code || null,
+            reason: err.message,
+          });
+        }
+        return null;
+      }
     })
     .filter(Boolean);
   const photoProof = {
@@ -228,10 +255,7 @@ async function buildEvidencePacket(store, shipmentId) {
     checksum: null,
   };
 
-  packet.checksum = crypto
-    .createHash('sha256')
-    .update(JSON.stringify(Object.assign({}, packet, { checksum: null })))
-    .digest('hex');
+  packet.checksum = evidenceChecksum(packet);
 
   // batch 3: packets live with the shipment's evidence — inside the repo,
   // gitignored (no more DRUM/reports/evidence outside the repo).
@@ -281,6 +305,54 @@ async function buildEvidencePacket(store, shipmentId) {
   return { jsonPath, mdPath, sha256: packet.checksum };
 }
 
+/* ---------------- P3.1: reproducible evidence checksum -------------------- */
+
+/**
+ * Fields excluded from the checksum because they change on EVERY packet build.
+ *
+ * Before this, the hash covered the entire packet INCLUDING `generatedAt` (and
+ * the carbon entry's `calculatedAt`/`createdAt`), so two packets built from
+ * identical underlying data produced different checksums — which made the
+ * "reproducible evidence packet" claim in ARCHITECTURE.md false. The exclusions
+ * are now an explicit, tested list instead of an accident.
+ *
+ * Paths are dot-separated. An absent path is ignored, never an error.
+ */
+const CHECKSUM_VOLATILE_PATHS = [
+  'checksum',
+  'generatedAt',
+  'carbonLedger.calculatedAt',
+  'carbonLedger.createdAt',
+];
+
+/** Deep clone of the packet with every volatile path removed. */
+function canonicalEvidencePayload(packet) {
+  if (packet === null || packet === undefined) return packet;
+  const clone = JSON.parse(JSON.stringify(packet));
+  if (typeof clone !== 'object' || clone === null) return clone;
+  for (const dotted of CHECKSUM_VOLATILE_PATHS) {
+    const parts = dotted.split('.');
+    let node = clone;
+    for (let i = 0; i < parts.length - 1 && node && typeof node === 'object'; i += 1) {
+      node = node[parts[i]];
+    }
+    if (node && typeof node === 'object') delete node[parts[parts.length - 1]];
+  }
+  return clone;
+}
+
+/**
+ * SHA-256 over the canonical payload. Identical underlying data → identical
+ * checksum, regardless of when the packet was generated. Any change to the
+ * substantive content (amounts, splits, dispute text, photo hashes) flips it.
+ */
+function evidenceChecksum(packet) {
+  return crypto
+    .createHash('sha256')
+    .update(JSON.stringify(canonicalEvidencePayload(packet)))
+    .digest('hex');
+}
+
 module.exports = {
   PROOFS_DIR,
   PROOF_WINDOW_HOURS,
@@ -291,4 +363,8 @@ module.exports = {
   attachDeliveryProof,
   processExpiredRefusals,
   buildEvidencePacket,
+  // P3.1 — canonical checksum helpers (used by the tests and by any verifier)
+  canonicalEvidencePayload,
+  evidenceChecksum,
+  CHECKSUM_VOLATILE_PATHS,
 };

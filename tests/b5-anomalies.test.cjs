@@ -154,12 +154,10 @@ test('B5.4: evidence packet — one action, complete + hashed', async () => {
   assert.equal(packet.carbonLedger.savedCo2Kg, 25.38);
   assert.ok(packet.stripe.mode.startsWith('DEMO'));
 
-  // checksum is reproducible: same content -> same hash
-  const crypto = require('node:crypto');
-  const rehash = crypto.createHash('sha256')
-    .update(JSON.stringify(Object.assign({}, packet, { checksum: null })))
-    .digest('hex');
-  assert.equal(rehash, out.sha256);
+  // Checksum is reproducible: recomputing over the canonical payload (volatile
+  // fields excluded — P3.1) yields the same hash. Uses the exported helper so
+  // the algorithm lives in exactly one place.
+  assert.equal(anomalies.evidenceChecksum(packet), out.sha256);
 
   fs.rmSync(path.dirname(out.jsonPath), { recursive: true, force: true });
 });

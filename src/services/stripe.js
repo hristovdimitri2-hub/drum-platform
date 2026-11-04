@@ -227,17 +227,24 @@ async function createCheckoutIntent({ amountCents, existingPaymentIntentId, desc
  * Split of the captured total: 80% carrier (Connect transfer),
  * 15% DRUM (stays in platform balance), 5% insurance pool.
  */
-async function captureAndSplit({ paymentIntentId, carrierConnectAccountId, totalEur, ticketEur }) {
+async function captureAndSplit({ paymentIntentId, carrierConnectAccountId, totalEur }) {
   assertTestMode();
 
   const totalCents = money.eurToCents(totalEur);
-  // B8.2 canon: splits run over the TICKET T (net of VAT-on-top); the
-  // remainder (userPays − ticket) is the VAT owed on the fee.
-  const ticketCents = ticketEur !== undefined ? money.eurToCents(ticketEur) : totalCents;
-  const split = money.splitAmounts(ticketCents);
+  // B8.1/B8.2 canon (see finance.js: "T = the captured amount the 80/15/5
+  // split runs on"): the CAPTURED amount IS the ticket, and the split runs on
+  // it. There is no separate "ticketEur".
+  //
+  // P1 fix — the VAT leg used to be `totalCents − (carrier + drum + insurance)`,
+  // which is identically 0 by construction (money.splitAmounts always sums to
+  // the total). It was therefore dead code that silently reported €0.00 VAT
+  // and disagreed with finance.js/b2b.js, which both derive VAT as
+  // `vatOnDrumFee(drumCents)` — 20% owed ON TOP of the DRUM fee and absorbed
+  // out of that fee. The capture path now uses the same canonical helper, so
+  // the transaction record and the financial model finally agree.
+  const split = money.splitAmounts(totalCents);
   const carrierAmountCents = split.carrierCents;
-  const vatCents = totalCents -
-    (split.carrierCents + split.drumCents + split.insuranceCents);
+  const vatCents = money.vatOnDrumFee(split.drumCents).vatCents;
 
   const splitEur = {
     carrierPayoutEur: money.centsToEur(split.carrierCents),
@@ -247,7 +254,6 @@ async function captureAndSplit({ paymentIntentId, carrierConnectAccountId, total
   };
   const splitCents = {
     totalCents,
-    ticketCents,
     carrierCents: split.carrierCents,
     drumCents: split.drumCents,
     insuranceCents: split.insuranceCents,

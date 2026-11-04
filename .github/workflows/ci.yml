@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, 'patch/**']
   pull_request:
     branches: [main, master]
   workflow_dispatch:
@@ -13,6 +13,11 @@ env:
   PORT: '3210'
   DEMO_MODE: 'true'
   DATA_BACKEND: 'sqlite'
+  # Route tests bind ephemeral loopback ports and assert limiter behaviour
+  # themselves; the global throttles are disabled so repeated CI runs on the
+  # same runner IP can never 429 a legitimate test.
+  RATELIMIT_DISABLED: 'true'
+  LOG_LEVEL: 'warn'
 
 jobs:
   ci:
@@ -37,7 +42,7 @@ jobs:
       - name: Coverage (report; per-module breakdown in log)
         run: npm run coverage
 
-      - name: Coverage gate (money/trust/carbon/matching >= 80%)
+      - name: Coverage gate (money/trust/carbon/matching/stripe/auth/security >= 80%)
         run: node scripts/coverage-gate.js
 
       - name: E2E demo (headless, no external services)
@@ -53,3 +58,33 @@ jobs:
           name: coverage
           path: coverage/
           if-no-files-found: ignore
+
+  # P2.2 — the Airtable backend must be exercised too. It is the documented
+  # production no-code backend and it had never been run in CI. The adapter is
+  # driven against a fake Airtable API on loopback (airtable@0.12 reads
+  # AIRTABLE_ENDPOINT_URL), so no credentials or network are needed. This job
+  # also asserts the load-time interface gate in services/store.js.
+  airtable-backend:
+    runs-on: ubuntu-latest
+    env:
+      DATA_BACKEND: 'airtable'
+      AIRTABLE_API_KEY: 'key_mock_ci'
+      AIRTABLE_BASE_ID: 'appMockCi'
+      DEMO_MODE: 'true'
+      RATELIMIT_DISABLED: 'true'
+      LOG_LEVEL: 'warn'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # p2-airtable-contract drives the real adapter over loopback; t2-airtable-links
+      # covers the pure mappers and the 422 link-fallback ladder.
+      - name: Airtable adapter contract + link fallback ladder
+        run: node --test tests/p2-airtable-contract.test.cjs tests/t2-airtable-links.test.cjs

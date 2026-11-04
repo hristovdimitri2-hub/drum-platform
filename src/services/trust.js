@@ -117,6 +117,14 @@ function applyEvent(currentScore, eventType, ctx = {}) {
     };
   }
 
+  // Deterministic no-ops (P2): raising/resolving a dispute does not move the
+  // score — only `dispute_lost` does. Recognised explicitly so callers get
+  // `applied: false` with an honest reason instead of "unknown event: ...".
+  if (NOOP_EVENTS.has(eventType)) {
+    return { score: current, tier: tierForScore(current), delta: 0,
+      applied: false, reason: `${eventType} does not change the score (no-op)` };
+  }
+
   const rule = RULES[eventType];
   if (!rule) {
     return { score: current, tier: tierForScore(current), delta: 0,
@@ -160,17 +168,38 @@ function applyEvent(currentScore, eventType, ctx = {}) {
     applied: delta !== 0, reason };
 }
 
-/** Legacy alias map (v1 event names). Prefer the explicit names above. */
+/**
+ * Legacy alias map (v1 event names). Prefer the explicit names above.
+ *
+ * P2 fix: `dispute_raised` / `dispute_resolved` used to map to `null`, so
+ * `normalizeEventType('dispute_raised')` returned null. Callers that pass the
+ * result straight into `applyEvent()` then hit the "unknown event: null" branch
+ * and logged a misleading reason; worse, a null-shaped key could be persisted.
+ *
+ * The two v1 names are now explicit NO-OPs: they normalise to themselves and
+ * `applyEvent()` recognises them as events with delta 0 (no score change on
+ * raising a dispute — the penalty is only on a LOST dispute), instead of
+ * silently degrading to "unknown event".
+ */
+const NOOP_EVENTS = new Set(['dispute_raised', 'dispute_resolved']);
+
 const LEGACY_ALIASES = {
   delivery_success: 'delivery_success_carrier',
-  delivery_failed: 'delivery_failed',
-  dispute_raised: null,        // no score change on raise (only on loss)
-  dispute_resolved: null,      // use dispute_lost / won flow
+  dispute_raised: 'dispute_raised',       // no score change on raise (only on loss)
+  dispute_resolved: 'dispute_resolved',   // use dispute_lost / won flow for scoring
   kyc_verified: 'kyc_verified',
 };
 
+/**
+ * Map a (possibly v1) event name to a canonical one.
+ * Always returns a non-empty string — never `null`/`undefined`.
+ */
 function normalizeEventType(eventType) {
-  return LEGACY_ALIASES[eventType] === undefined ? eventType : LEGACY_ALIASES[eventType];
+  if (eventType === undefined || eventType === null || eventType === '') return '';
+  const name = String(eventType);
+  const mapped = LEGACY_ALIASES[name];
+  if (mapped !== undefined) return mapped;
+  return name;
 }
 
 module.exports = {
@@ -178,6 +207,7 @@ module.exports = {
   TIER_LIMITS,
   RULES,
   BAN_RULES,
+  NOOP_EVENTS,
   clampScore,
   tierForScore,
   limitsForScore,

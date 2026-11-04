@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { EVIDENCE_DIR, EVIDENCE_RETENTION_DAYS } = require('./evidencePaths'); // batch 3: single source, no '..' escapes
+const { logger } = require('./security'); // P2: no silent catches
 
 function sanitizeShipmentId(id) {
   const s = String(id === undefined || id === null ? '' : id).trim();
@@ -70,14 +71,41 @@ function saveProofPhoto({ shipmentId, chatId, buffer, caption = '', source = 'te
 /** All photo-proof metadata records for a shipment (sorted by time). */
 function listProofPhotos(shipmentId) {
   let id;
-  try { id = sanitizeShipmentId(shipmentId); } catch { return []; }
+  try {
+    id = sanitizeShipmentId(shipmentId);
+  } catch (err) {
+    // A rejected id means the shipmentId was malformed (user/QR input); no
+    // photos can exist for it, so `[]` is the correct answer — but the
+    // rejection is now logged rather than swallowed. The value is truncated
+    // because it is caller-controlled.
+    logger.warn('photoProof.list.invalid_shipment_id', {
+      shipmentId: String(shipmentId).slice(0, 64),
+      reason: err.message,
+    });
+    return [];
+  }
   const dir = path.join(EVIDENCE_DIR, id);
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir)
     .filter((f) => f.endsWith('.json'))
     .sort()
     .map((f) => {
-      try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; }
+      try {
+        return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+      } catch (err) {
+        // One unreadable sidecar must not abort the listing, but a silent
+        // `return null` used to hide evidence corruption. ENOENT is a benign
+        // race with retention cleanup; anything else is a real problem.
+        if (err.code !== 'ENOENT') {
+          logger.warn('photoProof.list.unreadable_metadata', {
+            shipmentId: id,
+            file: f,
+            code: err.code || null,
+            reason: err.message,
+          });
+        }
+        return null;
+      }
     })
     .filter(Boolean);
 }
@@ -129,7 +157,20 @@ function cleanupExpiredEvidence({ nowMs = Date.now(), days = EVIDENCE_RETENTION_
       if (e.isDirectory()) {
         const p = path.join(dir, e.name);
         prune(p);
-        try { fs.rmdirSync(p); } catch { /* not empty */ }
+        try {
+          fs.rmdirSync(p);
+        } catch (err) {
+          // ENOTEMPTY is the EXPECTED outcome for a directory that still holds
+          // in-retention files. Anything else (EPERM/EBUSY/EACCES) means the
+          // GDPR retention cleanup did not fully apply and must be visible.
+          if (err.code !== 'ENOTEMPTY' && err.code !== 'ENOENT') {
+            logger.warn('photoProof.cleanup.prune_failed', {
+              dir: path.relative(EVIDENCE_DIR, p) || '.',
+              code: err.code || null,
+              reason: err.message,
+            });
+          }
+        }
       }
     }
   };

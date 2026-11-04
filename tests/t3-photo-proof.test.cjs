@@ -145,11 +145,8 @@ test('T3.3: evidence packet photoProof — REAL, [DEMO] placeholder, NONE', asyn
   assert.equal(packetReal.photoProof.attachments[0].demoPlaceholder, false);
   const mdReal = fs.readFileSync(outReal.mdPath, 'utf8');
   assert.ok(mdReal.includes('## Photo proof') && mdReal.includes('REAL photo'), 'md marks REAL');
-  // checksum still reproducible with the new section
-  const rehash = crypto.createHash('sha256')
-    .update(JSON.stringify(Object.assign({}, packetReal, { checksum: null })))
-    .digest('hex');
-  assert.equal(rehash, outReal.sha256);
+  // checksum still reproducible with the new section (P3.1 canonical payload)
+  assert.equal(anomalies.evidenceChecksum(packetReal), outReal.sha256);
   cleanupEvidence(realShip.id);
   fs.rmSync(path.dirname(outReal.jsonPath), { recursive: true, force: true });
 

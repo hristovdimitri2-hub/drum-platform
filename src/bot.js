@@ -37,6 +37,7 @@ const opsDashboard = require('./services/opsDashboard');
 const kpi = require('./services/kpi');
 const checkoutService = require('./services/checkout');
 const auth = require('./services/auth');
+const security = require('./services/security');
 
 const startCommand = require('./commands/start');
 const newCommand = require('./commands/new');
@@ -154,8 +155,20 @@ if (bot) {
 // ---------------------------- Web server ----------------------------------
 const app = express();
 
+// P1 hardening — security headers + structured access log on every route.
+// Mounted first so 4xx/5xx responses carry the headers too.
+app.disable('x-powered-by');
+app.set('trust proxy', true); // Railway terminates TLS in front of the app
+app.use(security.helmetMiddleware());
+app.use(security.requestLogger());
+
+const limiters = security.buildLimiters();
+
 // Stripe webhook MUST use raw body for signature verification —
 // mount it BEFORE any JSON body parser.
+// NOTE: deliberately NOT rate limited — Stripe retries on 429 and a dropped
+// payment event is worse than a burst. Signature verification + the
+// idempotency table (isWebhookProcessed) are the controls here.
 app.post(
   '/webhooks/stripe',
   express.raw({ type: 'application/json' }),
@@ -165,17 +178,24 @@ app.post(
       const event = stripeService.verifyWebhook(req.body, sig);
       // Anomaly 2 — replay protection: each webhook id is processed ONCE
       if (await airtableService.isWebhookProcessed(event.id)) {
-        console.log(`Webhook ${event.id} replayed — ignored (idempotent)`);
+        security.logger.info('stripe.webhook.replay', { eventId: event.id, type: event.type });
         return res.json({ received: true, replay: true });
       }
       const paid = await stripeEvents.handleStripeEvent(event, airtableService);
       if (paid.handled) {
-        console.log(`Shipment ${paid.shipmentId}: ${paid.from} → ${paid.to} (payment authorised)`);
+        security.logger.info('stripe.webhook.paid', {
+          eventId: event.id,
+          type: event.type,
+          shipmentId: paid.shipmentId,
+          from: paid.from,
+          to: paid.to,
+        });
       }
       await airtableService.markWebhookProcessed(event.id, event.type);
       res.json({ received: true });
     } catch (err) {
-      console.error('Webhook error:', err.message);
+      // 400 tells Stripe to retry; the failure reason is logged, not echoed.
+      security.logger.error('stripe.webhook.rejected', { reason: err.message });
       res.status(400).send(`Webhook Error: ${err.message}`);
     }
   }
@@ -194,21 +214,25 @@ app.get('/login', (req, res) => {
   res.send(auth.renderLoginPage({ error: '', next: req.query.next || '/dashboard/ops' }));
 });
 
-app.post('/login', express.urlencoded({ extended: false }), (req, res) => {
+// P1: brute-force throttle on the only credential-bearing public form.
+app.post('/login', limiters.login, express.urlencoded({ extended: false }), (req, res) => {
   const body = req.body || {};
   const expected = auth.adminToken();
   const nextUrl = typeof body.next === 'string' && body.next.startsWith('/') ? body.next : '/dashboard/ops';
 
   if (!expected) {
+    security.logger.warn('auth.login.unconfigured', { path: req.path });
     res
       .status(503)
       .send(auth.renderLoginPage({ error: 'ADMIN_TOKEN не е конфигуриран на сървъра.', next: nextUrl }));
     return;
   }
   if (!auth.tokenMatches(body.token, expected)) {
+    security.logger.warn('auth.login.failed', { path: req.path, ip: req.ip });
     res.status(401).send(auth.renderLoginPage({ error: 'Грешен токен.', next: nextUrl }));
     return;
   }
+  security.logger.info('auth.login.success', { path: req.path, ip: req.ip });
   const secure = String(process.env.APP_URL || '').startsWith('https://') ? '; Secure' : '';
   res.setHeader(
     'Set-Cookie',
@@ -224,6 +248,7 @@ app.post('/login', express.urlencoded({ extended: false }), (req, res) => {
 // P0 security: this returns a chargeable clientSecret → ADMIN_TOKEN required.
 app.post(
   '/api/checkout/:shipmentId',
+  limiters.api,
   auth.requireAdminApi,
   checkoutService.createCheckoutRoute({ store: airtableService, stripe: stripeService })
 );
@@ -234,6 +259,7 @@ app.post(
 // Batch 4 guard: localhost без токен; нелокален IP → SCAN_API_TOKEN (401 иначе).
 app.post(
   '/api/scan',
+  limiters.scan,
   scanWeb.createScanRoute({
     store: airtableService,
     stripe: stripeService,
@@ -268,14 +294,14 @@ app.get('/dashboard/ops', auth.requireAdminPage, async (req, res) => {
     const kpis = kpi.computeKpis({ users, shipments, disputes });
     res.send(opsDashboard.renderOpsDashboard({ kpis, lang, isDemo: IS_DEMO }));
   } catch (err) {
-    console.error('Ops dashboard error:', err);
+    security.logger.error('dashboard.ops.error', { reason: err.message });
     res.status(500).send('Ops dashboard error: ' + err.message);
   }
 });
 
 // Evidence packet endpoint (B5 anomaly 4 — ONE action, demo star)
 // P0 security: exposes the financial timeline, disputes and photo hashes.
-app.get('/api/evidence/:shipmentId', auth.requireAdminApi, async (req, res) => {
+app.get('/api/evidence/:shipmentId', limiters.api, auth.requireAdminApi, async (req, res) => {
   try {
     const anomalies = require('./services/anomalies');
     const out = await anomalies.buildEvidencePacket(airtableService, req.params.shipmentId);
@@ -301,7 +327,7 @@ app.get('/dashboard/carbon', auth.requireAdminPage, async (req, res) => {
       entries, summary, delivered, lang, isDemo: IS_DEMO, factors: carbon.FACTORS,
     }));
   } catch (err) {
-    console.error('Dashboard error:', err);
+    security.logger.error('dashboard.carbon.error', { reason: err.message });
     res.status(500).send('Dashboard error: ' + err.message);
   }
 });
@@ -309,39 +335,57 @@ app.get('/dashboard/carbon', auth.requireAdminPage, async (req, res) => {
 // ------------------------------- Start -------------------------------------
 const PORT = process.env.PORT || 3000;
 
-if (bot && process.env.TELEGRAM_WEBHOOK_URL) {
-  // Production: webhook mode
-  app.listen(PORT, async () => {
-    console.log(`🌐 Web server running on port ${PORT}`);
-    await bot.telegram.setWebhook(`${process.env.TELEGRAM_WEBHOOK_URL}/webhooks/telegram`);
-    console.log('🤖 Telegram webhook set');
-  });
-  bot.startWebhook(`/webhooks/telegram`, null, PORT);
-} else if (bot) {
-  // Development: polling mode
-  app.listen(PORT, () => {
-    console.log(`🌐 Web server running on port ${PORT} (webhooks endpoint ready)`);
-    console.log(`🔒 Ops/KPI dashboard: http://localhost:${PORT}/dashboard/ops${adminHint()}`);
-    console.log(`🌿 Carbon dashboard:  http://localhost:${PORT}/dashboard/carbon${adminHint()}`);
-    console.log(`🏠 Landing:           http://localhost:${PORT}/`);
-  });
-  bot.launch().then(() => {
-    console.log('🤖 DRUM bot started in polling mode');
-    console.log('   Send /start to begin');
-  });
-} else {
-  // Dashboard-only mode (DEMO without Telegram credentials)
-  app.listen(PORT, () => {
-    console.log('⚠️  TELEGRAM_BOT_TOKEN not set — bot disabled, dashboard-only mode.');
-    console.log(`🌐 Web server running on port ${PORT}`);
-    console.log(`🔒 Ops/KPI dashboard: http://localhost:${PORT}/dashboard/ops${adminHint()}`);
-    console.log(`🌿 Carbon dashboard:  http://localhost:${PORT}/dashboard/carbon${adminHint()}`);
-    console.log(`🏠 Landing:           http://localhost:${PORT}/`);
-  });
+/**
+ * Bind the HTTP listener (and, when a token is present, the Telegram bot).
+ *
+ * This runs ONLY when the file is the process entry point (`npm start` /
+ * `node src/bot.js`). When the module is `require()`d — which is exactly what
+ * the P2 route tests do — the Express `app` is exported WITHOUT binding a port,
+ * so the real production routes can be tested in-process (the sandbox forbids
+ * spawning child servers).
+ */
+function startServer() {
+  if (bot && process.env.TELEGRAM_WEBHOOK_URL) {
+    // Production: webhook mode
+    app.listen(PORT, async () => {
+      security.logger.info('server.listening', { port: Number(PORT), mode: 'telegram-webhook' });
+      await bot.telegram.setWebhook(`${process.env.TELEGRAM_WEBHOOK_URL}/webhooks/telegram`);
+      security.logger.info('telegram.webhook.set');
+    });
+    bot.startWebhook('/webhooks/telegram', null, PORT);
+  } else if (bot) {
+    // Development: polling mode
+    app.listen(PORT, () => {
+      security.logger.info('server.listening', { port: Number(PORT), mode: 'telegram-polling' });
+      console.log(`🌐 Web server running on port ${PORT} (webhooks endpoint ready)`);
+      console.log(`🔒 Ops/KPI dashboard: http://localhost:${PORT}/dashboard/ops${adminHint()}`);
+      console.log(`🌿 Carbon dashboard:  http://localhost:${PORT}/dashboard/carbon${adminHint()}`);
+      console.log(`🏠 Landing:           http://localhost:${PORT}/`);
+    });
+    bot.launch().then(() => {
+      console.log('🤖 DRUM bot started in polling mode');
+      console.log('   Send /start to begin');
+    });
+  } else {
+    // Dashboard-only mode (DEMO without Telegram credentials)
+    app.listen(PORT, () => {
+      security.logger.info('server.listening', { port: Number(PORT), mode: 'dashboard-only' });
+      console.log('⚠️  TELEGRAM_BOT_TOKEN not set — bot disabled, dashboard-only mode.');
+      console.log(`🌐 Web server running on port ${PORT}`);
+      console.log(`🔒 Ops/KPI dashboard: http://localhost:${PORT}/dashboard/ops${adminHint()}`);
+      console.log(`🌿 Carbon dashboard:  http://localhost:${PORT}/dashboard/carbon${adminHint()}`);
+      console.log(`🏠 Landing:           http://localhost:${PORT}/`);
+    });
+  }
+  return app;
 }
 
-// Graceful shutdown
-process.once('SIGINT', () => bot && bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot && bot.stop('SIGTERM'));
+if (require.main === module) {
+  startServer();
 
-if (bot) module.exports = bot;
+  // Graceful shutdown
+  process.once('SIGINT', () => bot && bot.stop('SIGINT'));
+  process.once('SIGTERM', () => bot && bot.stop('SIGTERM'));
+}
+
+module.exports = { app, bot, IS_DEMO, startServer, adminHint, limiters };

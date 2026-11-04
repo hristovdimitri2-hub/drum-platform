@@ -16,6 +16,7 @@
 
 const { Markup } = require('telegraf');
 const { CORRIDORS } = require('../services/finance'); // B8 single source of truth
+const money = require('../services/money'); // the ONLY split/VAT implementation
 
 module.exports = async (ctx) => {
   // Start session for new shipment
@@ -94,13 +95,25 @@ module.exports.handleTextInput = async (ctx) => {
         }
         session.deadline = text;
 
-        // Calculate price breakdown
+        // Price breakdown — ONE source of truth (services/money.js).
+        //
+        // P1 fix: this block used to hand-roll a SECOND split implementation
+        // (`base * 0.15`, `base * 0.05`), even though money.js states that
+        // "EVERY split/VAT/Stripe-fee/rounding calculation goes through here.
+        // No second implementation is allowed". The hand-rolled figures were
+        // computed on the BASE while the capture split runs on the TOTAL, so
+        // the sender was quoted a €1.50 fee / €0.50 insurance for a shipment
+        // that actually splits €1.80 / €0.60. The P0 fix had already synced
+        // /accept and the real payout to money.js — the wizard was the last
+        // place still showing stale numbers.
         const base = session.basePriceEur;
-        const fee = +(base * 0.15).toFixed(2); // 15% facilitation fee
-        const insurance = +(base * 0.05).toFixed(2); // 5% insurance
-        const total = +(base + fee + insurance).toFixed(2);
+        const total = +(base * 1.2).toFixed(2); // captured amount (= ticket T)
+        const splitCents = money.splitAmounts(money.eurToCents(total));
+        const fee = money.centsToEur(splitCents.drumCents);
+        const insurance = money.centsToEur(splitCents.insuranceCents);
+        const carrierPayout = money.centsToEur(splitCents.carrierCents);
 
-        session.priceBreakdown = { base, fee, insurance, total };
+        session.priceBreakdown = { base, fee, insurance, total, carrierPayout, splitCents };
 
         session.step = 'confirm';
         await ctx.reply(
@@ -109,8 +122,8 @@ module.exports.handleTextInput = async (ctx) => {
           `📦 *Пратка:* ${session.description}\n` +
           `💰 *Стойност:* €${session.parcelValueEur}\n` +
           `📅 *Срок:* ${session.deadline}\n\n` +
-          `*Ценова разбивка:*\n` +
-          `   Базова цена: €${base.toFixed(2)}\n` +
+          `*Ценова разбивка (split на уловената сума):*\n` +
+          `   Превозвач (80%): €${carrierPayout.toFixed(2)}\n` +
           `   Такса за улеснение (15%): €${fee.toFixed(2)}\n` +
           `   Застраховка (5%): €${insurance.toFixed(2)}\n` +
           `   *ОБЩО: €${total.toFixed(2)}*\n\n` +

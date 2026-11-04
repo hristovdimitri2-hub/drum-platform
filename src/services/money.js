@@ -20,9 +20,62 @@
  * amount (incl. any VAT). Shared constant — finance.js imports this.
  */
 
-const CARRIER_RATE = Number(process.env.CARRIER_PAYOUT_PERCENT || 80) / 100;
-const DRUM_RATE = Number(process.env.FACILITATION_FEE_PERCENT || 15) / 100;
-const INSURANCE_RATE = Number(process.env.INSURANCE_PREMIUM_PERCENT || 5) / 100;
+/**
+ * Percent parsing + validation (P2).
+ *
+ * The three split rates used to be read with a bare `Number(env || default)`,
+ * so `CARRIER_PAYOUT_PERCENT=abc` silently produced NaN and
+ * `CARRIER_PAYOUT_PERCENT=80 FACILITATION_FEE_PERCENT=80` silently produced a
+ * split that does not add up to 100% (the insurance leg went negative). Both
+ * are configuration errors on a money path — fail loudly at load time instead.
+ */
+function parsePercent(rawValue, fallback, name) {
+  if (rawValue === undefined || rawValue === null || String(rawValue).trim() === '') return fallback;
+  const n = Number(rawValue);
+  if (!Number.isFinite(n)) {
+    throw new Error(`Invalid ${name}: "${rawValue}" is not a number (expected 0–100).`);
+  }
+  if (n < 0 || n > 100) {
+    throw new Error(`Invalid ${name}: ${n} is outside the allowed range 0–100.`);
+  }
+  return n;
+}
+
+function validateRates({ carrierPercent, drumPercent, insurancePercent }) {
+  const legs = [
+    ['CARRIER_PAYOUT_PERCENT', carrierPercent],
+    ['FACILITATION_FEE_PERCENT', drumPercent],
+    ['INSURANCE_PREMIUM_PERCENT', insurancePercent],
+  ];
+  for (const [name, value] of legs) {
+    if (!Number.isFinite(value) || value < 0 || value > 100) {
+      throw new Error(`Invalid ${name}: ${value} is outside the allowed range 0–100.`);
+    }
+  }
+  // Cent-level tolerance: the rates are percentages, so 100% must be exact.
+  const sum = carrierPercent + drumPercent + insurancePercent;
+  if (Math.abs(sum - 100) > 1e-9) {
+    throw new Error(
+      `Split rates must sum to exactly 100% — got ${sum}% ` +
+        `(carrier ${carrierPercent} + facilitation ${drumPercent} + insurance ${insurancePercent}).`
+    );
+  }
+  return { carrierPercent, drumPercent, insurancePercent, sum };
+}
+
+const CARRIER_PERCENT = parsePercent(process.env.CARRIER_PAYOUT_PERCENT, 80, 'CARRIER_PAYOUT_PERCENT');
+const DRUM_PERCENT = parsePercent(process.env.FACILITATION_FEE_PERCENT, 15, 'FACILITATION_FEE_PERCENT');
+const INSURANCE_PERCENT = parsePercent(process.env.INSURANCE_PREMIUM_PERCENT, 5, 'INSURANCE_PREMIUM_PERCENT');
+
+validateRates({
+  carrierPercent: CARRIER_PERCENT,
+  drumPercent: DRUM_PERCENT,
+  insurancePercent: INSURANCE_PERCENT,
+});
+
+const CARRIER_RATE = CARRIER_PERCENT / 100;
+const DRUM_RATE = DRUM_PERCENT / 100;
+const INSURANCE_RATE = INSURANCE_PERCENT / 100;
 const VAT_RATE = 0.20;
 const STRIPE = { percent: 0.015, fixedCents: 25 };
 
@@ -84,6 +137,9 @@ module.exports = {
   CARRIER_RATE,
   DRUM_RATE,
   INSURANCE_RATE,
+  CARRIER_PERCENT,
+  DRUM_PERCENT,
+  INSURANCE_PERCENT,
   VAT_RATE,
   STRIPE,
   eurToCents,
@@ -92,4 +148,8 @@ module.exports = {
   vatOnDrumFee,
   stripeFeeCents,
   userPaysCents,
+  // Configuration validation (P2) — exported so the env matrix is unit-testable
+  // without reloading the module (the rates are read once, at load time).
+  parsePercent,
+  validateRates,
 };
