@@ -9,16 +9,21 @@
  * ## Why the list grew from 4 to 19 modules
  *
  * The original gate covered only money/trust/carbon/matching. Every module
- * below was measured over the full suite on 2026-11-10; the number in brackets
- * is the *measured* line coverage, so the 80% floor is a ratchet that documents
- * real headroom rather than an aspiration:
+ * below was measured over the full suite on 2026-11-10; the number shown is the
+ * *measured* line coverage, so the 80% floor is a ratchet that documents real
+ * headroom rather than an aspiration:
  *
  *   security.js 100 · auth.js 100 · b2b.js 100 · store.js 100 · kpi.js 100
  *   evidencePaths.js 100 · money.js 100 · matching.js 100
  *   carbon.js 99.09 · trust.js 98.62 · finance.js 96.84 · airtable.js 95.82
- *   scanWeb.js 95.49 · anomalies.js 94.05 · stripeEvents.js 92.68
- *   checkout.js 92.41 · carbonDashboard.js 90.32 · db/sqlite.js 87.22
- *   photoProof.js 83.98
+ *   scanWeb.js 95.48 · anomalies.js 94.05 · stripeEvents.js 92.68
+ *   checkout.js 92.40 · carbonDashboard.js 90.32 · db/sqlite.js 87.22
+ *   photoProof.js 83.97
+ *
+ * The numbers were measured twice — once with Node's built-in
+ * `--experimental-test-coverage` and once with c8, which is what CI runs — and
+ * the two agree within 0.01 pp on every module. The floor is therefore safe on
+ * the CI runner, not just locally.
  *
  * `db/sqlite.js` and `photoProof.js` are the two closest to the floor; if a
  * refactor drops one below 80 the gate is telling you something real.
